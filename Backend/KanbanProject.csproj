@@ -86,7 +86,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BusinessLayer\" />
+    <Folder Include="BusinessLayer\BoardPackage\" />
+    <Folder Include="BusinessLayer\UserPackage\" />
     <Folder Include="DataAccessLayer\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

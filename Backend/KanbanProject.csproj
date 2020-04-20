@@ -69,6 +69,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccessLayer\DALController.cs" />
+    <Compile Include="DataAccessLayer\Objects\DALObject.cs" />
+    <Compile Include="DataAccessLayer\Objects\GuyKabalaSaveToJson.cs" />
+    <Compile Include="DataAccessLayer\Objects\User.cs" />
     <Compile Include="ServiceLayer\Response.cs" />
     <Compile Include="ServiceLayer\ResponseT.cs" />
     <Compile Include="ServiceLayer\IService.cs" />
@@ -88,7 +92,6 @@
   <ItemGroup>
     <Folder Include="BusinessLayer\BoardPackage\" />
     <Folder Include="BusinessLayer\UserPackage\" />
-    <Folder Include="DataAccessLayer\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

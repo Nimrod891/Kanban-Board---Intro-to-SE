@@ -7,15 +7,26 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    class DALController
+    public class DALController
     {
-        public static void WriteToFile(string filename, string content)
+        public static void Write(string filename, string content)
         {
-            File.WriteAllText()
+            File.WriteAllText(filename, content);
         }
 
-        public static string ReadFromFile(string filename, string content)
+        // recieves the NAME of the required file and returns its CONTENT as a string if file exists
+        // else, creates an empty file of the same name.
+        public static string Read(string filename)
         {
+            if (File.Exists(filename))
+            {
+                return (File.ReadAllText(filename));   
+            }
+            else
+            {
+                throw new NotImplementedException();
+                //create empty file
+            }
             
         }
     }

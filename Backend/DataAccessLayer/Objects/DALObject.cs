@@ -8,12 +8,13 @@ using System.Text.Json;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 {
-    abstract class DALObject<T> where T : DALObject<T>
+    public abstract class DALObject<T> where T : DALObject<T>
     {
         // takes this instance of a DAL object and returns it as a json string
         public string ToJson()
         {
             return (JsonSerializer.Serialize(this, this.GetType()));
+            
         }
 
         public static T FromJson(string json)
@@ -22,6 +23,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 
             return (JsonSerializer.Deserialize<T>(json));
            
+        }
+
+        public abstract void Save();
+
+        public string GetSafeFilename(string filename)
+        {
+            char[] remove = { ',', '.', '@', '/', ':' };
+            filename = string.Join("", filename.Split(remove));
+            return (string.Join("", filename.Split(Path.GetInvalidFileNameChars())));
         }
 
 

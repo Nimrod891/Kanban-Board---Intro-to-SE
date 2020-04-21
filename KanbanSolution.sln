@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.28307.1022
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanProject", "Backend\KanbanProject.csproj", "{54D4CA44-F049-47DE-BF74-81FC80F867FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingConsoleApp", "TestingConsoleApp\TestingConsoleApp.csproj", "{FDF0E442-12EA-4AAC-A539-FD0E18620B98}"
+	ProjectSection(ProjectDependencies) = postProject
+		{54D4CA44-F049-47DE-BF74-81FC80F867FD} = {54D4CA44-F049-47DE-BF74-81FC80F867FD}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +20,10 @@ Global
 		{54D4CA44-F049-47DE-BF74-81FC80F867FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54D4CA44-F049-47DE-BF74-81FC80F867FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54D4CA44-F049-47DE-BF74-81FC80F867FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDF0E442-12EA-4AAC-A539-FD0E18620B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDF0E442-12EA-4AAC-A539-FD0E18620B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDF0E442-12EA-4AAC-A539-FD0E18620B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDF0E442-12EA-4AAC-A539-FD0E18620B98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

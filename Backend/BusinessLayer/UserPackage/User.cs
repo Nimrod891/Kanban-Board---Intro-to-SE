@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
-    class User
+    class User : IPresistObject<DataAccessLayer.Objects.User>
     {
         private string email;
         private string password;
@@ -59,6 +59,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             }
             is_logged = false;
             myBoard.SetIsULoggedIn(false);
+        }
+
+        public DataAccessLayer.Objects.User ToDalObject()
+        {
+            DataAccessLayer.Objects.User dalUser = new DataAccessLayer.Objects.User(this.email, this.password, this.nickname);
+            return dalUser;
         }
     }
 }

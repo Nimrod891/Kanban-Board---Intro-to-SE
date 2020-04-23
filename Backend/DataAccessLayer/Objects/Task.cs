@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 {
-    class Task : DALObject<Task>
+    public class Task : DALObject<Task>
     {
-        private int taskId;
-        private string title;
-        private string description;
-        private DateTime dueDate;
-        private DateTime creationDate;
+        public int taskId { get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
+        public DateTime dueDate { get; set; }
+        public DateTime creationDate { get; set; }
 
         public Task(int taskId, string title, string description, DateTime dueDate, DateTime creationDate)
         {
@@ -22,6 +22,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
             this.dueDate = dueDate;
             this.creationDate = creationDate;
         }
+
+        public Task() { }
 
         public override void Save()
         {

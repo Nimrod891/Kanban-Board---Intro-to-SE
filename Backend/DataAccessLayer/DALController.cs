@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class DALController
     {
-        private Dictionary<string, Board> Boards;
+        public Dictionary<string, Board> Boards {get;}
 
         public DALController()
         {
@@ -22,7 +22,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     Board boardToAdd = new Board();
                     boardToAdd = Board.FromJson(Read(file));
-                    Boards.Add(boardToAdd.getEmail(), boardToAdd);
+                    Boards.Add(boardToAdd.email, boardToAdd);
 
                     /// if boards exist in the folder /Kanban JSON Files/Boards 
                     /// this will create a dictionary of {email, board} as a field in DALController
@@ -37,7 +37,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             
             string dir = Directory.GetCurrentDirectory();
             dir = Path.Combine(dir, "Kanban JSON Files");
-            Directory.CreateDirectory(dir);
+
+            //Path.GetFileName(filename);
+            //Console.WriteLine(dir);
+            Directory.CreateDirectory(dir.TrimEnd((Path.GetFileName(filename)).ToCharArray()));
+            //Console.WriteLine(dir);
             string f = Path.Combine(dir, filename);
             File.WriteAllText(f, content);
         }

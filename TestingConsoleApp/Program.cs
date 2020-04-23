@@ -19,13 +19,13 @@ namespace TestingConsoleApp
 
         public static void Main(string[] args)
         {
-            var user = new IntroSE.Kanban.Backend.DataAccessLayer.Objects.User("ido12@banna.co.il", "passy", 
-                "nickname");
-            Console.WriteLine(user.ToJson());
+            var user = new IntroSE.Kanban.Backend.DataAccessLayer.Objects.User("nexttry@gmail.org", "asasd", 
+                "malihi");
+           // Console.WriteLine(user.ToJson());
             Console.ReadKey();
-            user.Save();
+            //user.Save();
 
-            Console.WriteLine(user.Import(user.email).ToString());
+            Console.WriteLine(user.Import("nexttry@gmail.org").ToString());
             Console.ReadKey();
         
         }

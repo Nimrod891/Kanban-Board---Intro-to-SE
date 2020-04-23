@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,13 +16,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             boards = new Dictionary<string, Board>();
         }
 
-        public Board GetBoard(string userEmail)
+        public IReadOnlyCollection<string> GetBoard(string userEmail)
         {
             if (!boards.ContainsKey(userEmail))
             {
                 throw new Exception("Board not exist");
             }
-            return boards[userEmail];
+            ReadOnlyCollection<string> readOnlyCollection = new );
         }
 
         public void AddNewTask(string userEmail ,string title, string description, DateTime dueDate)

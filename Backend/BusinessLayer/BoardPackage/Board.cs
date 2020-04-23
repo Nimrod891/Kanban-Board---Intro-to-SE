@@ -28,6 +28,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
 
         }
+       
         public Board(DataAccessLayer.Objects.Board myBoard)
         {
             this.userEmail = myBoard.getEmail();

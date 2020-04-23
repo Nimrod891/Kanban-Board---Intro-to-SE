@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    class Task
+    class Task : IPresistObject<DataAccessLayer.Objects.Task>
     {
        
         private int taskId;
@@ -21,7 +21,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.taskId = taskId;
             SetTitle(title);
             SetDescription(description);
-            this.dueDate = dueDate;
+            SetDueDate(dueDate);
             this.creationDate = DateTime.Now;
         }
 
@@ -62,34 +62,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
        
         public void SetTitle(string title)
         {
-            if (!(title.Length > 50))
+            if ((title.Length > 50))
             {
-                this.title = title;
+                throw new Exception("Title is over 50 chars");   
             }
-            else
+            if (String.IsNullOrWhiteSpace(title))
             {
-                throw new Exception("Title is over 50 chars");
+                throw new Exception("Title can't be empty");
             }
-            if (!(String.IsNullOrWhiteSpace(title)))
-            {
-                this.title = title;
-            }
-            else
-            {
-                throw new Exception("Title is empty");
-            }
+            this.title = title;
         }
 
         public void SetDescription(string description)
         {
-            if (!(description.Length > 300))
-            {
-                this.description = description;
-            }
-            else
+            if (description.Length > 300)
             {
                 throw new Exception("description is over 300 chars");
             }
+                this.description = description;
         }
 
         public void SetDueDate(DateTime dueDate)
@@ -99,6 +89,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("This date has already passed");
             }
             this.dueDate = dueDate;
+        }
+
+        public DataAccessLayer.Objects.Task ToDalObject()
+        {
+            DataAccessLayer.Objects.Task dalTask = new DataAccessLayer.Objects.Task(this.taskId,this.title, this.description, this.dueDate,this.creationDate);
+            return dalTask;
         }
 
     }

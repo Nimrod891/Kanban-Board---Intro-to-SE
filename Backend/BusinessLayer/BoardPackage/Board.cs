@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    class Board
+    class Board : IPresistObject<DataAccessLayer.Objects.Column>
     {
         private string userEmail;
         private Column[] columns;
@@ -40,36 +40,43 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public void AddNewTask(string title, string description, DateTime dueDate)
         {
-            if (is_UserLoggedin)
+            if (!is_UserLoggedin)
             {
-                taskId++;
-                columns[0].AddTask(taskId, title, description, dueDate);
+                throw new Exception("User is not logged in");
             }
-            else
-                throw new Exception("User  is not logged in");
+            taskId++;
+            columns[0].AddTask(taskId, title, description, dueDate);
         }
 
         public void LimitTasks(int columnId, int limitNum)
         {
-            if (is_UserLoggedin)
+            if (!is_UserLoggedin)
+            {
+                throw new Exception("User is not logged in");
+            }
+            if (columnId != 1)
+            {
+                throw new Exception("You can only limit the number of tasks in "  + columns[1].GetName() + " column");
+            }
                 columns[columnId].SetLimitNum(limitNum);
-            else
-                throw new Exception("User  is not logged in");
         }
 
         public void AdvanceTask(int currentColId, int taskId)
         {
             if (is_UserLoggedin)
             {
-                if (currentColId == columns.Length - 1) // if you're in the last column
-                {
-                    throw new Exception("You can't advance tasks from the last column");
-                }
-                columns[currentColId + 1].AddTasksToDict(taskId, columns[currentColId].GetTaskById(taskId)); // add task to the next column
-                columns[currentColId].DeleteTask(taskId); // delete task from current column
-            }
-            else
                 throw new Exception("User is not logged in");
+            }
+            if (currentColId == columns.Length - 1) // if you're in the last column
+            {
+                throw new Exception("You can't advance tasks from the last column");
+            }
+            if(currentColId < 0 || currentColId > columns.Length)
+            {
+                throw new Exception("Invalid colomn Ordinal");
+            }
+            columns[currentColId + 1].AddTasksToDict(taskId, columns[currentColId].GetTaskById(taskId)); // add task to the next column
+            columns[currentColId].DeleteTask(taskId); // delete task from current column
         }
 
         public void UpdateTaskDueDate(int colId, int taskId, DateTime dueDate)
@@ -104,19 +111,27 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return columns[columnOrdinal];
         }
 
-        public void GetColumnByName(string colName)
+        public Column GetColumnByName(string colName)
         {
             int colId = -1;
             for (int i = 0; i < columns.Length - 1; i++)
             {
-                colId = columns[i].GetColumnIdByName(colName);
                 if (colId != -1)
-                    this.GetColumnById(colId);
+                {
+                    colId = columns[i].GetColumnIdByName(colName);
+                }
+                   
             }
             if (colId == -1)
             {
                 throw new Exception("there's no column named " + colName);
             }
+            return columns[colId];
+        }
+        public DataAccessLayer.Objects.Board ToDalObject()
+        {
+            DataAccessLayer.Objects.Board dalBoard = new DataAccessLayer.Objects.Board();
+            return dalColumn;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    class Column
+    class Column : IPresistObject<DataAccessLayer.Objects.Column>
     {
         private string name;
         private int columnId;
@@ -53,6 +53,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void AddTask(int taskId, string title, string description, DateTime dueDate)
         {
+            if (!(this.columnId == 0))
+            {
+                throw new Exception("You can only add new task to backlog column");
+            }
             if (limitNum == -1 || numOfTasks < limitNum) /// if there's no limit or we didnt over limit task number
             {
                 Task t = new Task(taskId, title, description, dueDate);
@@ -74,20 +78,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public void AddTasksToDict(int taskId, Task t)
         {
-            if(limitNum == -1 || numOfTasks < limitNum)
-                {
-                tasks.Add(taskId, t);
-                numOfTasks = tasks.Count;
-            }
-            else
+            if (!(limitNum == -1 || numOfTasks < limitNum))
             {
-                throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// example:"there are already 6 tasks in backlog column" 
+                throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// example:"there are already 6 tasks in backlog column"  
             }
-
+            tasks.Add(taskId, t);
+            numOfTasks = tasks.Count;
         }
 
         public Task GetTaskById(int taskId)
         {
+            if (!tasks.ContainsKey(taskId))
+            {
+                throw new Exception("Task does not exisit");
+            }
             return tasks[taskId];
         }
 
@@ -99,6 +103,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 return this.columnId;
             }
             return -1;
+        }
+
+        public DataAccessLayer.Objects.Column ToDalObject()
+        {
+            DataAccessLayer.Objects.Column dalColumn = new DataAccessLayer.Objects.Column(this.name, this.columnId);
+            return dalColumn;
         }
     }
 }

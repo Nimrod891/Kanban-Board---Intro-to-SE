@@ -4,13 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 {
+    //[JsonObject(MemberSerialization.Fields)]
     public class Board : DALObject<Board>
     {
-        private string email; //{ get; set; }
-        private Column[] columns;
+        public string email { get; set; }
+        public Column[] columns { get; set; }
 
         public Board(string email)
         {
@@ -31,7 +33,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 
         public DALObject<Board> Import(string email)
         {
-            return DALObject<Board>.FromJson(DALController.Read(this.GetSafeFilename(email) + ".json"));
+            return DALObject<Board>.FromJson(DALController.Read
+                (Path.Combine("Boards",this.GetSafeFilename(email) + ".json")));
         }
         public override void Save()
         {
@@ -40,7 +43,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
         }
 
         public override string ToString()
-        { return ("Email: " + ", nickname: " + ", pass: "); }
+        { return ("Board name: "+email+"\n"+ToJson()); }
 
         public string getEmail()
         {

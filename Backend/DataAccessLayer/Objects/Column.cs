@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 {
-    class Column : DALObject<Column>
+    public class Column : DALObject<Column>
     {
-        private string name;
-        private int columnId;
-        private int limitNum;
-        private int numOfTasks;
-        private Dictionary<int, Task> tasks;
+        public string name { get; set; }
+        public int columnId { get; set; }
+        public int limitNum { get; set; }
+        public int numOfTasks { get; set; }
+        //[JsonExtensionData]
+        public Dictionary<int, Task> tasks { get; set; }
 
 
         public Column(string name, int columnId)
@@ -24,6 +27,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
             tasks = new Dictionary<int, Task>();
            
         }
+        public Column() { }
 
         public override void Save()
         {

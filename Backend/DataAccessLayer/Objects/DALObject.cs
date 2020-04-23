@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Text.Json;
+//using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 {
@@ -13,15 +14,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
         // takes this instance of a DAL object and returns it as a json string
         public string ToJson()
         {
-            return (JsonSerializer.Serialize(this, this.GetType()));
-            
+            //return (JsonSerializer.Serialize(this, this.GetType()));
+            return (JsonConvert.SerializeObject(this,Formatting.Indented));
+
         }
 
         public static T FromJson(string json)
         {
             // takes an already read json string from dal controller and returns it as an object
 
-            return (JsonSerializer.Deserialize<T>(json));
+            //return (JsonSerializer.Deserialize<T>(json));
+            return (JsonConvert.DeserializeObject<T>(json));
+
+
            
         }
 

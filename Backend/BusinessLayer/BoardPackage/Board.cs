@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    class Board
+    class Board : IPresistObject<DataAccessLayer.Objects.Board>
     {
         private string userEmail;
         private Column[] columns;
@@ -26,6 +26,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             taskId = 0;
             is_UserLoggedin = false;
 
+
+        }
+        public Board(DataAccessLayer.Objects.Board myBoard)
+        {
+            this.userEmail = myBoard.getEmail();
+            this.taskId = myBoard.getTaskID();
+            this.columns = new Column[myBoard.columns.Length];
+            //foreach(DataAccessLayer.Objects.Column newColumn in myBoard.columns)
+            //{
+            //    this.columns[]
+            //}
+            for(int i=0; i < myBoard.columns.Length; i++)
+            {
+                this.columns[i] = new Column(myBoard.columns[i]);
+            }
+            
+
+            //this.myBoard = new BoardPackage.Board(dalUser.myBoard);
 
         }
 
@@ -117,6 +135,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("there's no column named " + colName);
             }
+        }
+
+        public DataAccessLayer.Objects.Board ToDalObject()
+        {
+            DataAccessLayer.Objects.Board dalBoard = new DataAccessLayer.Objects.Board
+              (this.GetUserEmail());
+            return dalBoard;
         }
     }
 }

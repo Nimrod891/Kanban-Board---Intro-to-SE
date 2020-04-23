@@ -22,6 +22,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
             this.myBoard = new Board(this.email);
         }
 
+        public User(string email, string password, string nickname, Board myboard)
+        {
+            this.email = email;
+            this.password = password;
+            this.nickname = nickname;
+            this.myBoard = myboard;
+        }
+
         public User()
         {
         }

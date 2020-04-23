@@ -25,6 +25,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.creationDate = DateTime.Now;
         }
 
+        public Task(DataAccessLayer.Objects.Task dalTask)
+        {
+            this.taskId = dalTask.taskId;
+            this.title = dalTask.title;
+            this.description = dalTask.description;
+            this.dueDate = dalTask.dueDate;
+            this.creationDate = dalTask.creationDate;
+        }
+
         public int GetTaskId()
         {
             return taskId;

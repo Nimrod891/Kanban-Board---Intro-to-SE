@@ -13,6 +13,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
     {
         public string email { get; set; }
         public Column[] columns { get; set; }
+        private int taskId { get; set; }
 
         public Board(string email)
         {
@@ -24,6 +25,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
             columns[0] = backLog;
             columns[1] = inProgress;
             columns[2] = done;
+            taskId = 0;
             
         }
 
@@ -40,6 +42,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
         {
             DALController.Write(Path.Combine("Boards", this.GetSafeFilename(email)+ ".json"), this.ToJson());
 
+        }
+        public int getTaskID()
+        {
+            return this.taskId;
+        }
+
+        public Column[] GetColumns()
+        {
+            return this.columns;
         }
 
         public override string ToString()

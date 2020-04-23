@@ -22,6 +22,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             this.is_logged = false;
             myBoard = new BoardPackage.Board(email);
         }
+        public User(DataAccessLayer.Objects.User dalUser)
+        {
+            this.email = dalUser.email;
+            this.password = dalUser.password;
+            this.nickname = dalUser.nickname;
+            this.myBoard = new BoardPackage.Board(dalUser.myBoard);
+
+        }
         
 
         public string GetEmail()
@@ -63,7 +71,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 
         public DataAccessLayer.Objects.User ToDalObject()
         {
-            DataAccessLayer.Objects.User dalUser = new DataAccessLayer.Objects.User(this.email, this.password, this.nickname);
+
+            DataAccessLayer.Objects.User dalUser = new DataAccessLayer.Objects.User
+                (this.email, this.password, this.nickname//, this.myBoard.); to be added!
+                );
             return dalUser;
         }
     }

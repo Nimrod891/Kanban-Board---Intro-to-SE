@@ -22,6 +22,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             numOfTasks = 0;
             tasks = new Dictionary<int, Task>();
         }
+        public Column(DataAccessLayer.Objects.Column myColumn)
+        {
+            this.name = myColumn.name;
+            this.columnId = myColumn.columnId;
+            this.limitNum = myColumn.limitNum;
+
+            this.tasks = new Dictionary<int, Task>();
+            foreach(KeyValuePair<int, DataAccessLayer.Objects.Task> taskNum in myColumn.tasks)
+            {
+                Task taskToAdd = new Task(taskNum.Value);
+                tasks.Add(taskNum.Key, taskToAdd);
+            }
+
+
+        }
         public string GetName()
         {
             return name;

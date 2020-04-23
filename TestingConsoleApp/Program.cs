@@ -19,15 +19,39 @@ namespace TestingConsoleApp
 
         public static void Main(string[] args)
         {
-            var user = new IntroSE.Kanban.Backend.DataAccessLayer.Objects.User("nexttry@gmail.org", "asasd", 
+            var user = new IntroSE.Kanban.Backend.DataAccessLayer.Objects.User("nexttry@gmail.org", "asasd",
                 "malihi");
-           // Console.WriteLine(user.ToJson());
+            Console.WriteLine(user.ToJson());
+            Console.WriteLine("Click to continue1");
             Console.ReadKey();
-            //user.Save();
+            user.Save();
 
             Console.WriteLine(user.Import("nexttry@gmail.org").ToString());
+            Console.WriteLine("Click to continue2");
             Console.ReadKey();
-        
+            var board1 = new IntroSE.Kanban.Backend.DataAccessLayer.Objects.Board("iso34@goog.cv");
+            var board2 = new IntroSE.Kanban.Backend.DataAccessLayer.Objects.Board("buddc@nana.net");
+
+            Console.WriteLine(board1.ToJson());
+            Console.WriteLine(board2.ToJson());
+            Console.WriteLine("Click to continue3");
+            Console.ReadKey();
+            board1.Save();
+            board2.Save();
+
+            Console.WriteLine(board1.Import("iso34@goog.cv").ToString());
+            Console.WriteLine("click to continue4");
+            Console.ReadKey();
+            var dalcontrol = new IntroSE.Kanban.Backend.DataAccessLayer.DALController();
+            Console.WriteLine("click to continue5");
+            Console.ReadKey();
+            Console.WriteLine(dalcontrol.Boards["iso34@goog.cv"].ToString());
+            Console.WriteLine("click to continue6");
+            Console.ReadKey();
+
+
+
+
         }
     }
 }

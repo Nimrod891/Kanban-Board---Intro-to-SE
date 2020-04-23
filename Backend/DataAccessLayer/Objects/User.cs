@@ -9,17 +9,25 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 {
     public class User : DALObject<User>
     {
-        private string email { get; set; }
-        private string password { get; set; }
-        private string nickname { get; set; }
-        private Board myBoard;
+        public string email { get; set; }
+        public string password { get; set; }
+        public string nickname { get; set; }
+        public Board myBoard {get; set;}
 
         public User(string email, string password, string nickname)
         {
             this.email = email;
             this.password = password;
             this.nickname = nickname;
-            this.myBoard = new Board();
+            this.myBoard = new Board(this.email);
+        }
+
+        public User(string email, string password, string nickname, Board myboard)
+        {
+            this.email = email;
+            this.password = password;
+            this.nickname = nickname;
+            this.myBoard = myboard;
         }
 
         public User()
@@ -28,11 +36,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 
         public DALObject<User> Import(string email)
         {
-            return DALObject<User>.FromJson(DALController.Read(this.GetSafeFilename(email) + ".json"));
+            return DALObject<User>.FromJson(DALController.Read(Path.Combine
+                ("Users", this.GetSafeFilename(email) + ".json")));
         }
         public override void Save()
         {
-            DALController.Write(this.GetSafeFilename(email) + ".json", this.ToJson());
+            DALController.Write(Path.Combine
+                ("Users", this.GetSafeFilename(email) + ".json"), this.ToJson());
            
         }
 

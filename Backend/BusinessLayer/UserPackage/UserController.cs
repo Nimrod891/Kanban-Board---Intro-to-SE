@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
@@ -14,6 +15,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         public UserController()
         {
             users = new Dictionary<string, User>();
+
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Kanban JSON Files", "Users");
+            Directory.CreateDirectory(path);
+            foreach (string file in Directory.EnumerateFiles(path, "*.json"))
+            {
+                User userToAdd = new User(DataAccessLayer.Objects.User.FromJson(file));
+                //userToAdd = DataAccessLayer.Objects.User.FromJson(Read(file));
+                users.Add(userToAdd.GetEmail(), userToAdd);
+
+                /// if users exist in the folder /Kanban JSON Files/Users 
+                /// this will create a dictionary of {email, user} as a field in UserController
+
+            }
+            this.loggedInUser = null;
+
+
         }
 
         public void Register(string email, string pass, string nickname)

@@ -8,23 +8,27 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         userService myUserService;
         public Service()
         {
-            myBoardService = new boardService();
-            myUserService = new userService();
-
-
-
         }
 
         public Response LoadData()
         {
-            myUserService.LoadData();
+            try
+            {
+                myBoardService = new boardService();
+                myUserService = new userService();
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+            
         }
         public Response Register(string email, string password, string nickname)
         {
 
             return myUserService.Register(email, password, nickname);
         }
-
 
         public Response<User> Login(string email, string password)
         {
@@ -50,7 +54,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            return myBoardService.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate)
+            return myBoardService.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
         }
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
         {
@@ -71,7 +75,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
-            return myBoardService.GetColumn(email, columnOrdinal);
+            return myBoardService.GetColumn(email,columnOrdinal);
         }
     }
 }

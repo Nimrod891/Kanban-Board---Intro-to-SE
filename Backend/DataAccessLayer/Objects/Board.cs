@@ -13,7 +13,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
     {
         public string email { get; set; }
         public Column[] columns { get; set; }
-        private int taskId { get; set; }
+        public int taskId { get; set; }
 
         public Board(string email)
         {

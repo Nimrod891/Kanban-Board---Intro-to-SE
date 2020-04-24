@@ -15,7 +15,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         public UserController()
         {
             users = new Dictionary<string, User>();
-
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Kanban JSON Files", "Users");
             Directory.CreateDirectory(path);
             foreach (string file in Directory.EnumerateFiles(path, "*.json"))

@@ -27,6 +27,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
             tasks = new Dictionary<int, Task>();
            
         }
+        //Constructor which takes a BL user and makes it a 
+        //public Column()
+        //{
+
+        //}
         public Column() { }
 
         public override void Save()

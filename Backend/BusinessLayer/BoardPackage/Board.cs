@@ -148,8 +148,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public DataAccessLayer.Objects.Board ToDalObject()
         {
-            DataAccessLayer.Objects.Board dalBoard = new DataAccessLayer.Objects.Board();
+            DataAccessLayer.Objects.Board dalBoard = new DataAccessLayer.Objects.Board(); // empty dal board
+            /* fill with email, columnspublic string email { get; set; }
+             public Column[] columns { get; set; }
+              private int taskId { get; set; }*/
+            dalBoard.email = this.userEmail;
+            dalBoard.taskId = this.taskId;
+            
+            for(int i=0; i<this.columns.Length;i++)
+            {
+                dalBoard.columns[i] = this.columns[i].ToDalObject();
+            }
+
             return dalBoard;
+            
         }
         public List<string> GetMyColumns()
         {

@@ -2,10 +2,23 @@
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
+    /// <summary>
+    /// The service for using the Kanban board.
+    /// It allows executing all of the required behaviors by the Kanban board.
+    /// You are not allowed (and can't due to the interfance) to change the signatures
+    /// Do not add public methods\members! Your client expects to use specifically these functions.
+    /// You may add private, non static fields (if needed).
+    /// You are expected to implement all of the methods.
+    /// Good luck.
+    /// </summary>
     public class Service : IService
     {
         boardService myBoardService;
         userService myUserService;
+        /// <summary>
+        /// Simple public constructor.
+        /// </summary>
+        
         public Service()
         {
             myBoardService = new boardService();
@@ -14,18 +27,36 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
         }
+        /// <summary>        
+        /// Loads the data. Intended be invoked only when the program starts
+        /// </summary>
+        /// <returns>A response object. The response should contain a error message in case of an error.</returns>
 
         public Response LoadData()
         {
             myUserService.LoadData();
         }
+
+        /// <summary>
+        /// Registers a new user
+        /// </summary>
+        /// <param name="email">The email address of the user to register</param>
+        /// <param name="password">The password of the user to register</param>
+        /// <param name="nickname">The nickname of the user to register</param>
+        /// <returns>A response object. The response should contain a error message in case of an error<returns>
         public Response Register(string email, string password, string nickname)
         {
 
             return myUserService.Register(email, password, nickname);
         }
 
-
+        /// <summary>
+        /// Log in an existing user
+        /// </summary>
+        /// <param name="email">The email address of the user to login</param>
+        /// <param name="password">The password of the user to login</param>
+        /// <returns>A response object with a value set to the user, instead the response should 
+        /// contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
             return myUserService.Login(email, password);
@@ -50,7 +81,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            return myBoardService.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate)
+            return myBoardService.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
         }
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
         {

@@ -74,7 +74,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("You can only add new task to backlog column");
             }
-            if (limitNum != -1 && numOfTasks > limitNum) /// if there's no limit or we didnt over limit task number
+            if (limitNum != -1 && numOfTasks >= limitNum) /// if there's no limit or we didnt over limit task number
             {
                 throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// "there are already 6 tasks in backlog column"
                 
@@ -94,7 +94,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public void AddTasksToDict(int taskId, Task t)
         {
-            if (limitNum != -1 && numOfTasks > limitNum)
+            if (limitNum != -1 && numOfTasks >= limitNum)
             {
                 throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// example:"there are already 6 tasks in backlog column"  
             }

@@ -122,8 +122,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public DataAccessLayer.Objects.Column ToDalObject()
         {
-            DataAccessLayer.Objects.Column dalColumn = new DataAccessLayer.Objects.Column(this.name, this.columnId);
+            DataAccessLayer.Objects.Column dalColumn = new DataAccessLayer.Objects.Column
+                (this.name, this.columnId); // gives a new DAL column
+
+            dalColumn.limitNum = this.limitNum;
+            dalColumn.numOfTasks = this.numOfTasks;
+            Dictionary<int, DataAccessLayer.Objects.Task> dalTasks = new 
+                Dictionary<int, DataAccessLayer.Objects.Task>();
+
+
+            foreach (KeyValuePair<int, Task> taskNum in this.tasks)
+            {
+                dalTasks.Add(taskNum.Key, taskNum.Value.ToDalObject());
+                //DataAccessLayer.Objects.Task taskToAdd = new DataAccessLayer.Objects.Task();
+                  /*  (taskNum.Value.GetTaskId(),taskNum.Value.GetTitle(), taskNum.Value.GetDescription(),
+                    taskNum.Value.GetDueDate(), taskNum.Value.GetCreationDate());*/
+
+                //dalTasks.Add(taskNum.Key, taskToAdd);
+            }
             return dalColumn;
-        }
+    }
     }
 }

@@ -116,6 +116,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 return new Response<Column>(e.Message);
             }
+
+        }
+        public Response<Column> GetColumn(string email, int columnOrdinal)
+        {
+            try
+            {
+                Column columnService = new Column(MyBoardContorller.GetColumnById(email, columnOrdinal).GetMyTasks(), MyBoardContorller.GetColumnById(email,columnOrdinal).GetName(), MyBoardContorller.GetColumnById(email, columnOrdinal).GetLimitNum());
+                return new Response<Column>(columnService);
+            }
+            catch (Exception e)
+            {
+                return new Response<Column>(e.Message);
+            }
         }
     }
 }

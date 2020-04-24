@@ -53,11 +53,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 return new Response(e.Message);
             }
-
-        }
-        public Response LoadData()
-        {
-
         }
     }
 }

@@ -21,11 +21,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         
         public Service()
         {
-            myBoardService = new boardService();
-            myUserService = new userService();
-
-
-
         }
         /// <summary>        
         /// Loads the data. Intended be invoked only when the program starts
@@ -34,7 +29,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response LoadData()
         {
-            myUserService.LoadData();
+            try
+            {
+                myBoardService = new boardService();
+                myUserService = new userService();
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+            
         }
 
         /// <summary>
@@ -50,13 +55,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return myUserService.Register(email, password, nickname);
         }
 
-        /// <summary>
-        /// Log in an existing user
-        /// </summary>
-        /// <param name="email">The email address of the user to login</param>
-        /// <param name="password">The password of the user to login</param>
-        /// <returns>A response object with a value set to the user, instead the response should 
-        /// contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
             return myUserService.Login(email, password);
@@ -102,7 +100,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
-            return myBoardService.GetColumn(email, columnOrdinal);
+            return myBoardService.GetColumn(email,columnOrdinal);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
@@ -14,6 +15,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public BoardController()
         {
             boards = new Dictionary<string, Board>();
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Kanban JSON Files", "Boards");
+            Directory.CreateDirectory(path);
+            foreach (string file in Directory.EnumerateFiles(path, "*.json"))
+            {
+                Board boardToAdd = new Board(DataAccessLayer.Objects.Board.FromJson(file));
+                //boardToAdd = Board.FromJson(Read(file));
+                boards.Add(boardToAdd.GetUserEmail(), boardToAdd);
+
+                /// if boards exist in the folder /Kanban JSON Files/Boards 
+                /// this will create a dictionary of {email, board} as a field in BoardController
+
+            }
         }
 
         public IReadOnlyCollection<string> GetBoard(string userEmail)
@@ -29,7 +42,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             if (!boards.ContainsKey(userEmail))
             {
-                throw new Exception("Board not exist");
+                throw new Exception("Board does not exist");
             }
             boards[userEmail].AddNewTask(title, description, dueDate);
         }

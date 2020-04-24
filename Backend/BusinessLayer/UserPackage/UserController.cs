@@ -64,7 +64,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             users.Add(email, u);
         }
 
-        public void Login(string email, string pass)
+        public User Login(string email, string pass)
         {
              //email = email.ToLower();
             
@@ -78,6 +78,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                 throw new Exception("Can't logged in");
              }
             loggedInUser = users[email];
+            return loggedInUser;
         }
 
         public void Logout(string email)

@@ -29,22 +29,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
         }
 
-        public IReadOnlyCollection<string> GetBoard(string userEmail)
+        public Board GetBoard(string userEmail)
         {
             if (!boards.ContainsKey(userEmail))
             {
                 throw new Exception("Board not exist");
             }
-            ReadOnlyCollection<string> readOnlyCollection = new );
+            return boards[userEmail];
         }
 
-        public void AddNewTask(string userEmail ,string title, string description, DateTime dueDate)
+        public Task AddNewTask(string userEmail ,string title, string description, DateTime dueDate)
         {
             if (!boards.ContainsKey(userEmail))
             {
                 throw new Exception("Board does not exist");
             }
-            boards[userEmail].AddNewTask(title, description, dueDate);
+            return boards[userEmail].AddNewTask(title, description, dueDate);
         }
 
         public void LimitTasks(string userEmail, int columnId, int limitNum)
@@ -91,22 +91,33 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             boards[userEmail].UpdateTaskDescription(colId, taskId, description);
         }
 
-        public void GetColumnById(string userEmail, int columnOrdinal)
+        public Column GetColumnById(string userEmail, int columnOrdinal)
         {
             if (!boards.ContainsKey(userEmail))
             {
                 throw new Exception("Board not exist");
             }
-            boards[userEmail].GetColumnById(columnOrdinal);
+            return boards[userEmail].GetColumnById(columnOrdinal);
         }
 
-        public void GetColumnByName(string userEmail, string colName)
+        public Column GetColumnByName(string userEmail, string colName)
         {
             if (!boards.ContainsKey(userEmail))
             {
                 throw new Exception("Board not exist");
             }
-            boards[userEmail].GetColumnByName(colName);
+            return boards[userEmail].GetColumnByName(colName);
         }
+        
+        /*public IReadOnlyCollection<Task> GetColumns(string userEmail, string columnName)
+        {
+            if (!boards.ContainsKey(userEmail))
+            {
+                throw new Exception("Board not exist");
+            }
+            int colId = boards[userEmail].GetColumnByName(columnName);
+            return boards[userEmail].GetColumnById(colId).GetMyTasks();
+        }
+        */
     }
 }

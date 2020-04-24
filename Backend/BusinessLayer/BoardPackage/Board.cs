@@ -57,14 +57,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             this.is_UserLoggedin = a;
         }
-        public void AddNewTask(string title, string description, DateTime dueDate)
+        public Task AddNewTask(string title, string description, DateTime dueDate)
         {
             if (!is_UserLoggedin)
             {
                 throw new Exception("User is not logged in");
             }
             taskId++;
-            columns[0].AddTask(taskId, title, description, dueDate);
+            return columns[0].AddTask(taskId, title, description, dueDate);
         }
 
         public void LimitTasks(int columnId, int limitNum)
@@ -137,9 +137,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 if (colId != -1)
                 {
-                    colId = columns[i].GetColumnIdByName(colName);
-                }
-                   
+                    colId = columns[i].GetColumnId();
+                }  
             }
             if (colId == -1)
             {
@@ -162,6 +161,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
 
             return dalBoard;
+            
+        }
+        public List<string> GetMyColumns()
+        {
+            List<string> columnsName = new List<string>();
+            columnsName.Add(columns[0].GetName());
+            columnsName.Add(columns[1].GetName());
+            columnsName.Add(columns[2].GetName());
+            return columnsName;
         }
     }
 }

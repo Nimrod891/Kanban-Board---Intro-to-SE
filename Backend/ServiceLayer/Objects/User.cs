@@ -15,6 +15,5 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.Email = email;
             this.Nickname = nickname;
         }
-        // You can add code here
     }
 }

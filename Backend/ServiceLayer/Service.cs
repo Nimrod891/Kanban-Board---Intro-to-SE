@@ -189,6 +189,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
             return myBoardService.GetColumn(email,columnOrdinal);
-        }
+        } 
     }
 }

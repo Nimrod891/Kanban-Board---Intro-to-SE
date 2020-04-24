@@ -15,50 +15,44 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.myUserContorller = new BusinessLayer.UserPackage.UserController();
         }
         public Response Register(string email, string password, string nickname)
-
         {
             try
             {
                 myUserContorller.Register(email, password, nickname);
-
+                return new Response();
             }
             catch (Exception e)
             {
-                return new Response<object>(e.Message);
+                return new Response(e.Message);
             }
-            return new Response();
         }
 
 
         public Response<User> Login(string email, string password)
         {
-            User u = new User();
             try
             {
-                myUserContorller.Login(email, password);
-
+                BusinessLayer.UserPackage.User u = myUserContorller.Login(email, password);
+                User serviceUser = new User(u.GetEmail(), u.GetNickname());
+                return new Response<User>(serviceUser);
             }
             catch (Exception e)
             {
-                return new Response<User>(u, e.Message);
+                return new Response<User>(e.Message);
             }
-            return new Response<User>(u);
-
         }
 
         public Response Logout(string email)
         {
-
             try
             {
                 myUserContorller.Logout(email);
-
+                return new Response();
             }
             catch (Exception e)
             {
-                return new Response<object>(e);
+                return new Response(e.Message);
             }
-            return new Response();
 
         }
         public Response LoadData()
@@ -66,3 +60,4 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         }
     }
+}

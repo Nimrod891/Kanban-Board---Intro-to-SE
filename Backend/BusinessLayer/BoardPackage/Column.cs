@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private int limitNum;
         private int numOfTasks;
         private Dictionary<int, Task> tasks;
+        private ReadOnlyDictionary<int, Task> readOnlyDict;
 
         public Column(string name, int columnId)
         {
@@ -66,21 +68,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.limitNum = limitNum;
         }
 
-        public void AddTask(int taskId, string title, string description, DateTime dueDate)
+        public Task AddTask(int taskId, string title, string description, DateTime dueDate)
         {
             if (!(this.columnId == 0))
             {
                 throw new Exception("You can only add new task to backlog column");
             }
-            if (limitNum == -1 || numOfTasks < limitNum) /// if there's no limit or we didnt over limit task number
+            if (limitNum != -1 && numOfTasks > limitNum) /// if there's no limit or we didnt over limit task number
             {
-                Task t = new Task(taskId, title, description, dueDate);
-                this.AddTasksToDict(taskId, t);
+                throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// "there are already 6 tasks in backlog column"
+                
             }
-            else
-            {
-                throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// "there are already 6 tasks in backlog column" 
-            }
+            Task t = new Task(taskId, title, description, dueDate);
+            this.AddTasksToDict(taskId, t);
+            return t;
         }
 
         public void DeleteTask(int taskId)
@@ -93,7 +94,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public void AddTasksToDict(int taskId, Task t)
         {
-            if (!(limitNum == -1 || numOfTasks < limitNum))
+            if (limitNum != -1 && numOfTasks > limitNum)
             {
                 throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// example:"there are already 6 tasks in backlog column"  
             }
@@ -124,6 +125,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             DataAccessLayer.Objects.Column dalColumn = new DataAccessLayer.Objects.Column(this.name, this.columnId);
             return dalColumn;
+        }
+
+        public ReadOnlyCollection<ServiceLayer.Task> GetMyTasks()
+        {
+            List<ServiceLayer.Task> listTasks = new List<ServiceLayer.Task>();
+            foreach (KeyValuePair<int,Task> t in tasks)
+            {
+                ServiceLayer.Task task = new ServiceLayer.Task(t.Value.GetTaskId(), t.Value.GetCreationDate(), t.Value.GetDueDate(), t.Value.GetTitle(), t.Value.GetDescription());
+                listTasks.Add(task);
+            }
+            return listTasks.AsReadOnly();
         }
     }
 }

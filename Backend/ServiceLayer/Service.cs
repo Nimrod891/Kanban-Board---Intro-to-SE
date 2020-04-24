@@ -30,7 +30,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return myUserService.Register(email, password, nickname);
         }
 
-
         public Response<User> Login(string email, string password)
         {
             return myUserService.Login(email, password);

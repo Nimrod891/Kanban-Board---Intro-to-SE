@@ -40,11 +40,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public Task AddNewTask(string userEmail ,string title, string description, DateTime dueDate)
         {
+
             if (!boards.ContainsKey(userEmail))
             {
                 throw new Exception("Board does not exist");
             }
+
+            boards[userEmail].ToDalObject().Save();
             return boards[userEmail].AddNewTask(title, description, dueDate);
+            
         }
 
         public void LimitTasks(string userEmail, int columnId, int limitNum)
@@ -62,7 +66,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board not exist");
             }
             boards[userEmail].AdvanceTask(currentColId, taskId);
+            boards[userEmail].ToDalObject().Save();
+
         }
+
+        
 
         public void UpdateTaskDueDate(string userEmail, int colId, int taskId, DateTime dueDate)
         {

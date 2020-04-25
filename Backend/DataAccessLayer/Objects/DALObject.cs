@@ -24,6 +24,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
             // takes an already read json string from dal controller and returns it as an object
 
             //return (JsonSerializer.Deserialize<T>(json));
+            json = DALController.Read(json);
             return (JsonConvert.DeserializeObject<T>(json));
 
 

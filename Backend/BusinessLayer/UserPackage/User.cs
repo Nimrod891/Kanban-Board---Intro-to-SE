@@ -46,6 +46,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         {
             return nickname;
         }
+        public BoardPackage.Board GetUserBoard()
+        {
+            return myBoard;
+        }
 
 
         public bool Login(string pass)
@@ -73,8 +77,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         {
 
             DataAccessLayer.Objects.User dalUser = new DataAccessLayer.Objects.User
-                (this.email, this.password, this.nickname//, this.myBoard.); to be added!
-                );
+                (this.email, this.password, this.nickname, this.myBoard.ToDalObject());
             return dalUser;
         }
     }

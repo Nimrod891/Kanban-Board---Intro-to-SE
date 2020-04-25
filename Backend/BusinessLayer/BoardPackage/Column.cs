@@ -100,6 +100,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             tasks.Add(taskId, t);
             numOfTasks = tasks.Count;
+
         }
 
         public Task GetTaskById(int taskId)

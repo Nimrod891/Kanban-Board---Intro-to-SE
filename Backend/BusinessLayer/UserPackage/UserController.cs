@@ -62,13 +62,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             //email = email.ToLower();
             User u = new User(email, pass, nickname);
             users.Add(email, u);
+            u.ToDalObject().Save();
+            u.GetUserBoard().ToDalObject().Save();
+            
+
         }
 
         public User Login(string email, string pass)
         {
              //email = email.ToLower();
             
-             if (users.ContainsKey(email)) // if user does not exisit
+             if (!users.ContainsKey(email)) // if user does not exisit
              {
                     throw new Exception("User does not exisit");
              }

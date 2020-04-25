@@ -29,6 +29,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
             
         }
 
+        public Board(string email, int taskID, int sizeOfColumnsArray)
+        {
+            this.email = email;
+            columns = new Column[3];
+            Column backLog = new Column("BackLog", 0);
+            Column inProgress = new Column("InProgress", 1);
+            Column done = new Column("Done", 2);
+            columns[0] = backLog;
+            columns[1] = inProgress;
+            columns[2] = done;
+            taskId = 0;
+
+        }
+
         public Board()
         {
         }

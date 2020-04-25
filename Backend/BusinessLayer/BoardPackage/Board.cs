@@ -59,7 +59,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public Task AddNewTask(string title, string description, DateTime dueDate)
         {
-            if (!is_UserLoggedin)
+            if (!is_UserLoggedin)/// getting exception here because is_UserLoggedin from this board
+                                ///is not changed to true when the user is logged in.
             {
                 throw new Exception("User is not logged in");
             }
@@ -154,7 +155,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
               private int taskId { get; set; }*/
             dalBoard.email = this.userEmail;
             dalBoard.taskId = this.taskId;
-            
+            dalBoard.columns = new DataAccessLayer.Objects.Column[this.columns.Length];
+
+
+
+            int columnsSize=this.columns.Length;
             for(int i=0; i<this.columns.Length;i++)
             {
                 dalBoard.columns[i] = this.columns[i].ToDalObject();

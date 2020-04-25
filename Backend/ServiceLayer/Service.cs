@@ -21,6 +21,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         
         public Service()
         {
+            LoadData();
         }
         /// <summary>        
         /// Loads the data. Intended be invoked only when the program starts
@@ -31,13 +32,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                myBoardService = new boardService();
-                myUserService = new userService();
+                this.myBoardService = new boardService();
+                this.myUserService = new userService();
                 return new Response();
             }
             catch (Exception e)
             {
                 return new Response(e.Message);
+            }
+
+            finally
+            {
+                this.myBoardService = new boardService();
+                this.myUserService = new userService();
             }
             
         }
@@ -51,8 +58,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error<returns>
         public Response Register(string email, string password, string nickname)
         {
+             Response r=myUserService.Register(email, password, nickname);
+            this.myBoardService = new boardService();
+            return r;
 
-            return myUserService.Register(email, password, nickname);
+
         }
         /// <summary>
         /// Log in an existing user

@@ -1,5 +1,6 @@
 ﻿using System;
 
+[assembly: log4net.Config.XmlConfigurator(Watch =true)]
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     /// <summary>
@@ -13,6 +14,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class Service : IService
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+            (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         boardService myBoardService;
         userService myUserService;
         /// <summary>
@@ -30,22 +33,26 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response LoadData()
         {
+
             try
             {
+                log.Info("Loading data");
                 this.myBoardService = new boardService();
                 this.myUserService = new userService();
                 return new Response();
             }
             catch (Exception e)
             {
+                log.Fatal("Couldn't load data");
                 return new Response(e.Message);
             }
 
-            finally
-            {
-                this.myBoardService = new boardService();
-                this.myUserService = new userService();
-            }
+            //finally
+            //{
+            //    log.Fatal("Couldn't load datafinally");
+            //    this.myBoardService = new boardService();
+            //    this.myUserService = new userService();
+            //}
             
         }
 

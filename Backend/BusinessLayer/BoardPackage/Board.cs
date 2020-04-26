@@ -26,7 +26,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             taskId = 0;
             is_UserLoggedin = false;
 
-
         }
        
         public Board(DataAccessLayer.Objects.Board myBoard)

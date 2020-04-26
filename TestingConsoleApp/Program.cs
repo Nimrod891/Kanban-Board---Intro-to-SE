@@ -26,8 +26,8 @@ namespace TestingConsoleApp
             //myService.Register("ido@ido.ido", "Idodo1", "Idodo");
             myService.Login("test@test.test", "Test1");
 
-            //myService.AddTask("test@test.test", "my 7 Task",
-            //   "helloo", DateTime.Parse("13/1/2026"));
+            myService.AddTask("test@test.test", "",
+               "gel", DateTime.Parse("13/1/2026"));
 
 
 
@@ -42,9 +42,9 @@ namespace TestingConsoleApp
             //Console.ReadKey();
 
             //Console.WriteLine("trying to get backlog: "+ myService.GetColumn("test@test.test", "backlog").);
-            IntroSE.Kanban.Backend.ServiceLayer.Response<IntroSE.Kanban.Backend.ServiceLayer.Column> checkColumn = myService.GetColumn
-                ("test@test.test", "backlog");
-            Console.WriteLine(checkColumn.Value);
+            //IntroSE.Kanban.Backend.ServiceLayer.Response<IntroSE.Kanban.Backend.ServiceLayer.Column> checkColumn = myService.GetColumn
+            //    ("test@test.test", "backlog");
+            //Console.WriteLine(checkColumn.Value);
             Console.WriteLine("Click to continue4");
             Console.ReadKey();
             /* var user = new IntroSE.Kanban.Backend.DataAccessLayer.Objects.User("nexttry@gmail.org", "asasd",

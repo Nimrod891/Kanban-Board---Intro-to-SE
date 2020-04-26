@@ -19,11 +19,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
         {
             this.email = email;
             columns = new Column[3];
-            Column backLog = new Column("BackLog", 0);
-            Column inProgress = new Column("InProgress", 1);
-            Column done = new Column("Done", 2);
-            columns[0] = backLog;
-            columns[1] = inProgress;
+            Column backlog = new Column("backlog", 0);
+            Column in_progress = new Column("in progress", 1);
+            Column done = new Column("done", 2);
+            columns[0] = backlog;
+            columns[1] = in_progress;
             columns[2] = done;
             taskId = 0;
             
@@ -33,11 +33,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
         {
             this.email = email;
             columns = new Column[3];
-            Column backLog = new Column("BackLog", 0);
-            Column inProgress = new Column("InProgress", 1);
-            Column done = new Column("Done", 2);
-            columns[0] = backLog;
-            columns[1] = inProgress;
+            Column backlog = new Column("backlog", 0);
+            Column in_progress = new Column("in progress", 1);
+            Column done = new Column("done", 2);
+            columns[0] = backlog;
+            columns[1] = in_progress;
             columns[2] = done;
             taskId = 0;
 

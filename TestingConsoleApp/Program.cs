@@ -23,15 +23,29 @@ namespace TestingConsoleApp
             
 
             var myService = new IntroSE.Kanban.Backend.ServiceLayer.Service();
-            myService.Register("test@test.test", "Test1", "TestDiff");
+            //myService.Register("ido@ido.ido", "Idodo1", "Idodo");
             myService.Login("test@test.test", "Test1");
 
-            myService.AddTask("test@test.test", "my First Task",
-                "I am trying to test this", DateTime.Parse("13/1/2026"));
-            
-            
+            //myService.AddTask("test@test.test", "my 7 Task",
+            //   "helloo", DateTime.Parse("13/1/2026"));
 
-            Console.WriteLine("Click to continue2");
+
+
+            //Console.WriteLine("Click to continue2");
+            //Console.ReadKey();
+            //myService.UpdateTaskDescription("test@test.test", 0, 4, "new title update");
+
+            //Console.WriteLine("Click to continue3");
+            //Console.ReadKey();
+            //myService.UpdateTaskDueDate("test@test.test", 0, 5, DateTime.Parse("27/4/2020"));
+            //Console.WriteLine("Click to continue4");
+            //Console.ReadKey();
+
+            //Console.WriteLine("trying to get backlog: "+ myService.GetColumn("test@test.test", "backlog").);
+            IntroSE.Kanban.Backend.ServiceLayer.Response<IntroSE.Kanban.Backend.ServiceLayer.Column> checkColumn = myService.GetColumn
+                ("test@test.test", "backlog");
+            Console.WriteLine(checkColumn.Value);
+            Console.WriteLine("Click to continue4");
             Console.ReadKey();
             /* var user = new IntroSE.Kanban.Backend.DataAccessLayer.Objects.User("nexttry@gmail.org", "asasd",
                  "malihi");
@@ -62,9 +76,6 @@ namespace TestingConsoleApp
              Console.WriteLine(dalcontrol.Boards["iso34@goog.cv"].ToString());
              Console.WriteLine("click to continue6");
              Console.ReadKey();*/
-
-
-
 
         }
     }

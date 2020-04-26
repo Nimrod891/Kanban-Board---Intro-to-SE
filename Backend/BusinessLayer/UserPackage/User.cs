@@ -75,7 +75,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 
         public DataAccessLayer.Objects.User ToDalObject()
         {
-
             DataAccessLayer.Objects.User dalUser = new DataAccessLayer.Objects.User
                 (this.email, this.password, this.nickname, this.myBoard.ToDalObject());
             return dalUser;

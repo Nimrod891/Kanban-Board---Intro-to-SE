@@ -56,7 +56,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                MyBoardContorller.GetBoard(email).SetTaskId();
                 log.Error("User " + email + " tried to add a task with a due date in the past");
                 return new Response<Task>(e.Message);
             }

@@ -103,6 +103,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void UpdateTaskDueDate(int colId, int taskId, DateTime dueDate)
         {
+            if(colId == columns.Length-1)
+            {
+                throw new Exception("can't update tasks in done column");
+            }
             if (is_UserLoggedin)
                 columns[colId].GetTaskById(taskId).SetDueDate(dueDate);
             else
@@ -110,6 +114,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public void UpdateTaskTitle(int colId, int taskId, string title)
         {
+            if (colId == columns.Length-1)
+            {
+                throw new Exception("can't update tasks in done column");
+            }
             if (is_UserLoggedin)
                 columns[colId].GetTaskById(taskId).SetTitle(title);
             else
@@ -118,6 +126,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void UpdateTaskDescription(int colId, int taskId, string description)
         {
+            if (colId == columns.Length-1)
+            {
+                throw new Exception("can't update tasks in done column");
+            }
             if (is_UserLoggedin)
                 columns[colId].GetTaskById(taskId).SetDescription(description);
             else
@@ -126,7 +138,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public Column GetColumnById(int columnOrdinal)
         {
-            if (columnOrdinal < 0 || columnOrdinal > columns.Length)
+            if (columnOrdinal < 0 || columnOrdinal > columns.Length-1)
             {
                 throw new Exception("Invalid column ordinal");
             }

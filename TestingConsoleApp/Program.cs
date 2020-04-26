@@ -23,7 +23,9 @@ namespace TestingConsoleApp
             
 
             var myService = new IntroSE.Kanban.Backend.ServiceLayer.Service();
-            //myService.Register("ido@ido.ido", "Idodo1", "Idodo");
+            myService.Register("nana@baka.co", "Idodo1", "Idojssdo");
+            myService.Register("hila@hg..nbb", "Idodo1", "Hilablabla");
+           
             myService.Login("test@test.test", "Test1");
 
             myService.AddTask("test@test.test", "",

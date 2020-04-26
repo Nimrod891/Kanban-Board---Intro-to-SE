@@ -61,6 +61,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void SetLimitNum(int limitNum)
         {
+            if (limitNum == -1)
+            {
+                this.limitNum = limitNum;
+            }
             if(limitNum < 0 || limitNum <= numOfTasks) // limit num smaller then 
             {
                 throw new Exception("Invalid number of limited tasks");

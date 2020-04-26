@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
@@ -34,16 +36,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 
         public void Register(string email, string pass, string nickname)
         {
-
+            email = email.ToLower();
             foreach (KeyValuePair<string, User> users in users) // check through dictionary if email already exisit
             {
                 if (users.Key.Equals(email))
                 {
                     throw new Exception("User already exisit");
-                }
-                if (users.Value.GetNickname().Equals(nickname))
-                {
-                    throw new Exception("Nickname already taken");
                 }
                 if (string.IsNullOrWhiteSpace(nickname))
                 {
@@ -51,7 +49,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                 }
 
             }
-            if(!IsValidEmail(email))
+            if (!IsValidEmail(email))
             {
                 throw new Exception("Invalid email");
             }
@@ -64,23 +62,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             users.Add(email, u);
             u.ToDalObject().Save();
             u.GetUserBoard().ToDalObject().Save();
-            
+
 
         }
 
         public User Login(string email, string pass)
         {
-             //email = email.ToLower();
-            
-             if (!users.ContainsKey(email)) // if user does not exisit
-             {
-                    throw new Exception("User does not exisit");
-             }
-     
-             if (!users[email].Login(pass)) /// is correct password
-             {
+            //email = email.ToLower();
+
+            if (!users.ContainsKey(email)) // if user does not exisit
+            {
+                throw new Exception("User does not exisit");
+            }
+
+            if (!users[email].Login(pass)) /// is correct password
+            {
                 throw new Exception("Can't logged in");
-             }
+            }
             loggedInUser = users[email];
             return loggedInUser;
         }
@@ -100,13 +98,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             bool haveDigit = false;
             bool haveLow = false;
 
-            if (pass.Length < 4 && pass.Length > 20)
+            if (pass.Length < 4 || pass.Length > 20)
             {
                 return false;
             }
             foreach (char c in pass)
             {
-                
+
                 if (char.IsUpper(c))
                 {
                     haveUpper = true;
@@ -126,34 +124,49 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             }
             return false;
         }
-        public bool IsValidEmail(string email)
+        public static bool IsValidEmail(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
             try
             {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
+                // Normalize the domain
+                email = Regex.Replace(email, @"(@)(.+)$", DomainMapper,
+                                      RegexOptions.None, TimeSpan.FromMilliseconds(200));
+
+                // Examines the domain part of the email and normalizes it.
+                string DomainMapper(Match match)
+                {
+                    // Use IdnMapping class to convert Unicode domain names.
+                    var idn = new IdnMapping();
+
+                    // Pull out and process domain name (throws ArgumentException on invalid)
+                    var domainName = idn.GetAscii(match.Groups[2].Value);
+
+                    return match.Groups[1].Value + domainName;
+                }
             }
-            catch
+            catch (RegexMatchTimeoutException e)
+            {
+                return false;
+            }
+            catch (ArgumentException e)
+            {
+                return false;
+            }
+
+            try
+            {
+                return Regex.IsMatch(email,
+                    @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+            }
+            catch (RegexMatchTimeoutException)
             {
                 return false;
             }
         }
-        /*public bool IsValidEmail1(string email)
-        {
-            if (!email.Contains("."))
-            {
-                return false;
-            }
-            int count = 0;
-            foreach (char c in email)
-            {
-                if (c.Equals("@"))
-                    count++;
-            }
-            if (count == 1)
-                return true;
-            return false;
-        }
-        */
     }
 }

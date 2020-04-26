@@ -57,14 +57,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             this.is_UserLoggedin = a;
         }
-        public void SetTaskId()
-        {
-            if (!is_UserLoggedin)
-            {
-                throw new Exception("User is not logged in");
-            }
-            this.taskId--;
-        }
+        
         public Task AddNewTask(string title, string description, DateTime dueDate)
         {
             if (!is_UserLoggedin)/// getting exception here because is_UserLoggedin from this board
@@ -72,8 +65,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("User is not logged in");
             }
-            taskId++;
+            
             return columns[0].AddTask(taskId,title, description, dueDate);
+            taskId++;
         }
 
         public void LimitTasks(int columnId, int limitNum)

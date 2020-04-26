@@ -41,17 +41,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public Task AddNewTask(string userEmail ,string title, string description, DateTime dueDate)
         {
-
             if (!boards.ContainsKey(userEmail))
             {
                 throw new Exception("Board does not exist");
             }
-
             Task a = boards[userEmail].AddNewTask(title, description, dueDate);
             boards[userEmail].ToDalObject().Save();
 
             return a;
-            
         }
 
         public void LimitTasks(string userEmail, int columnId, int limitNum)

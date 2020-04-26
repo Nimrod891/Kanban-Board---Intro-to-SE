@@ -23,7 +23,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.columnId = columnId;
             limitNum = -1;
             numOfTasks = 0;
-            taskId = 0;
             tasks = new Dictionary<int, Task>();
         }
         public Column(DataAccessLayer.Objects.Column myColumn)
@@ -68,7 +67,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.limitNum = limitNum;
         }
 
-        public Task AddTask(string title, string description, DateTime dueDate)
+        public Task AddTask(int taskId, string title, string description, DateTime dueDate)
         {
             if (!(this.columnId == 0))
             {
@@ -78,7 +77,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// "there are already 6 tasks in backlog column"
             }
-            this.taskId++;
             Task t = new Task(taskId, title, description, dueDate);
             this.AddTasksToDict(taskId, t);
             return t;

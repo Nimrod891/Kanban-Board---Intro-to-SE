@@ -9,6 +9,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     class userService
     {
         BusinessLayer.UserPackage.UserController myUserContorller;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+            (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public userService()
         {
@@ -34,10 +36,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 BusinessLayer.UserPackage.User u = myUserContorller.Login(email, password);
                 User serviceUser = new User(u.GetEmail(), u.GetNickname());
+                log.Info("User " + email + " has logged in");
                 return new Response<User>(serviceUser);
             }
             catch (Exception e)
             {
+                //log.Error("User "+email+" threw exception during login"); to be uncommented!!
                 return new Response<User>(e.Message);
             }
         }

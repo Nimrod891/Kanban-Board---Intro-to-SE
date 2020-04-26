@@ -67,6 +67,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
              Response r=myUserService.Register(email, password, nickname);
             this.myBoardService = new boardService();
+            log.Info("New User Registered: [" + email + "]");
             return r;
 
 

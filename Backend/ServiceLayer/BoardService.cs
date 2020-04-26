@@ -10,6 +10,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     class boardService
     {
         BusinessLayer.BoardPackage.BoardController MyBoardContorller;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+            (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public boardService()
         {
@@ -49,10 +51,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 BusinessLayer.BoardPackage.Task t = MyBoardContorller.AddNewTask(email, title, description, dueDate);
                 Task servicTask = new Task(t.GetTaskId(),t.GetCreationDate(),t.GetDueDate(),t.GetTitle(),t.GetDescription());
+                log.Info($"User {email} has added a new task: \n{title}\nDue Date:{dueDate}");
                 return new Response<Task>(servicTask);
             }
             catch (Exception e)
             {
+                log.Error("User " + email + " tried to add a task with a due date in the past");
                 return new Response<Task>(e.Message);
             }
         }
@@ -61,10 +65,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 MyBoardContorller.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
+                log.Info($"User {email} has updated: COLUMN {columnOrdinal}, TASK {taskId} due date");
                 return new Response();
             }
             catch (Exception e)
             {
+                log.Error($"User {email} has failed to update COLUMN {columnOrdinal}, TASK {taskId} " +
+                    $"\nDue date: {dueDate}");
                 return new Response(e.Message);
             }
         }
@@ -73,10 +80,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 MyBoardContorller.UpdateTaskTitle(email, columnOrdinal, taskId, title);
+                log.Info($"User {email} has updated: COLUMN {columnOrdinal}, TASK {taskId} title");
                 return new Response();
             }
             catch (Exception e)
             {
+                log.Error($"User {email} has failed to update COLUMN {columnOrdinal}, TASK {taskId} " +
+                    $"\nTitle: {title}");
                 return new Response(e.Message);
             }
         }
@@ -85,10 +95,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 MyBoardContorller.UpdateTaskTitle(email, columnOrdinal, taskId, description);
+                log.Info($"User {email} has updated: COLUMN: {columnOrdinal}, TASK {taskId}: description");
                 return new Response();
             }
             catch (Exception e)
             {
+                log.Error($"User {email} has failed to update task description: COLUMN: {columnOrdinal}, TASK {taskId}:" +
+                    $" \nDescription: {description}");
                 return new Response(e.Message);
             }
         }

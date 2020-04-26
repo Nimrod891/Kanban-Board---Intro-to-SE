@@ -61,7 +61,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void SetLimitNum(int limitNum)
         {
-            if(limitNum < 0 || limitNum < numOfTasks) // limit num smaller then 
+            if(limitNum < 0 || limitNum <= numOfTasks) // limit num smaller then 
             {
                 throw new Exception("Invalid number of limited tasks");
             }
@@ -142,6 +142,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
                 //dalTasks.Add(taskNum.Key, taskToAdd);
             }
+            dalColumn.tasks = dalTasks;
             return dalColumn;
         }
 

@@ -75,16 +75,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void SetDescription(string description)
         {
-            if (description.Length > 300)
+            if (description != null)
             {
-                throw new Exception("description is over 300 chars");
+                if (description.Length > 300)
+                {
+                    throw new Exception("description is over 300 chars");
+                }
             }
+            
                 this.description = description;
         }
 
         public void SetDueDate(DateTime dueDate)
         {
-            if(dueDate < DateTime.Now)
+            if (dueDate < DateTime.Now)
             {
                 throw new Exception("This date has already passed");
             }

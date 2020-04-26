@@ -11,6 +11,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     class BoardController
     {
         private Dictionary<string, Board> boards;
+        //private Board loggedInBoard;
 
         public BoardController()
         {
@@ -33,7 +34,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             if (!boards.ContainsKey(userEmail))
             {
-                throw new Exception("Board not exist");
+                throw new Exception("Board does not exist");
             }
             return boards[userEmail];
         }
@@ -46,8 +47,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board does not exist");
             }
 
+            Task a = boards[userEmail].AddNewTask(title, description, dueDate);
             boards[userEmail].ToDalObject().Save();
-            return boards[userEmail].AddNewTask(title, description, dueDate);
+
+            return a;
             
         }
 
@@ -55,15 +58,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             if (!boards.ContainsKey(userEmail))
             {
-                throw new Exception("Board not exist");
+                throw new Exception("Board does not exist");
             }
             boards[userEmail].LimitTasks(columnId, limitNum);
+            boards[userEmail].ToDalObject().Save();
         }
         public void AdvanceTask(string userEmail, int currentColId, int taskId)
         {
             if (!boards.ContainsKey(userEmail))
             {
-                throw new Exception("Board not exist");
+                throw new Exception("Board does not exist");
             }
             boards[userEmail].AdvanceTask(currentColId, taskId);
             boards[userEmail].ToDalObject().Save();
@@ -79,6 +83,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board not exist");
             }
             boards[userEmail].UpdateTaskDueDate(colId, taskId, dueDate);
+            boards[userEmail].ToDalObject().Save();
         }
 
         public void UpdateTaskTitle(string userEmail, int colId, int taskId, string title)
@@ -88,6 +93,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board not exist");
             }
             boards[userEmail].UpdateTaskTitle(colId, taskId, title);
+            boards[userEmail].ToDalObject().Save();
         }
 
         public void UpdateTaskDescription(string userEmail, int colId, int taskId, string description)
@@ -97,6 +103,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board not exist");
             }
             boards[userEmail].UpdateTaskDescription(colId, taskId, description);
+            boards[userEmail].ToDalObject().Save();
         }
 
         public Column GetColumnById(string userEmail, int columnOrdinal)

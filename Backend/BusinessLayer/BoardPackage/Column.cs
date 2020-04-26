@@ -134,7 +134,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Dictionary<int, DataAccessLayer.Objects.Task> dalTasks = new 
                 Dictionary<int, DataAccessLayer.Objects.Task>();
 
-
             foreach (KeyValuePair<int, Task> taskNum in this.tasks)
             {
                 dalTasks.Add(taskNum.Key, taskNum.Value.ToDalObject());

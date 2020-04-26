@@ -26,6 +26,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             taskId = 0;
             is_UserLoggedin = false;
 
+
         }
        
         public Board(DataAccessLayer.Objects.Board myBoard)
@@ -57,7 +58,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             this.is_UserLoggedin = a;
         }
-        
         public Task AddNewTask(string title, string description, DateTime dueDate)
         {
             if (!is_UserLoggedin)/// getting exception here because is_UserLoggedin from this board
@@ -65,9 +65,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("User is not logged in");
             }
-            
-            return columns[0].AddTask(taskId,title, description, dueDate);
             taskId++;
+            return columns[0].AddTask(taskId, title, description, dueDate);
         }
 
         public void LimitTasks(int columnId, int limitNum)
@@ -76,11 +75,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("User is not logged in");
             }
-           /* if (columnId != 1)
+            if (columnId != 1)
             {
                 throw new Exception("You can only limit the number of tasks in "  + columns[1].GetName() + " column");
             }
-                */columns[columnId].SetLimitNum(limitNum);
+                columns[columnId].SetLimitNum(limitNum);
         }
 
         public void AdvanceTask(int currentColId, int taskId)

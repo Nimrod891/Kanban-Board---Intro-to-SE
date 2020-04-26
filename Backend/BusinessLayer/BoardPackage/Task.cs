@@ -62,7 +62,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
        
         public void SetTitle(string title)
         {
-            if (title.Length > 50)
+            if ((title.Length > 50))
             {
                 throw new Exception("Title is over 50 chars");   
             }
@@ -75,11 +75,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void SetDescription(string description)
         {
-            if (description.Length > 300)
+            if (description != null)
             {
-                throw new Exception("description is over 300 chars");
+                if (description.Length > 300)
+                {
+                    throw new Exception("description is over 300 chars");
+                }
             }
-            this.description = description;
+            
+                this.description = description;
         }
 
         public void SetDueDate(DateTime dueDate)
@@ -96,5 +100,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             DataAccessLayer.Objects.Task dalTask = new DataAccessLayer.Objects.Task(this.taskId,this.title, this.description, this.dueDate,this.creationDate);
             return dalTask;
         }
+
     }
+
 }

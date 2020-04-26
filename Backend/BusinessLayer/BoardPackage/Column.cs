@@ -13,7 +13,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private int columnId;
         private int limitNum;
         private int numOfTasks;
-        private int taskId;
         private Dictionary<int, Task> tasks;
         private ReadOnlyDictionary<int, Task> readOnlyDict;
 
@@ -37,6 +36,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Task taskToAdd = new Task(taskNum.Value);
                 tasks.Add(taskNum.Key, taskToAdd);
             }
+
+
         }
         public string GetName()
         {
@@ -76,6 +77,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (limitNum != -1 && numOfTasks >= limitNum) /// if there's no limit or we didnt over limit task number
             {
                 throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// "there are already 6 tasks in backlog column"
+                
             }
             Task t = new Task(taskId, title, description, dueDate);
             this.AddTasksToDict(taskId, t);
@@ -98,6 +100,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             tasks.Add(taskId, t);
             numOfTasks = tasks.Count;
+
         }
 
         public Task GetTaskById(int taskId)
@@ -111,6 +114,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public int GetColumnIdByName(string colName)
         {
+
             if (this.name.Equals(colName))
             {
                 return this.columnId;
@@ -127,6 +131,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             dalColumn.numOfTasks = this.numOfTasks;
             Dictionary<int, DataAccessLayer.Objects.Task> dalTasks = new 
                 Dictionary<int, DataAccessLayer.Objects.Task>();
+
 
             foreach (KeyValuePair<int, Task> taskNum in this.tasks)
             {

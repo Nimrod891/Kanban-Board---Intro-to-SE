@@ -75,11 +75,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("User is not logged in");
             }
-            if (columnId != 1)
+           /* if (columnId != 1)
             {
                 throw new Exception("You can only limit the number of tasks in "  + columns[1].GetName() + " column");
             }
-                columns[columnId].SetLimitNum(limitNum);
+                */columns[columnId].SetLimitNum(limitNum);
         }
 
         public void AdvanceTask(int currentColId, int taskId)

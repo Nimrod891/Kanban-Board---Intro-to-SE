@@ -64,8 +64,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("User is not logged in");
             }
-            taskId++;
-            return columns[0].AddTask(taskId, title, description, dueDate);
+            return columns[0].AddTask(title, description, dueDate);
         }
 
         public void LimitTasks(int columnId, int limitNum)

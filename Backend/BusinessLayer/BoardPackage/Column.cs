@@ -23,6 +23,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.columnId = columnId;
             limitNum = -1;
             numOfTasks = 0;
+            taskId = 0;
             tasks = new Dictionary<int, Task>();
         }
         public Column(DataAccessLayer.Objects.Column myColumn)
@@ -37,8 +38,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Task taskToAdd = new Task(taskNum.Value);
                 tasks.Add(taskNum.Key, taskToAdd);
             }
-
-
         }
         public string GetName()
         {
@@ -78,7 +77,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (limitNum != -1 && numOfTasks >= limitNum) /// if there's no limit or we didnt over limit task number
             {
                 throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// "there are already 6 tasks in backlog column"
-                
             }
             this.taskId++;
             Task t = new Task(taskId, title, description, dueDate);
@@ -102,7 +100,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             tasks.Add(taskId, t);
             numOfTasks = tasks.Count;
-
         }
 
         public Task GetTaskById(int taskId)
@@ -116,7 +113,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public int GetColumnIdByName(string colName)
         {
-
             if (this.name.Equals(colName))
             {
                 return this.columnId;

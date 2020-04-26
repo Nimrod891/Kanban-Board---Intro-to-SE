@@ -142,6 +142,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
                 //dalTasks.Add(taskNum.Key, taskToAdd);
             }
+            dalColumn.tasks = dalTasks;
             return dalColumn;
         }
 

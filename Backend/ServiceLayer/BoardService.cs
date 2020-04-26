@@ -10,6 +10,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     class boardService
     {
         BusinessLayer.BoardPackage.BoardController MyBoardContorller;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+            (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public boardService()
         {
@@ -49,10 +51,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 BusinessLayer.BoardPackage.Task t = MyBoardContorller.AddNewTask(email, title, description, dueDate);
                 Task servicTask = new Task(t.GetTaskId(),t.GetCreationDate(),t.GetDueDate(),t.GetTitle(),t.GetDescription());
+                log.Info($"User {email} has added a new task: \n{title}\nDue Date:{dueDate}");
                 return new Response<Task>(servicTask);
             }
             catch (Exception e)
             {
+                log.Error("User " + email + " tried to add a task with a due date in the past");
                 return new Response<Task>(e.Message);
             }
         }

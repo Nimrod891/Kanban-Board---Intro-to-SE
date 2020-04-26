@@ -27,7 +27,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                 /// this will create a dictionary of {email, user} as a field in UserController
 
             }
-            this.loggedInUser = null;
+            //this.loggedInUser = null;
 
 
         }

@@ -42,6 +42,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 this.columns[i] = new Column(myBoard.columns[i]);
             }
+            this.SetIsULoggedIn(true);
             
 
             //this.myBoard = new BoardPackage.Board(dalUser.myBoard);

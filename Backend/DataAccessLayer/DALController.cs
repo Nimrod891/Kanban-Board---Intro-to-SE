@@ -40,7 +40,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
             //Path.GetFileName(filename);
             //Console.WriteLine(dir);
-            Directory.CreateDirectory(dir.TrimEnd((Path.GetFileName(filename)).ToCharArray()));
+             Directory.CreateDirectory(dir.Replace((Path.GetFileName(filename)), ""));
+            //(Path.GetFileName(filename)).ToCharArray()
+             //   );
             //Console.WriteLine(dir);
             string f = Path.Combine(dir, filename);
             File.WriteAllText(f, content);

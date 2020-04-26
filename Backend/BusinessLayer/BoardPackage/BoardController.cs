@@ -11,6 +11,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     class BoardController
     {
         private Dictionary<string, Board> boards;
+        //private Board loggedInBoard;
 
         public BoardController()
         {
@@ -46,8 +47,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board does not exist");
             }
 
+            Task a = boards[userEmail].AddNewTask(title, description, dueDate);
             boards[userEmail].ToDalObject().Save();
-            return boards[userEmail].AddNewTask(title, description, dueDate);
+
+            return a;
             
         }
 

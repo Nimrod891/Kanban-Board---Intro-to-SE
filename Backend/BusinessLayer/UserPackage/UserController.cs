@@ -53,7 +53,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                 }
 
             }
-            if (!IsValidEmail(email))
+            if(!IsValidEmail(email))
             {
                 throw new Exception("Invalid email");
             }
@@ -66,22 +66,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             users.Add(email, u);
             u.ToDalObject().Save();
             u.GetUserBoard().ToDalObject().Save();
-
+            
 
         }
 
         public User Login(string email, string pass)
         {
-
-            if (!users.ContainsKey(email)) // if user does not exisit
-            {
-                throw new Exception("User does not exisit");
-            }
-
-            if (!users[email].Login(pass)) /// is correct password
-            {
+            
+             if (!users.ContainsKey(email)) // if user does not exisit
+             {
+                    throw new Exception("User does not exisit");
+             }
+     
+             if (!users[email].Login(pass)) /// is correct password
+             {
                 throw new Exception("Can't logged in");
-            }
+             }
             loggedInUser = users[email];
             return loggedInUser;
         }
@@ -107,7 +107,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             }
             foreach (char c in pass)
             {
-
+                
                 if (char.IsUpper(c))
                 {
                     haveUpper = true;
@@ -172,4 +172,31 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             }
         }
     }
+    /*try
+    {
+        var addr = new System.Net.Mail.MailAddress(email);
+        return addr.Address == email;
+    }
+    catch
+    {
+        return false;
+    }
+}
+public bool IsValidEmail1(string email)
+{
+    if (!email.Contains("."))
+    {
+        return false;
+    }
+    int count = 0;
+    foreach (char c in email)
+    {
+        if (c.Equals("@"))
+            count++;
+    }
+    if (count == 1)
+        return true;
+    return false;
+}
+*/
 }

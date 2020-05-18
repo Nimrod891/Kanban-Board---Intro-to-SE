@@ -97,7 +97,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string email)
         {
-            throw new NotImplementedException();
+            return myUserService.Logout(email);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Board> GetBoard(string email)
         {
             return myBoardService.GetBoard(email);
-            throw new NotImplementedException();
+           
         }
 
         /// <summary>

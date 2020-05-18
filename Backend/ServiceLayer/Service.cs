@@ -1,6 +1,5 @@
 ﻿using System;
 
-[assembly: log4net.Config.XmlConfigurator(Watch =true)]
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     /// <summary>
@@ -14,74 +13,53 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class Service : IService
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger
-            (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        boardService myBoardService;
-        userService myUserService;
+
         /// <summary>
         /// Simple public constructor.
         /// </summary>
-        
         public Service()
         {
-            LoadData();
+            throw new NotImplementedException();
         }
+               
         /// <summary>        
         /// Loads the data. Intended be invoked only when the program starts
         /// </summary>
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
-
         public Response LoadData()
         {
-
-            try
-            {
-                log.Info("Loading data");
-                this.myBoardService = new boardService();
-                this.myUserService = new userService();
-                return new Response();
-            }
-            catch (Exception e)
-            {
-                log.Fatal("Couldn't load data");
-                return new Response(e.Message);
-            }
-
-            //finally
-            //{
-            //    log.Fatal("Couldn't load datafinally");
-            //    this.myBoardService = new boardService();
-            //    this.myUserService = new userService();
-            //}
-            
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Registers a new user
-        /// </summary>
-        /// <param name="email">The email address of the user to register</param>
-        /// <param name="password">The password of the user to register</param>
-        /// <param name="nickname">The nickname of the user to register</param>
-        /// <returns>A response object. The response should contain a error message in case of an error<returns>
-        public Response Register(string email, string password, string nickname)
+
+        ///<summary>Remove all persistent data.</summary>
+        public Response DeleteData()
         {
-             Response r=myUserService.Register(email, password, nickname);
-            this.myBoardService = new boardService();
-            log.Info("New User Registered: [" + email + "]");
-            return r;
-
-
+            throw new NotImplementedException();
         }
+
+
+    /// <summary>
+    /// Registers a new user
+    /// </summary>
+    /// <param name="email">The email address of the user to register</param>
+    /// <param name="password">The password of the user to register</param>
+    /// <param name="nickname">The nickname of the user to register</param>
+    /// <returns>A response object. The response should contain a error message in case of an error<returns>
+    public Response Register(string email, string password, string nickname)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Log in an existing user
         /// </summary>
         /// <param name="email">The email address of the user to login</param>
         /// <param name="password">The password of the user to login</param>
-        /// <returns>A response object with a value set to the user, instead the response should contain 
-        /// a error message in case of an error</returns>
+        /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
-            return myUserService.Login(email, password);
+            throw new NotImplementedException();
         }
 
         /// <summary>        
@@ -91,20 +69,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string email)
         {
-            return myUserService.Logout(email);
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// Returns the board of a user. The user must be logged in
         /// </summary>
         /// <param name="email">The email of the user</param>
-        /// <returns>A response object with a value set to the board, instead
-        /// the response should contain a error message in case of an error</returns>
+        /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
         public Response<Board> GetBoard(string email)
         {
-            return myBoardService.GetBoard(email);
+            throw new NotImplementedException();
         }
-
 
         /// <summary>
         /// Limit the number of tasks in a specific column
@@ -115,7 +91,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit)
         {
-            return myBoardService.LimitColumnTasks(email, columnOrdinal, limit);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -128,8 +104,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string title, string description, DateTime dueDate)
         {
-
-            return myBoardService.AddTask(email, title, description, dueDate);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -142,7 +117,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            return myBoardService.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -155,7 +130,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
         {
-            return myBoardService.UpdateTaskTitle(email, columnOrdinal, taskId, title);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -168,32 +143,31 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string description)
         {
-            return myBoardService.UpdateTaskDescription(email, columnOrdinal, taskId, description);
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// Advance a task to the next column
         /// </summary>
         /// <param name="email">Email of user. Must be logged in</param>
-        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the 
-        /// ID increases by 1 for each column</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AdvanceTask(string email, int columnOrdinal, int taskId)
         {
-            return myBoardService.AdvanceTask(email, columnOrdinal, taskId);
+            throw new NotImplementedException();
         }
+
 
         /// <summary>
         /// Returns a column given it's name
         /// </summary>
         /// <param name="email">Email of the user. Must be logged in</param>
         /// <param name="columnName">Column name</param>
-        /// <returns>A response object with a value set to the Column, The response should 
-        /// contain a error message in case of an error</returns>
+        /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
         public Response<Column> GetColumn(string email, string columnName)
         {
-            return myBoardService.GetColumn(email, columnName);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -202,11 +176,64 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         /// <param name="email">Email of the user. Must be logged in</param>
         /// <param name="columnOrdinal">Column ID</param>
-        /// <returns>A response object with a value set to the Column, The response should 
-        /// contain a error message in case of an error</returns>
+        /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
+
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
-            return myBoardService.GetColumn(email,columnOrdinal);
-        } 
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Removes a column given it's identifier.
+        /// The first column is identified by 0, the ID increases by 1 for each column
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">Column ID</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response RemoveColumn(string email, int columnOrdinal)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Adds a new column, given it's name and a location to place it.
+        /// The first column is identified by 0, the ID increases by 1 for each column        
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">Location to place to column</param>
+        /// <param name="Name">new Column name</param>
+        /// <returns>A response object with a value set to the new Column, the response should contain a error message in case of an error</returns>
+        public Response<Column> AddColumn(string email, int columnOrdinal, string Name)
+        {
+            throw new NotImplementedException();
+
+        }
+
+        /// <summary>
+        /// Moves a column to the right, swapping it with the column wich is currently located there.
+        /// The first column is identified by 0, the ID increases by 1 for each column        
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">Current location of the column</param>
+        /// <returns>A response object with a value set to the moved Column, the response should contain a error message in case of an error</returns>
+        public Response<Column> MoveColumnRight(string email, int columnOrdinal)
+        {
+            throw new NotImplementedException();
+
+        }
+
+        /// <summary>
+        /// Moves a column to the left, swapping it with the column wich is currently located there.
+        /// The first column is identified by 0, the ID increases by 1 for each column.
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">Current location of the column</param>
+        /// <returns>A response object with a value set to the moved Column, the response should contain a error message in case of an error</returns>
+        public Response<Column> MoveColumnLeft(string email, int columnOrdinal)
+        {
+            throw new NotImplementedException();
+
+        }
+
     }
 }

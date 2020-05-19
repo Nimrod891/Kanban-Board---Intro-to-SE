@@ -49,12 +49,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 
         public DALObject<Board> Import(string email)
         {
-            return DALObject<Board>.FromJson(DALController.Read
+            return DALObject<Board>.FromJson(DalController.Read
                 (Path.Combine("Boards",this.GetSafeFilename(email) + ".json")));
         }
         public override void Save()
         {
-            DALController.Write(Path.Combine("Boards", this.GetSafeFilename(email)+ ".json"), this.ToJson());
+            DalController.Write(Path.Combine("Boards", this.GetSafeFilename(email)+ ".json"), this.ToJson());
 
         }
         public int getTaskID()

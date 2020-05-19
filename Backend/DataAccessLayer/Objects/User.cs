@@ -36,12 +36,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 
         public DALObject<User> Import(string email)
         {
-            return DALObject<User>.FromJson(DALController.Read(Path.Combine
+            return DALObject<User>.FromJson(DalController.Read(Path.Combine
                 ("Users", this.GetSafeFilename(email) + ".json")));
         }
         public override void Save()
         {
-            DALController.Write(Path.Combine
+            DalController.Write(Path.Combine
                 ("Users", this.GetSafeFilename(email) + ".json"), this.ToJson());
            
         }

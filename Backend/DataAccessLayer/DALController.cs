@@ -5,11 +5,150 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.DataAccessLayer.Objects;
+using Practical_DB.DataAccessLayer.DTOs;
+using System.Collections.Generic;
+using System.Data.SQLite;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    public class DALController
+    internal abstract class DalController
     {
+        protected readonly string _connectionString;
+        private readonly string _tableName;
+        public DalController(string tableName)
+        {
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"));
+            this._connectionString = $"Data Source={path}; Version=3;";
+            this._tableName = tableName;
+        }
+        public List<BusinessLayer.BoardPackage.Task> GetTasksbyID(int idColumn)
+        {
+            List<DTOs.TaskDTO> TasksbyID = 
+            TaskDalController TASKI = new TaskDalController();
+            TasksbyID = TASKI.SelectAllTasks();
+        }
+
+        public bool Update(long id, string attributeName, long attributeValue)
+        {
+            int res = -1;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id}"
+                };
+                try
+                {
+                    command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+
+                }
+
+            }
+            return res > 0;
+        }
+
+        protected List<DTOs.DTO> Select()
+        {
+            List<DTOs.DTO> results = new List<DTOs.DTO>();
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"select * from {_tableName};";
+                SQLiteDataReader dataReader = null;
+                try
+                {
+                    connection.Open();
+                    dataReader = command.ExecuteReader();
+
+                    while (dataReader.Read())
+                    {
+                        results.Add(ConvertReaderToObject(dataReader));
+
+                    }
+                }
+                finally
+                {
+                    if (dataReader != null)
+                    {
+                        dataReader.Close();
+                    }
+
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
+            return results;
+        }
+
+        protected abstract DTOs.DTO ConvertReaderToObject(SQLiteDataReader reader);
+
+        public bool Delete(DTOs.DTO DTOObj)
+        {
+            int res = -1;
+
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                var command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"delete from {_tableName} where id={DTOObj.Id}"
+                };
+                try
+                {
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
+            return res > 0;
+        }
+        public static string Read(string filename)
+        {
+
+            while(DataR)
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+        /*
         public Dictionary<string, Board> Boards {get;}
 
         public DALController()
@@ -62,7 +201,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 throw new NotImplementedException();
                 //create empty file
             }
-            
+            /*
         }
     }
 }

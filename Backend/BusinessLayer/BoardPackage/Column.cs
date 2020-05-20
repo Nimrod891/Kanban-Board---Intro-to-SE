@@ -58,7 +58,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             return numOfTasks;
         }
-
+        public void setColumnId(int columnId)
+        {
+            this.columnId = columnId;
+        }
+       public Dictionary<int,Task> getMyTasks()
+        {
+            return this.tasks;
+        }
+        public void removeMyTasks()
+        {
+            tasks.Clear();
+        }
         public void SetLimitNum(int limitNum)
         {
             if (limitNum == -1)

@@ -13,6 +13,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
     {
         private Dictionary<string, User> users;
         private User loggedInUser;
+        private int maxPass = 25;
+        private int minPass = 5;
 
         public UserController()
         {
@@ -98,7 +100,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             bool haveDigit = false;
             bool haveLow = false;
 
-            if (pass.Length < 4 || pass.Length > 20)
+            if (pass.Length < minPass || pass.Length > maxPass)
             {
                 return false;
             }
@@ -155,7 +157,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             {
                 return false;
             }
-
             try
             {
                 return Regex.IsMatch(email,

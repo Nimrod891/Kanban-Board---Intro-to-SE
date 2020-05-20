@@ -65,7 +65,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
         {
             return this.taskId;
         }
-
         public Dictionary<int,Column> GetColumns()
         {
             return this.columns;

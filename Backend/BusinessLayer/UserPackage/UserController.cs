@@ -157,7 +157,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             {
                 return false;
             }
-
             try
             {
                 return Regex.IsMatch(email,

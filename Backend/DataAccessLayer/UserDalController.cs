@@ -14,16 +14,83 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
 
         }
-
-
-        public List<DTOs.UserDTO> SelectAllForums()
+        protected List<DTOs.UserDTO> Select(int id, string email)
         {
-            List<DTOs.UserDTO> result = Select().Cast<DTOs.UserDTO>().ToList();
+            List<DTOs.UserDTO> results = new List<DTOs.UserDTO>();
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                if (email.Equals("***"))
+                {
+                    command.CommandText = $"select * from {MessageTableName};";
+                }
+                else
+                {
+                    command.CommandText = $"select * from {MessageTableName} WHERE email = {email};";
+                }
 
-            return result;
+                SQLiteDataReader dataReader = null;
+                try
+                {
+                    connection.Open();
+                    dataReader = command.ExecuteReader();
+
+                    while (dataReader.Read())
+                    {
+                        results.Add(ConvertReaderToObject(dataReader));
+
+                    }
+                }
+                finally
+                {
+                    if (dataReader != null)
+                    {
+                        dataReader.Close();
+                    }
+
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
+
+
+            return results;
         }
+        public List<DTOs.UserDTO> SelectAllusers()
+        {
+            //string t_name = "boards";
+            List<DTOs.UserDTO> results = new List<DTOs.UserDTO>();
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"select * from {MessageTableName}";
+                SQLiteDataReader dataReader = null;
+                try
+                {
+                    connection.Open();
+                    dataReader = command.ExecuteReader();
 
-        public dictionary loadUsers
+                    while (dataReader.Read())
+                    {
+                        results.Add(ConvertReaderToObject(dataReader));
+
+                    }
+                }
+                finally
+                {
+                    if (dataReader != null)
+                    {
+                        dataReader.Close();
+                    }
+
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
+            return results;
+        }
 
         public bool Insert(DTOs.UserDTO User)
         {
@@ -63,13 +130,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
-        protected override DTOs.DTO ConvertReaderToObject(SQLiteDataReader reader)
+        protected DTOs.UserDTO ConvertReaderToObject(SQLiteDataReader reader)
         {
-            DTOs.UserDTO result = new DTOs.UserDTO((long)reader.GetValue(0), reader.GetString(1), reader.GetString(2), (long)reader.GetValue(3));
+            DTOs.UserDTO result = new DTOs.UserDTO((long)reader.GetValue(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
             return result;
 
         }
-    }
 
-}
+
+    }
 }

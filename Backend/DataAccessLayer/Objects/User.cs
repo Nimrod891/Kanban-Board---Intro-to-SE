@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using System.IO;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
-{
+{ }
+/*
     public class User : DALObject<User>
     {
         public string email { get; set; }
@@ -51,3 +52,4 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 
     }
 }
+*/

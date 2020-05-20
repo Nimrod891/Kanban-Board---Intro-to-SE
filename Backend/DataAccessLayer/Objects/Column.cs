@@ -7,8 +7,8 @@ using System.Text.Json;
 using Newtonsoft.Json;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
-{
-    public class Column : DALObject<Column>
+{ }
+   /* public class Column : DALObject<Column>
     {
         public string name { get; set; }
         public int columnId { get; set; }
@@ -40,3 +40,4 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
         }
     }
 }
+*/

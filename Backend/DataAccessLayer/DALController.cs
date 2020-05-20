@@ -5,7 +5,6 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.DataAccessLayer.Objects;
-using Practical_DB.DataAccessLayer.DTOs;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
@@ -18,17 +17,42 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private readonly string _tableName;
         public DalController(string tableName)
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"));
-            this._connectionString = $"Data Source={path}; Version=3;";
-            this._tableName = tableName;
-        }
-        public List<BusinessLayer.BoardPackage.Task> GetTasksbyID(int idColumn)
-        {
-            List<DTOs.TaskDTO> TasksbyID = 
-            TaskDalController TASKI = new TaskDalController();
-            TasksbyID = TASKI.SelectAllTasks();
-        }
+            try
+            {
+                string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"));
+                this._connectionString = $"Data Source={path}; Version=3;";
+            }
+            catch (Exception e)
+            {
+                if (e.Equals(null))
+                {
+                    string sql1 = @"CREATE TABLE Board(id INTEGER NOT NULL,email TEXT PRIMARY KEY NOT NULL)";
+                    string sql2 = "CREATE TABLE USER(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,NickName TEXT NOT NULL ,password  TEXT NOT NULL)";
+                    string sql3 = "CREATE TABLE Column(id INTEGER NOT NULL PRIMARY KEY,email TEXT NOT NULL PRIMARY KEY,limitNum INTEGER NOT NULL , BoardID INTEGER NOT NULL, Name TEXT NOT NULL, NumTasks INTEGER NOT NULL)";
+                    string sql4 = "CREATE TABLE Task(id INTEGER NOT NULL PRIMARY KEY,ColumnId INTEGER NOT NULL PRIMERY KEY,email TEXT NOT NULL PRIMARY KEY,Title TEXT NOT NULL , BoardID INTEGER NOT NULL, Description TEXT NOT NULL, Column INTEGER NOT NULL,DueDate DATETIME NOT NULL,CreationTime DATETIME NOT NULL )";
+                    System.Data.SQLite.SQLiteConnection.CreateFile("M3.db");
+                    using (System.Data.SQLite.SQLiteConnection con = new System.Data.SQLite.SQLiteConnection("data source=  M3.db"))
+                    {
+                        using (System.Data.SQLite.SQLiteCommand com = new System.Data.SQLite.SQLiteCommand(con))
+                        {
+                            con.Open();
 
+                            com.CommandText = sql1;
+                            com.ExecuteNonQuery();
+                            com.CommandText = sql2;
+                            com.ExecuteNonQuery();
+                            com.CommandText = sql3;
+                            com.ExecuteNonQuery();
+                            com.CommandText = sql4;
+                            com.ExecuteNonQuery();
+                        }
+                    }
+
+                }
+            }
+            this._tableName = tableName;
+
+        }
         public bool Update(long id, string attributeName, long attributeValue)
         {
             int res = -1;
@@ -55,42 +79,62 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
             return res > 0;
         }
-
-        protected List<DTOs.DTO> Select()
+        public bool Update(long id, string attributeName, string attributeValue)
         {
-            List<DTOs.DTO> results = new List<DTOs.DTO>();
+            int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
             {
-                SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"select * from {_tableName};";
-                SQLiteDataReader dataReader = null;
+                SQLiteCommand command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id}"
+                };
                 try
                 {
+                    command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
                     connection.Open();
-                    dataReader = command.ExecuteReader();
-
-                    while (dataReader.Read())
-                    {
-                        results.Add(ConvertReaderToObject(dataReader));
-
-                    }
+                    command.ExecuteNonQuery();
                 }
                 finally
                 {
-                    if (dataReader != null)
-                    {
-                        dataReader.Close();
-                    }
-
                     command.Dispose();
                     connection.Close();
+
                 }
 
             }
-            return results;
+            return res > 0;
+        }
+        public bool Update(long id, string attributeName, DateTime attributeValue)
+        {
+            int res = -1;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id}"
+                };
+                try
+                {
+                    command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+
+                }
+
+            }
+            return res > 0;
         }
 
-        protected abstract DTOs.DTO ConvertReaderToObject(SQLiteDataReader reader);
+        // public abstract List<DTOs.DTO> Select(int id, string email);
+
+        //  protected abstract DTOs.DTO ConvertReaderToObject(SQLiteDataReader reader);
 
         public bool Delete(DTOs.DTO DTOObj)
         {
@@ -117,91 +161,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
             return res > 0;
         }
-        public static string Read(string filename)
-        {
 
-            while(DataR)
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-        /*
-        public Dictionary<string, Board> Boards {get;}
-
-        public DALController()
-        {
-            //string boardsJson = Read("Boards.json");
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Kanban JSON Files", "Boards");
-            this.Boards = new Dictionary<string, Board>();
-            Directory.CreateDirectory(path);
-                foreach (string file in Directory.EnumerateFiles(path, "*.json"))
-                {
-                    Board boardToAdd = new Board();
-                    boardToAdd = Board.FromJson(Read(file));
-                    Boards.Add(boardToAdd.email, boardToAdd);
-
-                    /// if boards exist in the folder /Kanban JSON Files/Boards 
-                    /// this will create a dictionary of {email, board} as a field in DALController
-
-                }
-            
-            
-        }
-
-        public static void Write(string filename, string content)
-        {
-            
-            string dir = Directory.GetCurrentDirectory();
-            dir = Path.Combine(dir, "Kanban JSON Files");
-
-            //Path.GetFileName(filename);
-            //Console.WriteLine(dir);
-             Directory.CreateDirectory(dir.Replace((Path.GetFileName(filename)), ""));
-            //(Path.GetFileName(filename)).ToCharArray()
-             //   );
-            //Console.WriteLine(dir);
-            string f = Path.Combine(dir, filename);
-            File.WriteAllText(f, content);
-        }
-
-        // recieves the NAME of the required file and returns its CONTENT as a string if file exists
-        // else, creates an empty file of the same name.
-        public static string Read(string filename)
-        {
-            filename = Path.Combine(Directory.GetCurrentDirectory(), "Kanban JSON Files", filename);
-            if (File.Exists(filename))
-            {
-                return (File.ReadAllText(filename));   
-            }
-            else
-            {
-                throw new NotImplementedException();
-                //create empty file
-            }
-            /*
-        }
     }
 }

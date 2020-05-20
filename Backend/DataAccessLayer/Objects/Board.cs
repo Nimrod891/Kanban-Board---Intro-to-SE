@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
-{
+{ }
+/*
     //[JsonObject(MemberSerialization.Fields)]
     public class Board : DALObject<Board>
     {
@@ -79,3 +80,4 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
         }
     }
 }
+*/

@@ -8,15 +8,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 {
     class UserDTO : DTO
     {
-      //  public const string MessageUserIDColumnName = "IdUser";
         public const string MessageEmailColumnName = "email";
         public const string MessageNickNameColumnName = "NickName";
         public const string MessagePassword = "password";
 
-      //  private long _userid;
+        //  private long _userid;
         //public long IdUser { get => _userid; set { _userid = value; _controller.Update(Id, MessageUserIDColumnName, value); } }
-        private string _email;
-        public string email { get => _email; set { _email = value; _controller.Update(Id, MessageEmailColumnName, value); } }
         private string _nickname;
         public string NickName { get => _nickname; set { _nickname = value; _controller.Update(Id, MessageNickNameColumnName, value); } }
         private string _password;
@@ -24,11 +21,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
 
 
-        public UserDTO(long userID, string email, string nickName,long password) : base(new UserDalController())
+        public UserDTO(long userID, string Email, string nickName, string password) : base(new UserDalController())
         {
-            Id = userID;
-            _email = email;
+            //Id = userID;
+            email = Email;
             _nickname = nickName;
+            _password = password;
 
         }
+
     }
+}

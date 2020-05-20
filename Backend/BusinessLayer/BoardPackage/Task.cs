@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    class Task : IPresistObject<DataAccessLayer.Objects.Task>
+    class Task 
     {
        
         private int taskId;
@@ -25,15 +25,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             SetDescription(description);
             SetDueDate(dueDate);
             this.creationDate = DateTime.Now;
-        }
-
-        public Task(DataAccessLayer.Objects.Task dalTask)
-        {
-            this.taskId = dalTask.taskId;
-            this.title = dalTask.title;
-            this.description = dalTask.description;
-            this.dueDate = dalTask.dueDate;
-            this.creationDate = dalTask.creationDate;
         }
 
         public int GetTaskId()
@@ -97,11 +88,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.dueDate = dueDate;
         }
 
-        public DataAccessLayer.Objects.Task ToDalObject()
-        {
-            DataAccessLayer.Objects.Task dalTask = new DataAccessLayer.Objects.Task(this.taskId,this.title, this.description, this.dueDate,this.creationDate);
-            return dalTask;
-        }
 
     }
 

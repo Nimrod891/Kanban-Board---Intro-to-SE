@@ -15,25 +15,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         private User loggedInUser;
         private int maxPass = 25;
         private int minPass = 5;
+        DataAccessLayer.UserDalController myUserDC;
 
         public UserController()
         {
             users = new Dictionary<string, User>();
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Kanban JSON Files", "Users");
-            Directory.CreateDirectory(path);
-            foreach (string file in Directory.EnumerateFiles(path, "*.json"))
+            List<DataAccessLayer.DTOs.UserDTO> myUsers = myUserDC.SelectAllusers();
+            foreach(DataAccessLayer.DTOs.UserDTO u in myUsers)
             {
-                User userToAdd = new User(DataAccessLayer.Objects.User.FromJson(file));
-                //userToAdd = DataAccessLayer.Objects.User.FromJson(Read(file));
-                users.Add(userToAdd.GetEmail(), userToAdd);
-
-                /// if users exist in the folder /Kanban JSON Files/Users 
-                /// this will create a dictionary of {email, user} as a field in UserController
-
+                User newUser = new User(u.email, u.Password, u.NickName);
+                users.Add(u.email, newUser);
             }
-            //this.loggedInUser = null;
-
-
         }
 
         public void Register(string email, string pass, string nickname)
@@ -62,8 +54,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             //email = email.ToLower();
             User u = new User(email, pass, nickname);
             users.Add(email, u);
-            u.ToDalObject().Save();
-            u.GetUserBoard().ToDalObject().Save();
+            //u.ToDalObject().Save();
+            //u.GetUserBoard().ToDalObject().Save();
 
 
         }

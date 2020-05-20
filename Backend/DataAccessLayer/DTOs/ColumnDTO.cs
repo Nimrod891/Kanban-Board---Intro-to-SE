@@ -8,14 +8,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 {
     class ColumnDTO :DTO
     {
-      //  public const string MessageColumnIDColumnName = "ColumnID";
         public const string MessageLimitNumColumnName = "LimitNum";
         public const string MessageBoardIDColumnName = "BoardID";
         public const string MessageNameColumnName = "Name";
         public const string MessageNumTasksColumnName = "NumTasks";
 
-     //   private long _columnid;
-      //  public long ColumnID { get => _columnid; set { _columnid = value; _controller.Update(Id, MessageColumnIDColumnName, value); } }
+        //   private long _columnid;
+        //  public long ColumnID { get => _columnid; set { _columnid = value; _controller.Update(Id, MessageColumnIDColumnName, value); } }
         private long _limitnum;
         public long LimitNum { get => _limitnum; set { _limitnum = value; _controller.Update(Id, MessageLimitNumColumnName, value); } }
         private long _boardid;
@@ -26,9 +25,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         public long NumTasks { get => _numtasks; set { _numtasks = value; _controller.Update(Id, MessageNumTasksColumnName, value); } }
 
 
-        public ColumnDTO(long columnID, long limitNum ,long BoardID ,string name, long numTasks) : base(new ColumnDalController())
+        public ColumnDTO(long columnID, long limitNum, long BoardID, string name, long numTasks, string Email) : base(new ColumnDalController())
         {
-            Id = columnID;
+            email = Email;
+            //Id = columnID;
             _limitnum = limitNum;
             _boardid = BoardID;
             _name = name;
@@ -36,6 +36,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
 
         }
+
 
     }
 }

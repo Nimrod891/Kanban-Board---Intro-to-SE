@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    class Board : IPresistObject<DataAccessLayer.Objects.Board>
+    class Board
     {
+       
         private static int num_Boards;
         private int Id_board;
         private string userEmail;
@@ -16,6 +17,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private int columnId;
         private int minColumns = 2;
         private bool is_UserLoggedin;
+        DataAccessLayer.ColumnDalController myColumnDC;
 
         public Board(string userEmail)
         {
@@ -31,27 +33,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             columns.Add(done.GetColumnId(), done);
             taskId = 0;
             is_UserLoggedin = false;
+<<<<<<< HEAD
+=======
 
+>>>>>>> ad27cfe3b935c79a76050ae7da0d1da80bf6e44d
         }
        
-        public Board(DataAccessLayer.Objects.Board myBoard)
+        public void initBoard()
         {
-            this.userEmail = myBoard.getEmail();
-            this.taskId = myBoard.getTaskID();
-            this.columns = new Dictionary<int, Column>();
-            //foreach(DataAccessLayer.Objects.Column newColumn in myBoard.columns)
-            //{
-            //    this.columns[]
-            //}
-            for(int i=0; i < myBoard.columns.Count; i++)
+            List<DataAccessLayer.DTOs.ColumnDTO> myColumns = myColumnDC.Select(Id_board, userEmail);
+            foreach (DataAccessLayer.DTOs.ColumnDTO c in myColumns)
             {
-                this.columns[i] = new Column(myBoard.columns[i]);
+                Column newCol = new Column(c.Name, c.Id);
+                columns.Add(c.Id, newCol);
+                newCol.initColumn(userEmail);
             }
-            this.SetIsULoggedIn(true);
-            
-
-            //this.myBoard = new BoardPackage.Board(dalUser.myBoard);
-
         }
 
         public string GetUserEmail()
@@ -162,26 +158,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             return columns[colId];
         }
-        public DataAccessLayer.Objects.Board ToDalObject()
-        {
-            DataAccessLayer.Objects.Board dalBoard = new DataAccessLayer.Objects.Board(); // empty dal board
-            /* fill with email, columnspublic string email { get; set; }
-             public Column[] columns { get; set; }
-              private int taskId { get; set; }*/
-            dalBoard.email = this.userEmail;
-            dalBoard.taskId = this.taskId;
-            dalBoard.columns = new Dictionary<int, DataAccessLayer.Objects.Column>();
-
-
-
-            int columnsSize=this.columns.Count;
-            for(int i=0; i<columnsSize;i++)
-            {
-                dalBoard.columns.Add(i, this.columns[i].ToDalObject());
-            }
-
-            return dalBoard;
-        }
+        
         public List<string> GetMyColumns()
         {
             List<string> columnsName = new List<string>();
@@ -231,6 +208,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             
             if (columnOrdinal == 0) // move tasks to right column
             {
+                if(columns[columnOrdinal+1].GetNumOfTasks()+columns[columnOrdinal].GetNumOfTasks() > columns[columnOrdinal + 1].GetLimitNum())
+                {
+                    throw new Exception("You cant delete this tasks because the number of tasks is too high");
+                }
                 foreach (var t in tasks)
                 {
                     columns[columnOrdinal + 1].AddTasksToDict(t.Key, t.Value);
@@ -238,6 +219,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             else
             {
+                if (columns[columnOrdinal - 1].GetNumOfTasks() + columns[columnOrdinal].GetNumOfTasks() > columns[columnOrdinal - 1].GetLimitNum())
+                {
+                    throw new Exception("You cant delete this tasks because the number of tasks is too high");
+                }
                 foreach (var t in tasks)
                 {
                     columns[columnOrdinal - 1].AddTasksToDict(t.Key, t.Value);

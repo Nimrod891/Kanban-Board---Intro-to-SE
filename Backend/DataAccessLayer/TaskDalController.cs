@@ -16,13 +16,47 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         }
 
-        public List<DTOs.TaskDTO> SelectAllTasks()
+        public List<DTOs.TaskDTO> SelectAllTasks(int id, string email)
         {
-            List<DTOs.TaskDTO> result = Select().Cast<DTOs.TaskDTO>().ToList();
+            List<DTOs.TaskDTO> result = Select(id, email).Cast<DTOs.TaskDTO>().ToList();
 
             return result;
         }
 
+        public List<DTOs.TaskDTO> Select(int id, string email)
+        {
+            //string t_name = "columns";
+            List<DTOs.TaskDTO> results = new List<DTOs.TaskDTO>();
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"select * from {MessageTableName} WHERE email = {email} AND id={id} ";
+                SQLiteDataReader dataReader = null;
+                try
+                {
+                    connection.Open();
+                    dataReader = command.ExecuteReader();
+
+                    while (dataReader.Read())
+                    {
+                        results.Add(ConvertReaderToObject(dataReader));
+
+                    }
+                }
+                finally
+                {
+                    if (dataReader != null)
+                    {
+                        dataReader.Close();
+                    }
+
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
+            return results;
+        }
 
 
         public bool Insert(DTOs.TaskDTO TASK)
@@ -71,11 +105,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
-        protected override DTOs.TaskDTO ConvertReaderToObject(SQLiteDataReader reader)
+        protected DTOs.TaskDTO ConvertReaderToObject(SQLiteDataReader reader)
         {
-            DTOs.TaskDTO result = new DTOs.TaskDTO((long)reader.GetValue(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), (long)reader.GetValue(5));
+            DTOs.TaskDTO result = new DTOs.TaskDTO((long)reader.GetValue(0), reader.GetString(1), reader.GetString(2), reader.GetDateTime(3), reader.GetDateTime(4), (long)reader.GetValue(5), reader.GetString(6));
             return result;
 
         }
+
     }
 }

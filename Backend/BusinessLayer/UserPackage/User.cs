@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
-    class User : IPresistObject<DataAccessLayer.Objects.User>
+    class User 
     {
         private string email;
         private string password;
         private string nickname;
         private bool is_logged;
         private BoardPackage.Board myBoard;
+        DataAccessLayer.BoardDalController myBoardDC;
 
         public User(string email, string password, string nickname)
         {
@@ -22,12 +23,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             this.is_logged = false;
             myBoard = new BoardPackage.Board(email);
         }
-        public User(DataAccessLayer.Objects.User dalUser)
+        public User(DataAccessLayer.DTOs.UserDTO u)
         {
-            this.email = dalUser.email;
-            this.password = dalUser.password;
-            this.nickname = dalUser.nickname;
-            this.myBoard = new BoardPackage.Board(dalUser.myBoard);
+            this.email = u.email;
+            this.password = u.Password;
+            this.nickname = u.NickName;
+            this.is_logged = false;
+            List<DataAccessLayer.DTOs.BoardDTO> myInitBoard = myBoardDC.Select(0, email);
+
 
         }
         
@@ -73,12 +76,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             myBoard.SetIsULoggedIn(false);
         }
 
-        public DataAccessLayer.Objects.User ToDalObject()
-        {
-
-            DataAccessLayer.Objects.User dalUser = new DataAccessLayer.Objects.User
-                (this.email, this.password, this.nickname, this.myBoard.ToDalObject());
-            return dalUser;
-        }
     }
 }

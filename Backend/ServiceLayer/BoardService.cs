@@ -94,7 +94,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                MyBoardContorller.UpdateTaskTitle(email, columnOrdinal, taskId, description);
+                MyBoardContorller.UpdateTaskDescription(email, columnOrdinal, taskId, description);
                 log.Info($"User {email} has updated: COLUMN: {columnOrdinal}, TASK {taskId}: description");
                 return new Response();
             }
@@ -129,13 +129,63 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 return new Response<Column>(e.Message);
             }
-
         }
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
             try
             {
                 Column columnService = new Column(MyBoardContorller.GetColumnById(email, columnOrdinal).GetMyTasks(), MyBoardContorller.GetColumnById(email,columnOrdinal).GetName(), MyBoardContorller.GetColumnById(email, columnOrdinal).GetLimitNum());
+                return new Response<Column>(columnService);
+            }
+            catch (Exception e)
+            {
+                return new Response<Column>(e.Message);
+            }
+        }
+        public Response RemoveColumn(string email, int columnOrdinal)
+        {
+            try
+            {
+                MyBoardContorller.RemoveColumn(email, columnOrdinal);
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+            return new Response();
+        }
+        public Response<Column> AddColumn(string email, int columnOrdinal, string Name)
+        {
+            try
+            {
+                BusinessLayer.BoardPackage.Column c = MyBoardContorller.AddColumn(email, columnOrdinal, Name);
+                Column columnService = new Column(MyBoardContorller.GetColumnById(email, columnOrdinal).GetMyTasks(), c.GetName(), c.GetLimitNum());
+                return new Response<Column>(columnService);
+            }
+            catch (Exception e)
+            {
+                return new Response<Column>(e.Message);
+            }
+        }
+        public Response<Column> MoveColumnRight(string email, int columnOrdinal)
+        {
+            try
+            {
+                BusinessLayer.BoardPackage.Column c = MyBoardContorller.MoveColumnRight(email, columnOrdinal);
+                Column columnService = new Column(MyBoardContorller.GetColumnById(email, columnOrdinal).GetMyTasks(), c.GetName(), c.GetLimitNum());
+                return new Response<Column>(columnService);
+            }
+            catch (Exception e)
+            {
+                return new Response<Column>(e.Message);
+            }
+        }
+        public Response<Column> MoveColumnLeft(string email, int columnOrdinal)
+        {
+            try
+            {
+                BusinessLayer.BoardPackage.Column c = MyBoardContorller.MoveColumnLeft(email, columnOrdinal);
+                Column columnService = new Column(MyBoardContorller.GetColumnById(email, columnOrdinal).GetMyTasks(), c.GetName(), c.GetLimitNum());
                 return new Response<Column>(columnService);
             }
             catch (Exception e)

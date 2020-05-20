@@ -221,7 +221,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response RemoveColumn(string email, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            return myBoardService.RemoveColumn(email, columnOrdinal);
         }
 
         /// <summary>
@@ -234,8 +234,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the new Column, the response should contain a error message in case of an error</returns>
         public Response<Column> AddColumn(string email, int columnOrdinal, string Name)
         {
-            throw new NotImplementedException();
-
+            return myBoardService.AddColumn(email, columnOrdinal, Name);
         }
 
         /// <summary>
@@ -247,8 +246,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the moved Column, the response should contain a error message in case of an error</returns>
         public Response<Column> MoveColumnRight(string email, int columnOrdinal)
         {
-            throw new NotImplementedException();
-
+            return myBoardService.MoveColumnRight(email, columnOrdinal);
         }
 
         /// <summary>
@@ -260,8 +258,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the moved Column, the response should contain a error message in case of an error</returns>
         public Response<Column> MoveColumnLeft(string email, int columnOrdinal)
         {
-            throw new NotImplementedException();
-
+            return myBoardService.MoveColumnLeft(email, columnOrdinal);
         }
 
     }

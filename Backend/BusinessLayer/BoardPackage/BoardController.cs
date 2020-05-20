@@ -123,16 +123,37 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             return boards[userEmail].GetColumnByName(colName);
         }
-        
-        /*public IReadOnlyCollection<Task> GetColumns(string userEmail, string columnName)
+        public Column AddColumn(string email, int columnOrdinal, string Name)
         {
-            if (!boards.ContainsKey(userEmail))
+            if (!boards.ContainsKey(email))
             {
                 throw new Exception("Board not exist");
             }
-            int colId = boards[userEmail].GetColumnByName(columnName);
-            return boards[userEmail].GetColumnById(colId).GetMyTasks();
+            return boards[email].AddColumn(columnOrdinal, Name);
         }
-        */
+        public void RemoveColumn(string email, int columnOrdinal)
+        {
+            if (!boards.ContainsKey(email))
+            {
+                throw new Exception("Board not exist");
+            }
+            boards[email].RemoveColumn(columnOrdinal);
+        }
+        public Column MoveColumnRight(string email, int columnOrdinal)
+        {
+            if (!boards.ContainsKey(email))
+            {
+                throw new Exception("Board not exist");
+            }
+            return boards[email].MoveColumnRight(columnOrdinal);
+        }
+        public Column MoveColumnLeft(string email, int columnOrdinal)
+        {
+            if (!boards.ContainsKey(email))
+            {
+                throw new Exception("Board not exist");
+            }
+            return boards[email].MoveColumnLeft(columnOrdinal);
+        }
     }
 }

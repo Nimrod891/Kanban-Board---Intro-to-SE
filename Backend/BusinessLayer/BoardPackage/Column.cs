@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    class Column : IPresistObject<DataAccessLayer.Objects.Column>
+    class Column
     {
         private string name;
         private int columnId;
@@ -15,6 +15,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private int numOfTasks;
         private Dictionary<int, Task> tasks;
         private ReadOnlyDictionary<int, Task> readOnlyDict;
+        DataAccessLayer.TaskDalController myTaskDC;
 
         public Column(string name, int columnId)
         {
@@ -24,20 +25,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             numOfTasks = 0;
             tasks = new Dictionary<int, Task>();
         }
-        public Column(DataAccessLayer.Objects.Column myColumn)
+        public void initColumn(string email)
         {
-            this.name = myColumn.name;
-            this.columnId = myColumn.columnId;
-            this.limitNum = myColumn.limitNum;
-
-            this.tasks = new Dictionary<int, Task>();
-            foreach(KeyValuePair<int, DataAccessLayer.Objects.Task> taskNum in myColumn.tasks)
+            List<DataAccessLayer.DTOs.TaskDTO> myTasks = myTaskDC.Select(columnId, email);
+            foreach(DataAccessLayer.DTOs.TaskDTO t in myTasks)
             {
-                Task taskToAdd = new Task(taskNum.Value);
-                tasks.Add(taskNum.Key, taskToAdd);
+                Task newTask = new Task(t.Id, t.Title, t.Description, t.DueDate);
+                tasks.Add(t.Id, newTask);
             }
-
-
         }
         public string GetName()
         {
@@ -137,29 +132,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return -1;
         }
 
-        public DataAccessLayer.Objects.Column ToDalObject()
-        {
-            DataAccessLayer.Objects.Column dalColumn = new DataAccessLayer.Objects.Column
-                (this.name, this.columnId); // gives a new DAL column
 
-            dalColumn.limitNum = this.limitNum;
-            dalColumn.numOfTasks = this.numOfTasks;
-            Dictionary<int, DataAccessLayer.Objects.Task> dalTasks = new 
-                Dictionary<int, DataAccessLayer.Objects.Task>();
-
-
-            foreach (KeyValuePair<int, Task> taskNum in this.tasks)
-            {
-                dalTasks.Add(taskNum.Key, taskNum.Value.ToDalObject());
-                //DataAccessLayer.Objects.Task taskToAdd = new DataAccessLayer.Objects.Task();
-                  /*  (taskNum.Value.GetTaskId(),taskNum.Value.GetTitle(), taskNum.Value.GetDescription(),
-                    taskNum.Value.GetDueDate(), taskNum.Value.GetCreationDate());*/
-
-                //dalTasks.Add(taskNum.Key, taskToAdd);
-            }
-            dalColumn.tasks = dalTasks;
-            return dalColumn;
-        }
 
         public ReadOnlyCollection<ServiceLayer.Task> GetMyTasks()
         {

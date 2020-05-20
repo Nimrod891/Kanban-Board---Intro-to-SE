@@ -8,8 +8,8 @@ using System.IO;
 using Newtonsoft.Json;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
-{
-    public abstract class DALObject<T> where T : DALObject<T>
+{ }
+   /* public abstract class DALObject<T> where T : DALObject<T>
     {
         // takes this instance of a DAL object and returns it as a json string
         public string ToJson()
@@ -43,3 +43,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
 
     }
 }
+*/
+

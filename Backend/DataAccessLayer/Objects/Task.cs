@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
-{
+{ }
+/*
     public class Task : DALObject<Task>
     {
         public int taskId { get; set; }
@@ -31,3 +32,4 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
         }
     }
 }
+*/

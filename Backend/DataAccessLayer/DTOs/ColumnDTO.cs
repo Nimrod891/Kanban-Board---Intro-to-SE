@@ -26,8 +26,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         public long NumTasks { get => _numtasks; set { _numtasks = value; _controller.Update(Id, MessageNumTasksColumnName, value); } }
 
 
-        public ColumnDTO(long columnID, long limitNum ,long BoardID ,string name, long numTasks) : base(new ColumnDalController())
+        public ColumnDTO(long columnID, long limitNum ,long BoardID ,string name, long numTasks,string email) : base(new ColumnDalController())
         {
+            Email = email; 
             Id = columnID;
             _limitnum = limitNum;
             _boardid = BoardID;

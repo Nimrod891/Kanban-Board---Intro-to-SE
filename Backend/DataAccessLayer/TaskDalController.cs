@@ -16,9 +16,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         }
 
-        public List<DTOs.TaskDTO> SelectAllTasks()
+        public List<DTOs.TaskDTO> SelectAllTasks(int id, string email)
         {
-            List<DTOs.TaskDTO> result = Select().Cast<DTOs.TaskDTO>().ToList();
+            List<DTOs.TaskDTO> result = Select(id,email).Cast<DTOs.TaskDTO>().ToList();
 
             return result;
         }

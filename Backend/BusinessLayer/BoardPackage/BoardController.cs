@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private Dictionary<string, Board> boards;
         //private Board loggedInBoard;
-
+        private 
         public BoardController()
         {
             boards = new Dictionary<string, Board>();
@@ -123,37 +123,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             return boards[userEmail].GetColumnByName(colName);
         }
-        public Column AddColumn(string email, int columnOrdinal, string Name)
+        
+        /*public IReadOnlyCollection<Task> GetColumns(string userEmail, string columnName)
         {
-            if (!boards.ContainsKey(email))
+            if (!boards.ContainsKey(userEmail))
             {
                 throw new Exception("Board not exist");
             }
-            return boards[email].AddColumn(columnOrdinal, Name);
+            int colId = boards[userEmail].GetColumnByName(columnName);
+            return boards[userEmail].GetColumnById(colId).GetMyTasks();
         }
-        public void RemoveColumn(string email, int columnOrdinal)
-        {
-            if (!boards.ContainsKey(email))
-            {
-                throw new Exception("Board not exist");
-            }
-            boards[email].RemoveColumn(columnOrdinal);
-        }
-        public Column MoveColumnRight(string email, int columnOrdinal)
-        {
-            if (!boards.ContainsKey(email))
-            {
-                throw new Exception("Board not exist");
-            }
-            return boards[email].MoveColumnRight(columnOrdinal);
-        }
-        public Column MoveColumnLeft(string email, int columnOrdinal)
-        {
-            if (!boards.ContainsKey(email))
-            {
-                throw new Exception("Board not exist");
-            }
-            return boards[email].MoveColumnLeft(columnOrdinal);
-        }
+        */
     }
 }

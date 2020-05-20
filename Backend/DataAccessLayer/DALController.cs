@@ -16,17 +16,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     {
         protected readonly string _connectionString;
         private readonly string _tableName;
+        TaskDalController mytasks = new TaskDalController();
         public DalController(string tableName)
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"));
             this._connectionString = $"Data Source={path}; Version=3;";
             this._tableName = tableName;
-        }
-        public List<BusinessLayer.BoardPackage.Task> GetTasksbyID(int idColumn)
-        {
-            List<DTOs.TaskDTO> TasksbyID = 
-            TaskDalController TASKI = new TaskDalController();
-            TasksbyID = TASKI.SelectAllTasks();
         }
 
         public bool Update(long id, string attributeName, long attributeValue)
@@ -56,13 +51,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return res > 0;
         }
 
-        protected List<DTOs.DTO> Select()
+        protected List<DTOs.DTO> Select(int id , string email)
         {
             List<DTOs.DTO> results = new List<DTOs.DTO>();
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"select * from {_tableName};";
+                command.CommandText = $"select * from {_tableName}WHERE id={id} AND email ={email}";
                 SQLiteDataReader dataReader = null;
                 try
                 {

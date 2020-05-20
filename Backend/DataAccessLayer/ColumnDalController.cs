@@ -15,7 +15,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
 
-        public List<DTOs.BoardDTO> SelectAllForums()
+        public List<DTOs.BoardDTO> SelectAllColumn()
         {
             List<DTOs.BoardDTO> result = Select().Cast<DTOs.BoardDTO>().ToList();
 

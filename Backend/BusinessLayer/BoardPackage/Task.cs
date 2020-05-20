@@ -14,8 +14,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private string description;
         private DateTime dueDate;
         private DateTime creationDate;
-        private int maxDesc = 300;
-        private int maxTitle = 50;
 
         public Task(int taskId, string title, string description, DateTime dueDate)
         {
@@ -64,7 +62,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
        
         public void SetTitle(string title)
         {
-            if (title.Length > maxTitle)
+            if ((title.Length > 50))
             {
                 throw new Exception("Title is over 50 chars");   
             }
@@ -79,7 +77,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             if (description != null)
             {
-                if (description.Length > maxDesc)
+                if (description.Length > 300)
                 {
                     throw new Exception("description is over 300 chars");
                 }

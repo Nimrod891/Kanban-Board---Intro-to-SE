@@ -26,15 +26,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
 
 
-        private string _duedate;
-        public string DueDate { get => _duedate; set { _duedate = value; _controller.Update(Id, MessageDueDateColumnName, value); } }
-        private string _creationtime;
-        public string CreationTime { get => _creationtime; set { _creationtime = value; _controller.Update(Id, MessageCreationTimeColumnName, value); } }
+        private DateTime _duedate;
+        public DateTime DueDate { get => _duedate; set { _duedate = value; _controller.Update(Id, MessageDueDateColumnName, value); } }
+        private DateTime _creationtime;
+        public DateTime CreationTime { get => _creationtime; set { _creationtime = value; _controller.Update(Id, MessageCreationTimeColumnName, value); } }
 
 
 
-        public TaskDTO(long ID, string Title, string Description, string DueDate, string CreationTime, long columnID) : base(new TaskDalController())
+        public TaskDTO(long ID, string Title, string Description, string DueDate, string CreationTime, long columnID,string email) : base(new TaskDalController())
         {
+            Email = email;
             Id = ID;
             _title = Title;
             _description = Description;

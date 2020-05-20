@@ -13,8 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
     {
         private Dictionary<string, User> users;
         private User loggedInUser;
-        private int maxPass = 25;
-        private int minPass = 5;
+        DataAccessLayer.UserDalController myusercontroller; 
 
         public UserController()
         {
@@ -22,6 +21,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Kanban JSON Files", "Users");
             Directory.CreateDirectory(path);
             foreach (string file in Directory.EnumerateFiles(path, "*.json"))
+                myusercontroller.se
             {
                 User userToAdd = new User(DataAccessLayer.Objects.User.FromJson(file));
                 //userToAdd = DataAccessLayer.Objects.User.FromJson(Read(file));
@@ -100,7 +100,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             bool haveDigit = false;
             bool haveLow = false;
 
-            if (pass.Length < minPass || pass.Length > maxPass)
+            if (pass.Length < 4 || pass.Length > 20)
             {
                 return false;
             }
@@ -157,6 +157,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             {
                 return false;
             }
+
             try
             {
                 return Regex.IsMatch(email,

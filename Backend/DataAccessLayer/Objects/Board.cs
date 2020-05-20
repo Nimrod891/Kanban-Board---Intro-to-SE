@@ -12,23 +12,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
     public class Board : DALObject<Board>
     {
         public string email { get; set; }
-        public Dictionary<int,Column> columns { get; set; }
+        public Column[] columns { get; set; }
         public int taskId { get; set; }
-        public int columnId;
 
         public Board(string email)
         {
             this.email = email;
-            columns = new Dictionary<int, Column>();
-            columnId = 0;
-            Column backlog = new Column("backlog", columnId);
-            columnId++;
-            Column in_progress = new Column("in progress", columnId);
-            columnId++;
-            Column done = new Column("done", columnId);
-            columns.Add(backlog.columnId, backlog);
-            columns.Add(in_progress.columnId, in_progress);
-            columns.Add(done.columnId, done);
+            columns = new Column[3];
+            Column backlog = new Column("backlog", 0);
+            Column in_progress = new Column("in progress", 1);
+            Column done = new Column("done", 2);
+            columns[0] = backlog;
+            columns[1] = in_progress;
+            columns[2] = done;
             taskId = 0;
             
         }
@@ -36,7 +32,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
         public Board(string email, int taskID, int sizeOfColumnsArray)
         {
             this.email = email;
-            //columns = new Column[3];
+            columns = new Column[3];
             Column backlog = new Column("backlog", 0);
             Column in_progress = new Column("in progress", 1);
             Column done = new Column("done", 2);
@@ -65,7 +61,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
         {
             return this.taskId;
         }
-        public Dictionary<int,Column> GetColumns()
+
+        public Column[] GetColumns()
         {
             return this.columns;
         }

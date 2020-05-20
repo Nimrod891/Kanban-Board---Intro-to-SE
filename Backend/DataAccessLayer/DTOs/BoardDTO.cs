@@ -14,8 +14,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         private string _name;
         public string Name { get => _name; set { _name = value; _controller.Update(Id, BoardNameColumnName, value); } }
 
-        public BoardDTO(long ID, string Title) : base(new BoardDalController())
+        public BoardDTO(long ID, string Title,string email) : base(new BoardDalController())
         {
+            Email = email;
             Id = ID;
             _name = Title;
         }

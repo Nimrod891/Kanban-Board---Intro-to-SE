@@ -33,6 +33,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             columns.Add(done.GetColumnId(), done);
             taskId = 0;
             is_UserLoggedin = false;
+<<<<<<< HEAD
+=======
+
+>>>>>>> ad27cfe3b935c79a76050ae7da0d1da80bf6e44d
         }
        
         public void initBoard()

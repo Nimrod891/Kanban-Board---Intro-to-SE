@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
         public Board(string email, int taskID, int sizeOfColumnsArray)
         {
             this.email = email;
-            columns = new Column[3];
+            //columns = new Column[3];
             Column backlog = new Column("backlog", 0);
             Column in_progress = new Column("in progress", 1);
             Column done = new Column("done", 2);
@@ -66,7 +66,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.Objects
             return this.taskId;
         }
 
-        public Column[] GetColumns()
+        public Dictionary<int,Column> GetColumns()
         {
             return this.columns;
         }

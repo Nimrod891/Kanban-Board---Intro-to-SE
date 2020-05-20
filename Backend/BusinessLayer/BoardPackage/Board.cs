@@ -8,6 +8,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     class Board : IPresistObject<DataAccessLayer.Objects.Board>
     {
+        private static int num_Boards;
+        private int Id_board;
         private string userEmail;
         private Dictionary<int, Column> columns;
         private int taskId;

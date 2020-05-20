@@ -152,10 +152,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 {
                     colId = columns[i].GetColumnId();
                 }
-                //if (colId != -1)
-                //{
-                //    colId = columns[i].GetColumnId();
-                //}  
+               
             }
             if (colId == -1)
             {

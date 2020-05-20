@@ -178,7 +178,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
 
             return dalBoard;
-            
         }
         public List<string> GetMyColumns()
         {

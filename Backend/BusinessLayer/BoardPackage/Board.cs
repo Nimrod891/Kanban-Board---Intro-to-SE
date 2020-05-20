@@ -8,6 +8,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     class Board : IPresistObject<DataAccessLayer.Objects.Board>
     {
+        private static int num_Boards;
+        private int Id_board;
         private string userEmail;
         private Dictionary<int, Column> columns;
         private int taskId;
@@ -29,6 +31,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             columns.Add(done.GetColumnId(), done);
             taskId = 0;
             is_UserLoggedin = false;
+
         }
        
         public Board(DataAccessLayer.Objects.Board myBoard)

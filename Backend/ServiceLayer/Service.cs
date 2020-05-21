@@ -1,5 +1,13 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer.Objects;
+using System.Collections.Generic;
+using System.Data.SQLite;
+using System.IO;
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -34,11 +42,42 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
         public Response LoadData()
         {
+            if(!File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"))))
+                {
+                string sql1 = @"CREATE TABLE Board(id INTEGER NOT NULL,email TEXT PRIMARY KEY NOT NULL)";
+                string sql2 = "CREATE TABLE USER(id INTEGER NOT NULL,email TEXT NOT NULL FOR KEY,NickName TEXT NOT NULL ,password  TEXT NOT NULL)";
+                string sql3 = "CREATE TABLE Column(id INTEGER NOT NULL PRIMARY KEY,email TEXT NOT NULL PRIMARY KEY,limitNum INTEGER NOT NULL , BoardID INTEGER NOT NULL, Name TEXT NOT NULL, NumTasks INTEGER NOT NULL)";
+                string sql4 = "CREATE TABLE Task(id INTEGER NOT NULL PRIMARY KEY,email TEXT NOT NULL PRIMARY KEY,Title TEXT NOT NULL , BoardID INTEGER NOT NULL, Description TEXT NOT NULL, Column INTEGER NOT NULL,DueDate DATETIME NOT NULL,CreationTime DATETIME NOT NULL )";
+                System.Data.SQLite.SQLiteConnection.CreateFile("M3.db");
+
+
+                //using (System.Data.SQLite.SQLiteConnection con = new System.Data.SQLite.SQLiteConnection("data source=M3.db"))
+                string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"));
+                string connectionString = $"Data Source={path}; Version=3;";
+                using (System.Data.SQLite.SQLiteConnection con = new System.Data.SQLite.SQLiteConnection(connectionString))
+                {
+                    using (System.Data.SQLite.SQLiteCommand com = new System.Data.SQLite.SQLiteCommand(con))
+                    {
+                        con.Open();
+
+                        com.CommandText = sql1;
+                        com.ExecuteNonQuery();
+                        com.CommandText = sql2;
+                        com.ExecuteNonQuery();
+                        com.CommandText = sql3;
+                        com.ExecuteNonQuery();
+                        com.CommandText = sql4;
+                        com.ExecuteNonQuery();
+                    }
+                }
+
+            }
             try
             {
                 log.Info("Loading data");
-                this.myBoardService = new boardService();
                 this.myUserService = new userService();
+                this.myBoardService = new boardService();
+               
                 return new Response();
             }
             catch (Exception e)
@@ -64,15 +103,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
 
-    /// <summary>
-    /// Registers a new user
-    /// </summary>
-    /// <param name="email">The email address of the user to register</param>
-    /// <param name="password">The password of the user to register</param>
-    /// <param name="nickname">The nickname of the user to register</param>
-    /// <returns>A response object. The response should contain a error message in case of an error<returns>
+
     public Response Register(string email, string password, string nickname)
         {
+
             Response r = myUserService.Register(email, password, nickname);
             this.myBoardService = new boardService();
             log.Info("New User Registered: [" + email + "]");

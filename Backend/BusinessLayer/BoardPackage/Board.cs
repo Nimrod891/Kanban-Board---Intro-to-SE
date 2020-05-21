@@ -17,7 +17,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private int columnId;
         private int minColumns = 2;
         private bool is_UserLoggedin;
-        DataAccessLayer.ColumnDalController myColumnDC;
+        private DataAccessLayer.ColumnDalController myColumnDC;
 
         public Board(string userEmail)
         {
@@ -38,6 +38,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
        
         public void initBoard()
         {
+            myColumnDC = new DataAccessLayer.ColumnDalController();
             List<DataAccessLayer.DTOs.ColumnDTO> myColumns = myColumnDC.Select(Id_board, userEmail);
             foreach (DataAccessLayer.DTOs.ColumnDTO c in myColumns)
             {

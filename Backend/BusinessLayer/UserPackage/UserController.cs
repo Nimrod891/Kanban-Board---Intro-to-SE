@@ -15,15 +15,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         private User loggedInUser;
         private int maxPass = 25;
         private int minPass = 5;
-        DataAccessLayer.UserDalController myUserDC;
+        private DataAccessLayer.UserDalController myUserDC;
 
         public UserController()
         {
+            myUserDC = new DataAccessLayer.UserDalController();
             users = new Dictionary<string, User>();
             List<DataAccessLayer.DTOs.UserDTO> myUsers = myUserDC.SelectAllusers();
             foreach(DataAccessLayer.DTOs.UserDTO u in myUsers)
             {
-                User newUser = new User(u.email, u.Password, u.NickName);
+                User newUser = new User(u);
                 users.Add(u.email, newUser);
             }
         }

@@ -56,7 +56,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
 
-                command.CommandText = $"select * from {MessageTableName} WHERE email  = {email};";
+                command.CommandText = $"select * from {MessageTableName} WHERE email  = '{email}';";
                 SQLiteDataReader dataReader = null;
                 try
                 {
@@ -99,10 +99,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                         $"VALUES (@idVal,@emailVal);";
 
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", BOARD.Id);
-                    SQLiteParameter nameParam = new SQLiteParameter(@"emailVal", BOARD.email); 
+                    SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", BOARD.email); 
 
                     command.Parameters.Add(idParam);
-                    command.Parameters.Add(nameParam);
+                    command.Parameters.Add(emailParam);
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();

@@ -26,6 +26,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
            (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         boardService myBoardService;
         userService myUserService;
+        
 
         /// <summary>
         /// Simple public constructor.
@@ -46,8 +47,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                 string sql1 = @"CREATE TABLE Board(id INTEGER NOT NULL,email TEXT PRIMARY KEY NOT NULL)";
                 string sql2 = "CREATE TABLE USER(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,NickName TEXT NOT NULL ,password  TEXT NOT NULL)";
-                string sql3 = "CREATE TABLE Column(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,limitNum INTEGER NOT NULL , BoardID INTEGER NOT NULL, Name TEXT NOT NULL, NumTasks INTEGER NOT NULL)";
-                string sql4 = "CREATE TABLE Task(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,Title TEXT NOT NULL , BoardID INTEGER NOT NULL, Description TEXT NOT NULL, Column INTEGER NOT NULL,DueDate DATETIME NOT NULL,CreationTime DATETIME NOT NULL )";
+                string sql3 = "CREATE TABLE Column(id INTEGER ,email text ,LimitNum INTEGER NOT NULL , Name TEXT NOT NULL, NumTask INTEGER NOT NULL,PRIMARY KEY ('id','email'))";
+                string sql4 = "CREATE TABLE Task(id INTEGER,Column INTEGER NOT NULL,email TEXT NOT NULL ,Title TEXT NOT NULL , Description TEXT NOT NULL,DueDate DATETIME NOT NULL,CreationTime DATETIME NOT NULL,PRIMARY KEY('id','Column','email' ))";
                 System.Data.SQLite.SQLiteConnection.CreateFile("M3.db");
 
 
@@ -109,6 +110,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             Response r = myUserService.Register(email, password, nickname);
             this.myBoardService = new boardService();
+
             log.Info("New User Registered: [" + email + "]");
             return r;
         }

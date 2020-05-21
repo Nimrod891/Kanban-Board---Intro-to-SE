@@ -21,9 +21,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             List<DataAccessLayer.DTOs.BoardDTO> myBoards = myBoardDC.SelectAllboards();
             foreach (DataAccessLayer.DTOs.BoardDTO b in myBoards)
             {
-                Board newBoard = new Board(b.email);
+                Board newBoard = new Board(0, b.email);
                 boards.Add(b.email, newBoard);
-                newBoard.initBoard();
 
             }
         }

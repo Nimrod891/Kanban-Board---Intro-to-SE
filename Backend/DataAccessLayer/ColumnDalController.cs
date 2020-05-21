@@ -29,7 +29,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"select * from {MessageTableName} WHERE email = {email} AND id= {id}";
+                command.CommandText = $"select * from {MessageTableName} WHERE email = '{email}' AND id= {id}";
+                
                 SQLiteDataReader dataReader = null;
                 try
                 {
@@ -67,19 +68,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTOs.DTO.IDColumnName} ,{DTOs.ColumnDTO.MessageLimitNumColumnName},{DTOs.ColumnDTO.MessageBoardIDColumnName},{DTOs.ColumnDTO.MessageNameColumnName},{DTOs.ColumnDTO.MessageNumTasksColumnName}) " +
-    $"VALUES (@idVal,@LimitNumVal,@BoardIDVal,@ColumnNameVal,@NumTaskval);";
+                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTOs.DTO.IDColumnName},{DTOs.ColumnDTO.EmailColumnName} ,{DTOs.ColumnDTO.MessageLimitNumColumnName},{DTOs.ColumnDTO.MessageNameColumnName},{DTOs.ColumnDTO.MessageNumTasksColumnName}) " +
+    $"VALUES (@idVal,@emailval,@LimitNumVal,@NameVal,@NumTaskval);";
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", column.Id);
+                    SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", column.email);
                     SQLiteParameter limitParam = new SQLiteParameter(@"LimitNumVal", column.LimitNum);
-                    SQLiteParameter boardParam = new SQLiteParameter(@"BoardIDVal", column.BoardID);
-                    SQLiteParameter nameParam = new SQLiteParameter(@"ColumnNameVal", column.Name);
+                    SQLiteParameter nameParam = new SQLiteParameter(@"NameVal", column.Name);
                     SQLiteParameter numParam = new SQLiteParameter(@"NumTaskval", column.NumTasks);
-
-
 
 
                     command.Parameters.Add(idParam);
                     command.Parameters.Add(nameParam);
+                    command.Parameters.Add(limitParam);
+                    command.Parameters.Add(emailParam);
+                    command.Parameters.Add(numParam);
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();
@@ -99,7 +101,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         protected DTOs.ColumnDTO ConvertReaderToObject(SQLiteDataReader reader)
         {
-            DTOs.ColumnDTO result = new DTOs.ColumnDTO((long)reader.GetValue(0), (long)reader.GetValue(1), (long)reader.GetValue(2), reader.GetString(3), (long)reader.GetValue(4), reader.GetString(5));
+            DTOs.ColumnDTO result = new DTOs.ColumnDTO((long)reader.GetValue(0), reader.GetString(1), (long)reader.GetValue(2), reader.GetString(3), (long)reader.GetValue(4));
 
             return result;
 

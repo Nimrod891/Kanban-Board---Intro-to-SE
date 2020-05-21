@@ -30,11 +30,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             this.nickname = u.NickName;
             this.is_logged = false;
             DataAccessLayer.DTOs.BoardDTO DBoard = myBoardDC.Select(email);
-            myBoard = new BoardPackage.Board(DBoard.email);
-            myBoard.initBoard();
+            myBoard = new BoardPackage.Board(0,DBoard.email);
+            //myBoard.initBoard();
         }
         
-
+        public BoardPackage.Board getMyBoard()
+        {
+            return this.myBoard;
+        }
         public string GetEmail()
         {
             return email;
@@ -60,7 +63,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             if (this.password.Equals(pass))
             {
                 is_logged = true;
-                myBoard.SetIsULoggedIn(true);
+                
                 return true;
             }
             return false;

@@ -15,9 +15,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         //  private long _userid;
         //public long IdUser { get => _userid; set { _userid = value; _controller.Update(Id, MessageUserIDColumnName, value); } }
         private string _nickname;
-        public string NickName { get => _nickname; set { _nickname = value; _controller.Update(Id, MessageNickNameColumnName, value); } }
+        public string NickName { get => _nickname; set { _nickname = value; _controller.Update(Id, email, MessageNickNameColumnName, value); } }
         private string _password;
-        public string Password { get => _password; set { _password = value; _controller.Update(Id, MessagePassword, value); } }
+        public string Password { get => _password; set { _password = value; _controller.Update(Id, email, MessagePassword, value); } }
 
 
 

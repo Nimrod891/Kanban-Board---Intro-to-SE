@@ -21,14 +21,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"));
                 this._connectionString = $"Data Source={path}; Version=3;";
+                this._tableName = tableName;
             }
             catch (Exception e)
             {
+                /*
                 if (e.Equals(null))
                 {
                     string sql1 = @"CREATE TABLE Board(id INTEGER NOT NULL,email TEXT PRIMARY KEY NOT NULL)";
                     string sql2 = "CREATE TABLE USER(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,NickName TEXT NOT NULL ,password  TEXT NOT NULL)";
-                    string sql3 = "CREATE TABLE Column(id INTEGER NOT NULL PRIMARY KEY ,email TEXT NOT NULL PRIMARY KEY,limitNum INTEGER NOT NULL ," +
+                    string sql3 = "CREATE TABLE Column(id INTEGER ,email text PRIMARY KEY(id,email) ,email TEXT NOT NULL PRIMARY KEY,limitNum INTEGER NOT NULL ," +
                         " BoardID INTEGER NOT NULL, Name TEXT NOT NULL, NumTasks INTEGER NOT NULL)";
                     string sql4 = "CREATE TABLE Task(id INTEGER NOT NULL PRIMARY KEY,ColumnId INTEGER NOT NULL PRIMERY KEY," +
                         "email TEXT NOT NULL PRIMARY KEY,Title TEXT NOT NULL , BoardID INTEGER NOT NULL, Description TEXT NOT NULL," +
@@ -53,12 +55,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                 }
             }
-            this._tableName = tableName;
+            */
+                
 
 
+            }
         }
 
-        public bool Update(long id, string attributeName, long attributeValue)
+        public bool Update(long id, string boardEmail, string attributeName, long attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -66,7 +70,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id}"
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id} AND email={boardEmail}"
                 };
                 try
                 {
@@ -84,7 +88,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
             return res > 0;
         }
-        public bool Update(long id, string attributeName, string attributeValue)
+        public bool Update(long id, string boardEmail, string attributeName, string attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -92,7 +96,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id}"
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id} AND email={boardEmail}"
                 };
                 try
                 {
@@ -110,7 +114,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
             return res > 0;
         }
-        public bool Update(long id, string attributeName, DateTime attributeValue)
+        public bool Update(long id, string boardEmail, string attributeName, DateTime attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -118,7 +122,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id}"
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id} AND email={boardEmail}"
                 };
                 try
                 {

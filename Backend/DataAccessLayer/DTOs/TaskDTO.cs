@@ -17,18 +17,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         // private string _taskid;
         // public string TaskID { get => _taskid; set { _taskid = value; _controller.Update(Id, MessageTaskIDColumnName, value); } }
         private string _title;
-        public string Title { get => _title; set { _title = value; _controller.Update(Id, MessageTitleColumnName, value); } }
+        public string Title { get => _title; set { _title = value; _controller.Update(Id, email, MessageTitleColumnName, value); } }
         private string _description;
-        public string Description { get => _description; set { _description = value; _controller.Update(Id, MessagedescriptionColumnName, value); } }
+        public string Description { get => _description; set { _description = value; _controller.Update(Id, email, MessagedescriptionColumnName, value); } }
         private long _coulumnId;
-        public long ColumnId { get => _coulumnId; set { _coulumnId = value; _controller.Update(Id, MessagecolumnColumnName, value); } }
+        public long ColumnId { get => _coulumnId; set { _coulumnId = value; _controller.Update(Id, email, MessagecolumnColumnName, value); } }
 
 
 
         private DateTime _duedate;
-        public DateTime DueDate { get => _duedate; set { _duedate = value; _controller.Update(Id, MessageDueDateColumnName, value); } }
+        public DateTime DueDate { get => _duedate; set { _duedate = value; _controller.Update(Id, email, MessageDueDateColumnName, value); } }
         private DateTime _creationtime;
-        public DateTime CreationTime { get => _creationtime; set { _creationtime = value; _controller.Update(Id, MessageCreationTimeColumnName, value); } }
+        public DateTime CreationTime { get => _creationtime; set { _creationtime = value; _controller.Update(Id, email, MessageCreationTimeColumnName, value); } }
 
 
 

@@ -33,10 +33,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             columns.Add(done.GetColumnId(), done);
             taskId = 0;
             is_UserLoggedin = false;
-<<<<<<< HEAD
-=======
 
->>>>>>> ad27cfe3b935c79a76050ae7da0d1da80bf6e44d
         }
        
         public void initBoard()
@@ -44,8 +41,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             List<DataAccessLayer.DTOs.ColumnDTO> myColumns = myColumnDC.Select(Id_board, userEmail);
             foreach (DataAccessLayer.DTOs.ColumnDTO c in myColumns)
             {
-                Column newCol = new Column(c.Name, c.Id);
-                columns.Add(c.Id, newCol);
+                int newId = Convert.ToInt32(c.Id);
+                Column newCol = new Column(c.Name, newId);
+                columns.Add(newId, newCol);
                 newCol.initColumn(userEmail);
             }
         }

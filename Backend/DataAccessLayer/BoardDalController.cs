@@ -108,10 +108,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                         $"VALUES (@idVal,@emailVal);";
 
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", BOARD.Id);
-                    //SQLiteParameter nameParam = new SQLiteParameter(@"nameVal", BOARD.Name); ASK NIV
+                    SQLiteParameter nameParam = new SQLiteParameter(@"emailVal", BOARD.email); 
 
                     command.Parameters.Add(idParam);
-                    //command.Parameters.Add(nameParam); ASK NIV
+                    command.Parameters.Add(nameParam);
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();

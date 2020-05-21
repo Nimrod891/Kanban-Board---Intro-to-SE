@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         public BoardDTO(long ID, string Email) : base(new BoardDalController())
         {
             email = Email;
-            //Id = ID;
+            Id = ID;
         }
 
     }

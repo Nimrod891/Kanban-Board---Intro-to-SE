@@ -34,8 +34,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
         public TaskDTO(long ID, string Title, string Description, DateTime DueDate, DateTime CreationTime, long columnID, string Email) : base(new TaskDalController())
         {
+
             email = Email;
-            //Id = ID;
+            Id = ID;
             _title = Title;
             _description = Description;
             _coulumnId = columnID;

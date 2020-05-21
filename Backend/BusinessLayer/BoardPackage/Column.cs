@@ -30,8 +30,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             List<DataAccessLayer.DTOs.TaskDTO> myTasks = myTaskDC.Select(columnId, email);
             foreach(DataAccessLayer.DTOs.TaskDTO t in myTasks)
             {
-                Task newTask = new Task(t.Id, t.Title, t.Description, t.DueDate);
-                tasks.Add(t.Id, newTask);
+                int newId = Convert.ToInt32(t.Id);
+                Task newTask = new Task(newId, t.Title, t.Description, t.DueDate);
+                tasks.Add(newId, newTask);
             }
         }
         public string GetName()

@@ -45,9 +45,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if(!File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"))))
                 {
                 string sql1 = @"CREATE TABLE Board(id INTEGER NOT NULL,email TEXT PRIMARY KEY NOT NULL)";
-                string sql2 = "CREATE TABLE USER(id INTEGER NOT NULL,email TEXT NOT NULL FOR KEY,NickName TEXT NOT NULL ,password  TEXT NOT NULL)";
-                string sql3 = "CREATE TABLE Column(id INTEGER NOT NULL PRIMARY KEY,email TEXT NOT NULL PRIMARY KEY,limitNum INTEGER NOT NULL , BoardID INTEGER NOT NULL, Name TEXT NOT NULL, NumTasks INTEGER NOT NULL)";
-                string sql4 = "CREATE TABLE Task(id INTEGER NOT NULL PRIMARY KEY,email TEXT NOT NULL PRIMARY KEY,Title TEXT NOT NULL , BoardID INTEGER NOT NULL, Description TEXT NOT NULL, Column INTEGER NOT NULL,DueDate DATETIME NOT NULL,CreationTime DATETIME NOT NULL )";
+                string sql2 = "CREATE TABLE USER(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,NickName TEXT NOT NULL ,password  TEXT NOT NULL)";
+                string sql3 = "CREATE TABLE Column(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,limitNum INTEGER NOT NULL , BoardID INTEGER NOT NULL, Name TEXT NOT NULL, NumTasks INTEGER NOT NULL)";
+                string sql4 = "CREATE TABLE Task(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,Title TEXT NOT NULL , BoardID INTEGER NOT NULL, Description TEXT NOT NULL, Column INTEGER NOT NULL,DueDate DATETIME NOT NULL,CreationTime DATETIME NOT NULL )";
                 System.Data.SQLite.SQLiteConnection.CreateFile("M3.db");
 
 

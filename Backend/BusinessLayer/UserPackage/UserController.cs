@@ -55,6 +55,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             //email = email.ToLower();
             User u = new User(email, pass, nickname);
             users.Add(email, u);
+            DataAccessLayer.DTOs.UserDTO dataUser = new DataAccessLayer.DTOs.UserDTO(0, email, nickname, pass);
+            myUserDC.Insert(dataUser);
             //u.ToDalObject().Save();
             //u.GetUserBoard().ToDalObject().Save();
 
@@ -75,6 +77,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                 throw new Exception("Can't logged in");
             }
             loggedInUser = users[email];
+            loggedInUser.getMyBoard().SetIsULoggedIn(true);
             return loggedInUser;
         }
 

@@ -26,7 +26,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 else
                 {
-                    command.CommandText = $"select * from {MessageTableName} WHERE email = {email};";
+                    command.CommandText = $"select * from {MessageTableName} WHERE email = '{email}';";
                 }
 
                 SQLiteDataReader dataReader = null;
@@ -103,16 +103,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
                     command.CommandText = $"INSERT INTO {MessageTableName} ({DTOs.DTO.IDColumnName} ,{DTOs.UserDTO.MessageEmailColumnName},{DTOs.UserDTO.MessageNickNameColumnName},{DTOs.UserDTO.MessagePassword}) " +
-                        $"VALUES (@idVal,@emailval,@nicknameVal,@passwordval);";
+                        $"VALUES (@idVal,@emailval,@NickNameVal,@passwordval);";
 
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", User.Id);
-                    SQLiteParameter nameParam = new SQLiteParameter(@"passwordVal", User.NickName);
-
-                    SQLiteParameter passwordParam = new SQLiteParameter(@"nicknameval", User.NickName);
+                    SQLiteParameter nameParam = new SQLiteParameter(@"NickNameVal", User.NickName);
+                    SQLiteParameter passwordParam = new SQLiteParameter(@"passwordval", User.Password);
                     SQLiteParameter emailparam = new SQLiteParameter(@"emailval", User.email);
 
                     command.Parameters.Add(idParam);
                     command.Parameters.Add(nameParam);
+                    command.Parameters.Add(passwordParam);
+                    command.Parameters.Add(emailparam);
+
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();

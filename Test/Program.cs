@@ -22,8 +22,7 @@ namespace test
 
             Response reg = service.Register("gg@gmail.com", "aA123456", "dasda");
             reg = service.Register("ggg@gmail.com", "aA123456", "dasda");
-            reg = service.Register("gggg@gmail.com", "aA123456", "dasda");
-            reg = service.Register("ggggg@gmail.com", "aA123456", "dasda");
+ 
             reg = service.Login("ggg@gmail.com", "aA123456");
             reg = service.AddTask("ggg@gmail.com", "dasd", "dasda", DateTime.Today.AddDays(1));
             reg = service.AddTask("ggg@gmail.com", "adasd", "daasda", DateTime.Today.AddDays(1));

@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"select * from {MessageTableName} WHERE email = {email} AND id={id} ";
+                command.CommandText = $"select * from {MessageTableName} WHERE email = '{email}' AND id={id} ";
                 SQLiteDataReader dataReader = null;
                 try
                 {
@@ -69,11 +69,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTOs.DTO.IDColumnName} ,{DTOs.TaskDTO.MessageTitleColumnName},{DTOs.TaskDTO.MessagedescriptionColumnName},{DTOs.TaskDTO.MessageDueDateColumnName},{DTOs.TaskDTO.MessageDueDateColumnName}{DTOs.TaskDTO.MessageCreationTimeColumnName}{DTOs.TaskDTO.MessagecolumnColumnName}) " +
-    $"VALUES (@idVal,@Titelval,@descriptionVal,@DueDateVal,@CreationVal,@ColumnIdVal);";
+                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTOs.DTO.IDColumnName} ,{DTOs.TaskDTO.MessagecolumnColumnName},{DTOs.TaskDTO.EmailColumnName},{DTOs.TaskDTO.MessageTitleColumnName},{DTOs.TaskDTO.MessagedescriptionColumnName},{DTOs.TaskDTO.MessageDueDateColumnName}{DTOs.TaskDTO.MessageCreationTimeColumnName}) " +
+    $"VALUES (@idVal,@Columnval,@emailval,@Titleval,@Descriptionval,@DueDateVal,@CreationTimeVal);";
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", TASK.Id);
-                    SQLiteParameter titleParam = new SQLiteParameter(@"Titelval", TASK.Description);
-                    SQLiteParameter descriptionParam = new SQLiteParameter(@"descriptionVal", TASK.DueDate);
+                    SQLiteParameter titleParam = new SQLiteParameter(@"Titleval", TASK.Title);
+                    SQLiteParameter descriptionParam = new SQLiteParameter(@"DescriptionVal", TASK.Description);
                     SQLiteParameter duedateParam = new SQLiteParameter(@"DueDateVal", TASK.DueDate);
                     SQLiteParameter creationtimeParam = new SQLiteParameter(@"CreationVal", TASK.CreationTime);
                     SQLiteParameter columnideParam = new SQLiteParameter(@"ColumnIdVal", TASK.ColumnId);

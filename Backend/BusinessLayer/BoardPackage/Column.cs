@@ -15,7 +15,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private int numOfTasks;
         private Dictionary<int, Task> tasks;
         private ReadOnlyDictionary<int, Task> readOnlyDict;
-        private DataAccessLayer.TaskDalController myTaskDC;
+        public DataAccessLayer.TaskDalController myTaskDC;
+        private DataAccessLayer.ColumnDalController myColumnDC;
 
         public Column(string name, int columnId)
         {
@@ -25,8 +26,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             numOfTasks = 0;
             tasks = new Dictionary<int, Task>();
         }
-        public void initColumn(string email)
+        public  Column(string email, string name, int columnId, int limitNum, int numOfTasks)
         {
+            this.name = name;
+            this.columnId = columnId;
+            this.limitNum = limitNum;
+            this.numOfTasks = numOfTasks;
+            tasks = new Dictionary<int, Task>();
             myTaskDC = new DataAccessLayer.TaskDalController();
             List<DataAccessLayer.DTOs.TaskDTO> myTasks = myTaskDC.Select(columnId, email);
             foreach(DataAccessLayer.DTOs.TaskDTO t in myTasks)

@@ -23,7 +23,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
         public UserDTO(long userID, string Email, string nickName, string password) : base(new UserDalController())
         {
-            //Id = userID;
+            Id = userID;
             email = Email;
             _nickname = nickName;
             _password = password;

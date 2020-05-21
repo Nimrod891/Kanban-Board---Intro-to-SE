@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         public const string IDColumnName = "id";
         protected DalController _controller;
         public const string EmailColumnName = "email";
-        public int Id { get; set; } = -1;
+        public long Id { get; set; } = -1;
         public string email { get; set; }
 
 

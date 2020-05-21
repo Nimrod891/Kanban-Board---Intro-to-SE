@@ -50,33 +50,24 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return results;
         }
 
-        public List<DTOs.BoardDTO> Select(int id, string email)
+        public DTOs.BoardDTO Select(string email)
         {
-            //string t_name = "boards";
-            List<DTOs.BoardDTO> results = new List<DTOs.BoardDTO>();
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                if (email.Equals("***"))
-                {
-                    command.CommandText = $"select * from {MessageTableName};";
-                }
-                else
-                {
-                    command.CommandText = $"select * from {MessageTableName} WHERE email = {email};";
-                }
 
+                command.CommandText = $"select * from {MessageTableName} WHERE email  = {email};";
                 SQLiteDataReader dataReader = null;
                 try
                 {
                     connection.Open();
                     dataReader = command.ExecuteReader();
-
-                    while (dataReader.Read())
+                    if (dataReader.Read())
                     {
-                        results.Add(ConvertReaderToObject(dataReader));
-
+                        return ConvertReaderToObject(dataReader);
                     }
+
+
                 }
                 finally
                 {
@@ -90,11 +81,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
 
             }
-            return results;
+            return null;
         }
 
 
-        public bool Insert(DTOs.BoardDTO BOARD)
+            public bool Insert(DTOs.BoardDTO BOARD)
         {
 
             using (var connection = new SQLiteConnection(_connectionString))
@@ -108,10 +99,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                         $"VALUES (@idVal,@emailVal);";
 
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", BOARD.Id);
-                    //SQLiteParameter nameParam = new SQLiteParameter(@"nameVal", BOARD.Name); ASK NIV
+                    SQLiteParameter nameParam = new SQLiteParameter(@"emailVal", BOARD.email); 
 
                     command.Parameters.Add(idParam);
-                    //command.Parameters.Add(nameParam); ASK NIV
+                    command.Parameters.Add(nameParam);
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();

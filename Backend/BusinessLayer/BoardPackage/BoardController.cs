@@ -10,13 +10,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     class BoardController
     {
-        DataAccessLayer.BoardDalController myBoardDC;
+        private DataAccessLayer.BoardDalController myBoardDC;
         private Dictionary<string, Board> boards;
         //private Board loggedInBoard;
 
         public BoardController()
         {
-
+            myBoardDC = new DataAccessLayer.BoardDalController();
             boards = new Dictionary<string, Board>();
             List<DataAccessLayer.DTOs.BoardDTO> myBoards = myBoardDC.SelectAllboards();
             foreach (DataAccessLayer.DTOs.BoardDTO b in myBoards)

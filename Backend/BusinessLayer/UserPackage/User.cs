@@ -29,9 +29,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             this.password = u.Password;
             this.nickname = u.NickName;
             this.is_logged = false;
-            List<DataAccessLayer.DTOs.BoardDTO> myInitBoard = myBoardDC.Select(0, email);
-
-
+            DataAccessLayer.DTOs.BoardDTO DBoard = myBoardDC.Select(email);
+            myBoard = new BoardPackage.Board(DBoard.email);
+            myBoard.initBoard();
         }
         
 

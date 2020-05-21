@@ -28,7 +28,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         public ColumnDTO(long columnID, long limitNum, long BoardID, string name, long numTasks, string Email) : base(new ColumnDalController())
         {
             email = Email;
-            //Id = columnID;
+            Id = columnID;
             _limitnum = limitNum;
             _boardid = BoardID;
             _name = name;

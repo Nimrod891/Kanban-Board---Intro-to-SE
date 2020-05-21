@@ -52,7 +52,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
             this._tableName = tableName;
 
+
         }
+
         public bool Update(long id, string attributeName, long attributeValue)
         {
             int res = -1;

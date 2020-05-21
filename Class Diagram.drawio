@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-05-21T11:21:40.494Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" etag="HLNJbH3WehxbVJDfXyL7" version="13.1.2" type="github">
+<mxfile host="app.diagrams.net" modified="2020-05-21T11:33:18.908Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" etag="mAjlNFaCrBuF7wT3T0wB" version="13.1.2" type="github">
   <diagram id="-RquYQ_NJTg_AUpqB6Ne" name="Page-1">
-    <mxGraphModel dx="2194" dy="2962" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2706" dy="3274" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -21,9 +21,6 @@
         </mxCell>
         <mxCell id="7azGiuc3Ixv7HJGIlcdi-17" value="User Package" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=146;tabHeight=27;tabPosition=left;html=1;fillColor=none;labelPosition=left;verticalLabelPosition=top;align=right;verticalAlign=bottom;spacingRight=-100;spacingBottom=-25;strokeColor=#007FFF;" parent="1" vertex="1">
           <mxGeometry x="880" y="-310" width="690" height="780" as="geometry" />
-        </mxCell>
-        <mxCell id="ltBjUtxW135NRDKXW1PK-18" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;IPresistedObject&amp;lt;T extends DalObject&amp;lt;T&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ ToDalObject(): T&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;strokeColor=#007FFF;fillColor=#ffffff;" parent="1" vertex="1">
-          <mxGeometry x="660" y="-820" width="330" height="80" as="geometry" />
         </mxCell>
         <mxCell id="ltBjUtxW135NRDKXW1PK-77" value="BoardController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
           <mxGeometry x="-50" y="-775" width="540" height="418" as="geometry" />
@@ -118,7 +115,7 @@
         <mxCell id="PlvojTVU_Txq_sQHf2pY-42" value="+ GetColumnIdById(userEmail : string, colId : int) : Response" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="PlvojTVU_Txq_sQHf2pY-31" vertex="1">
           <mxGeometry y="274" width="575" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="ltBjUtxW135NRDKXW1PK-75" value="&lt;b&gt;&lt;font style=&quot;font-size: 22px&quot;&gt;Presistance&lt;/font&gt;&lt;/b&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;startSize=26;spacingBottom=-28;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+        <mxCell id="ltBjUtxW135NRDKXW1PK-75" value="&lt;b&gt;&lt;font style=&quot;font-size: 22px&quot;&gt;SQLite&lt;/font&gt;&lt;/b&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;startSize=26;spacingBottom=-28;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
           <mxGeometry x="510" y="1910" width="390" height="160" as="geometry" />
         </mxCell>
         <mxCell id="ltBjUtxW135NRDKXW1PK-92" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;IService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ Register(email: String, password : String, nickname: String) : Response&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ Login(email : string, password : password) : Response&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ GetTaskByID(taskID : int) : Response&lt;/p&gt;&lt;div style=&quot;padding: 0px ; margin: 0px&quot;&gt;&amp;nbsp;+ GetBoard(email : String) : Response&amp;lt;Board&amp;gt;&lt;span&gt;&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&amp;nbsp;+ LimitColumnTasks(currentColumn: column, num : int) : Response&lt;br&gt;&amp;nbsp;+ AdvanceTask (email : String, columnId : int,&amp;nbsp; taskId : int) : Response&lt;br&gt;&amp;nbsp;+ DeleteTask(taskID : int) : Response&lt;span&gt;&amp;nbsp;&lt;/span&gt;&lt;br&gt;&amp;nbsp;+ UpdateTaskDueDate(userEmail : String, columnId : int, taskId : int, dueDate : String) :&amp;nbsp; Response&lt;br&gt;&amp;nbsp;+ UpdateTaskTitle(userEmail : String, columnId : int, taskId : int, title : String) :&amp;nbsp; Response&lt;div style=&quot;padding: 0px ; margin: 0px&quot;&gt;&amp;nbsp;+ UpdateTaskDescription(userEmail : String, columnId : int, taskId : int,&amp;nbsp; description : String) :&amp;nbsp; Response&lt;div style=&quot;padding: 0px ; margin: 0px&quot;&gt;&amp;nbsp;+ loadData() : Response&lt;/div&gt;&lt;div style=&quot;padding: 0px ; margin: 0px&quot;&gt;&amp;nbsp;+ DeleteData() : Response&lt;/div&gt;&lt;div style=&quot;padding: 0px ; margin: 0px&quot;&gt;&amp;nbsp;+ GetColumn(email : string, columnName : string) : Response&amp;lt;Column&amp;gt;&lt;/div&gt;&lt;div style=&quot;padding: 0px ; margin: 0px&quot;&gt;&amp;nbsp;+ GetColumn(email : string, columnOrdinal : int) : Response&amp;lt;Column&amp;gt;&lt;/div&gt;&lt;div style=&quot;padding: 0px ; margin: 0px&quot;&gt;&amp;nbsp;+ removeColumn(email : string, columnOrdinal : int) : Response&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;padding: 0px ; margin: 0px&quot;&gt;&amp;nbsp;+ AddColumn(email : string, columnOrdinal : int, name : string) : Response&amp;lt;Column&amp;gt;&amp;nbsp;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;padding: 0px ; margin: 0px&quot;&gt;&amp;nbsp;+ MoveColumnRight(email : string, columnOrdinal : int) : Response&amp;lt;Column&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;padding: 0px ; margin: 0px&quot;&gt;&amp;nbsp;+ MoveColumnLeft(email : string, columnOrdinal : int) : Response&amp;lt;Column&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;startSize=26;" parent="1" vertex="1">
@@ -234,43 +231,6 @@
         </mxCell>
         <mxCell id="ltBjUtxW135NRDKXW1PK-50" value="- taskId : int&#xa;- creationTime : DateTime&#xa;- dueDate : DateTime&#xa;- title : String&#xa;- description : String&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="ltBjUtxW135NRDKXW1PK-49" vertex="1">
           <mxGeometry y="26" width="340" height="84" as="geometry" />
-        </mxCell>
-        <mxCell id="PlvojTVU_Txq_sQHf2pY-45" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;" parent="1" source="Bc8iCjD8DV4jMRBxt45--7" edge="1">
-          <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="720" y="-160" as="sourcePoint" />
-            <mxPoint x="960" y="-741" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="960" y="40" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="PlvojTVU_Txq_sQHf2pY-46" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="ltBjUtxW135NRDKXW1PK-17" edge="1">
-          <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="720" y="-480" as="sourcePoint" />
-            <mxPoint x="703" y="-741" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="670" y="-254" />
-              <mxPoint x="700" y="-254" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="PlvojTVU_Txq_sQHf2pY-47" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="PlvojTVU_Txq_sQHf2pY-1" edge="1">
-          <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="710" y="-390" as="sourcePoint" />
-            <mxPoint x="755" y="-740" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="750" y="240" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="PlvojTVU_Txq_sQHf2pY-48" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;exitX=1.024;exitY=0.295;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="ltBjUtxW135NRDKXW1PK-50" target="ltBjUtxW135NRDKXW1PK-18" edge="1">
-          <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="490" y="570" as="sourcePoint" />
-            <mxPoint x="650" y="570" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="820" y="571" />
-            </Array>
-          </mxGeometry>
         </mxCell>
         <mxCell id="PlvojTVU_Txq_sQHf2pY-49" value="1" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=0;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;entryX=0.5;entryY=0;entryDx=0;entryDy=0;spacingBottom=-33;" parent="1" target="ltBjUtxW135NRDKXW1PK-49" edge="1">
           <mxGeometry x="-1" y="3" relative="1" as="geometry">
@@ -578,10 +538,10 @@
         <mxCell id="ltBjUtxW135NRDKXW1PK-71" value="DalController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
           <mxGeometry x="470" y="1391" width="430" height="178" as="geometry" />
         </mxCell>
-        <mxCell id="ltBjUtxW135NRDKXW1PK-73" value="# _connectionString : string&#xa;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4;part=0;" parent="ltBjUtxW135NRDKXW1PK-71" vertex="1">
+        <mxCell id="ltBjUtxW135NRDKXW1PK-73" value="# _connectionString : string&#xa;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0;part=0;" parent="ltBjUtxW135NRDKXW1PK-71" vertex="1">
           <mxGeometry y="26" width="430" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="TTnJjQzm0ArWal8KWD2n-18" value="- _tableName : string" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4;part=0;" vertex="1" parent="ltBjUtxW135NRDKXW1PK-71">
+        <mxCell id="TTnJjQzm0ArWal8KWD2n-18" value="- _tableName : string" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0;part=0;" vertex="1" parent="ltBjUtxW135NRDKXW1PK-71">
           <mxGeometry y="50" width="430" height="24" as="geometry" />
         </mxCell>
         <mxCell id="TTnJjQzm0ArWal8KWD2n-17" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="ltBjUtxW135NRDKXW1PK-71">

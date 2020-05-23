@@ -17,6 +17,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             this.MyBoardContorller = new BusinessLayer.BoardPackage.BoardController();
         }
+        public void SetLoggedInBoard(string email)
+        {
+            MyBoardContorller.SetLoggedInBoard(email);
+        }
         public Response<Board> GetBoard(string email)
         {
             try

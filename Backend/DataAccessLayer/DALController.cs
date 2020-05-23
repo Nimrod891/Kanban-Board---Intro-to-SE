@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
-using IntroSE.Kanban.Backend.DataAccessLayer.Objects;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
@@ -70,13 +69,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id} AND email={boardEmail}"
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id} AND email='{boardEmail}'"
                 };
                 try
                 {
                     command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
                     connection.Open();
-                    command.ExecuteNonQuery();
+                    res=command.ExecuteNonQuery();
                 }
                 finally
                 {
@@ -96,13 +95,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id} AND email={boardEmail}"
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id} AND email='{boardEmail}'"
                 };
                 try
                 {
                     command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
                     connection.Open();
-                    command.ExecuteNonQuery();
+                    res=command.ExecuteNonQuery();
                 }
                 finally
                 {
@@ -122,13 +121,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id} AND email={boardEmail}"
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id} AND email='{boardEmail}'"
                 };
                 try
                 {
                     command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
                     connection.Open();
-                    command.ExecuteNonQuery();
+                    res=command.ExecuteNonQuery();
                 }
                 finally
                 {

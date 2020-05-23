@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
-using IntroSE.Kanban.Backend.DataAccessLayer.Objects;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
@@ -123,7 +122,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
-            return myUserService.Login(email, password);
+            Response<User> r = myUserService.Login(email, password);
+            if (r.ErrorMessage == null)
+                myBoardService.SetLoggedInBoard(email);
+
+            return r;
         }
 
         /// <summary>        

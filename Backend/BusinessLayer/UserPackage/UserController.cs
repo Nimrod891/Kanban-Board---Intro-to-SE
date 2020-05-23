@@ -78,6 +78,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             }
             loggedInUser = users[email];
             loggedInUser.getMyBoard().SetIsULoggedIn(true);
+            loggedInUser.GetUserBoard().SetIsULoggedIn(true);
             return loggedInUser;
         }
 

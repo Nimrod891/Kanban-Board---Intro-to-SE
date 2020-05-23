@@ -24,10 +24,19 @@ namespace test
             reg = service.Register("ggg@gmail.com", "aA123456", "dasda");
  
             reg = service.Login("ggg@gmail.com", "aA123456");
-            reg = service.AddTask("ggg@gmail.com", "dasd", "dasda", DateTime.Today.AddDays(1));
-            reg = service.AddTask("ggg@gmail.com", "adasd", "daasda", DateTime.Today.AddDays(1));
-            reg = service.AddTask("ggg@gmail.com", "adasd", "adasda", DateTime.Today.AddDays(1));
+            reg = service.AddTask("ggg@gmail.com", "first", "first body", DateTime.Today.AddDays(1));
+            reg = service.AddTask("ggg@gmail.com", "secondadd", "second body", DateTime.Today.AddDays(1));
+            reg = service.AddTask("ggg@gmail.com", "thirdtask", "third body", DateTime.Today.AddDays(1));
             reg = service.AdvanceTask("ggg@gmail.com", 0, 1);
+            reg = service.UpdateTaskDescription("ggg@gmail.com", 0, 2, "upated description test");
+            reg = service.UpdateTaskDueDate("ggg@gmail.com", 0, 2, DateTime.Today.AddDays(3));
+            reg = service.UpdateTaskTitle("ggg@gmail.com", 1, 1, "updated title test");
+            reg = service.AddColumn("ggg@gmail.com", 1, "testColumn");
+            reg = service.MoveColumnLeft("ggg@gmail.com", 1);
+            reg = service.MoveColumnRight("ggg@gmail.com", 1);
+            reg = service.RemoveColumn("ggg@gmail.com", 2);
+            reg = service.RemoveColumn("ggg@gmail.com", 0);
+
 
             while (!terminate)
             {

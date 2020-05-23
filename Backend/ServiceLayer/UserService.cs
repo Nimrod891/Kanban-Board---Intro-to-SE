@@ -41,7 +41,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                //log.Error("User "+email+" threw exception during login"); to be uncommented!!
+                log.Error("User "+email+" threw exception during login");
                 return new Response<User>(e.Message);
             }
         }

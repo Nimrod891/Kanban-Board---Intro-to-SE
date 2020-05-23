@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private DataAccessLayer.BoardDalController myBoardDC;
         private Dictionary<string, Board> boards;
-        //private Board loggedInBoard;
+        private Board loggedInBoard;
 
         public BoardController()
         {
@@ -22,6 +22,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             foreach (DataAccessLayer.DTOs.BoardDTO b in myBoards)
             {
                 Board newBoard = new Board(0, b.email);
+               
                 boards.Add(b.email, newBoard);
 
             }
@@ -69,6 +70,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             boards[userEmail].AdvanceTask(currentColId, taskId);
             //boards[userEmail].ToDalObject().Save();
 
+        }
+
+        public void SetLoggedInBoard(string email)
+        {
+            this.loggedInBoard = boards[email];
+            boards[email].SetIsULoggedIn(true);
         }
 
         

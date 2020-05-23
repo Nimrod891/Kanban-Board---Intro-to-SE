@@ -16,11 +16,39 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         }
 
-        public List<DTOs.TaskDTO> SelectAllTasks(int id, string email)
+        public List<DTOs.TaskDTO> SelectAllTasks(string email)
         {
-            List<DTOs.TaskDTO> result = Select(id, email).Cast<DTOs.TaskDTO>().ToList();
+            //string t_name = "columns";
+            List<DTOs.TaskDTO> results = new List<DTOs.TaskDTO>();
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"select * from {MessageTableName} WHERE email = '{email}'";
+                SQLiteDataReader dataReader = null;
+                try
+                {
+                    connection.Open();
+                    dataReader = command.ExecuteReader();
 
-            return result;
+                    while (dataReader.Read())
+                    {
+                        results.Add(ConvertReaderToObject(dataReader));
+
+                    }
+                }
+                finally
+                {
+                    if (dataReader != null)
+                    {
+                        dataReader.Close();
+                    }
+
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
+            return results;
         }
 
         public List<DTOs.TaskDTO> Select(int id, string email)
@@ -69,20 +97,22 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTOs.DTO.IDColumnName} ,{DTOs.TaskDTO.MessagecolumnColumnName},{DTOs.TaskDTO.EmailColumnName},{DTOs.TaskDTO.MessageTitleColumnName},{DTOs.TaskDTO.MessagedescriptionColumnName},{DTOs.TaskDTO.MessageDueDateColumnName}{DTOs.TaskDTO.MessageCreationTimeColumnName}) " +
+                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTOs.DTO.IDColumnName} ,{DTOs.TaskDTO.MessagecolumnColumnName},{DTOs.TaskDTO.EmailColumnName},{DTOs.TaskDTO.MessageTitleColumnName},{DTOs.TaskDTO.MessagedescriptionColumnName},{DTOs.TaskDTO.MessageDueDateColumnName},{DTOs.TaskDTO.MessageCreationTimeColumnName}) " +
     $"VALUES (@idVal,@Columnval,@emailval,@Titleval,@Descriptionval,@DueDateVal,@CreationTimeVal);";
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", TASK.Id);
+                    SQLiteParameter emailParam = new SQLiteParameter(@"emailval", TASK.email);
                     SQLiteParameter titleParam = new SQLiteParameter(@"Titleval", TASK.Title);
                     SQLiteParameter descriptionParam = new SQLiteParameter(@"DescriptionVal", TASK.Description);
                     SQLiteParameter duedateParam = new SQLiteParameter(@"DueDateVal", TASK.DueDate);
-                    SQLiteParameter creationtimeParam = new SQLiteParameter(@"CreationVal", TASK.CreationTime);
-                    SQLiteParameter columnideParam = new SQLiteParameter(@"ColumnIdVal", TASK.ColumnId);
+                    SQLiteParameter creationtimeParam = new SQLiteParameter(@"CreationTimeVal", TASK.CreationTime);
+                    SQLiteParameter columnideParam = new SQLiteParameter(@"ColumnVal", TASK.ColumnId);
 
 
 
 
 
                     command.Parameters.Add(idParam);
+                    command.Parameters.Add(emailParam);
                     command.Parameters.Add(titleParam);
                     command.Parameters.Add(descriptionParam);
                     command.Parameters.Add(duedateParam);

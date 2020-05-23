@@ -111,11 +111,6 @@
     <Compile Include="DataAccessLayer\DTOs\DTO.cs" />
     <Compile Include="DataAccessLayer\DTOs\TaskDTO.cs" />
     <Compile Include="DataAccessLayer\DTOs\UserDTO.cs" />
-    <Compile Include="DataAccessLayer\Objects\Board.cs" />
-    <Compile Include="DataAccessLayer\Objects\Column.cs" />
-    <Compile Include="DataAccessLayer\Objects\DALObject.cs" />
-    <Compile Include="DataAccessLayer\Objects\Task.cs" />
-    <Compile Include="DataAccessLayer\Objects\User.cs" />
     <Compile Include="DataAccessLayer\TaskDalController.cs" />
     <Compile Include="DataAccessLayer\UserDalController.cs" />
     <Compile Include="ServiceLayer\BoardService.cs" />
@@ -131,7 +126,9 @@
     <Compile Include="ServiceLayer\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

@@ -55,9 +55,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             columns = new Dictionary<int, Column>();
             this.userEmail = userEmail;
-            is_UserLoggedin = false;
+
+            //is_UserLoggedin = false;
             myColumnDC = new DataAccessLayer.ColumnDalController();
-            List<DataAccessLayer.DTOs.ColumnDTO> myColumns = myColumnDC.Select(Id_board, userEmail);
+            List<DataAccessLayer.DTOs.ColumnDTO> myColumns = myColumnDC.SelectAllColumns( userEmail);
+               // Select(Id_board, userEmail);
             foreach (DataAccessLayer.DTOs.ColumnDTO c in myColumns)
             {
                 int newId = Convert.ToInt32(c.Id);
@@ -95,10 +97,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void LimitTasks(int columnId, int limitNum)
         {
-            if (!is_UserLoggedin)
-            {
-                throw new Exception("User is not logged in");
-            }
+            //if (!is_UserLoggedin)
+            //{
+            //    throw new Exception("User is not logged in");
+            //}
                 columns[columnId].SetLimitNum(limitNum);
             myColumnDC.Update(columnId,userEmail, DataAccessLayer.DTOs.ColumnDTO.MessageLimitNumColumnName, limitNum);
         }
@@ -118,7 +120,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Invalid colomn Ordinal");
             }
             columns[currentColId + 1].AddTasksToDict(taskId, columns[currentColId].GetTaskById(taskId)); // add task to the next column
-            columns[currentColId].myTaskDC.Update(columnId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, currentColId+1);
+            columns[currentColId].myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, currentColId+1);
             columns[currentColId].DeleteTask(taskId); // delete task from current column
         }
 
@@ -131,7 +133,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (is_UserLoggedin)
             {
                 columns[colId].GetTaskById(taskId).SetDueDate(dueDate);
-                columns[columnId].myTaskDC.Update(columnId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessageDueDateColumnName, dueDate);
+                columns[columnId].myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessageDueDateColumnName, dueDate);
             }
               
             else
@@ -146,7 +148,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (is_UserLoggedin)
             {
                 columns[colId].GetTaskById(taskId).SetTitle(title);
-                columns[colId].myTaskDC.Update(columnId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessageTitleColumnName, title);
+                columns[colId].myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessageTitleColumnName, title);
             }
                 
             else
@@ -162,7 +164,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (is_UserLoggedin)
             {
                 columns[colId].GetTaskById(taskId).SetDescription(description);
-                columns[colId].myTaskDC.Update(columnId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessagedescriptionColumnName, description);
+                columns[colId].myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessagedescriptionColumnName, description);
             }
                 
 
@@ -218,8 +220,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     throw new Exception("This name is allready taken");
                 }
             }
-            for(int i = columnOrdinal; i <= columns.Count; i++) // moving all necessery columns right
+            for(int i = columns.Count-1; i >= columnOrdinal; i--) // moving all necessery columns right
             {
+
                 columns[i].setColumnId(i + 1);
                 Column col = columns[i];
                 columns.Remove(i);
@@ -296,11 +299,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             columns[columnOrdinal + 1].setColumnId(columnOrdinal);
             Column col1 = columns[columnOrdinal];
             Column col2 = columns[columnOrdinal + 1];
+            myColumnDC.Update(col2.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, -1);
             myColumnDC.Update(col1.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col1.GetColumnId() + 1);
-            myColumnDC.Update(col2.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col2.GetColumnId() - 1);
-            columns.Remove(columnOrdinal);
+            myColumnDC.Update(-1, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col2.GetColumnId() - 1);
+            columns.Remove(columnOrdinal+1);
             columns.Add(columnOrdinal + 1, col1);
-            columns.Remove(columnOrdinal + 1);
+            columns.Remove(columnOrdinal);
             columns.Add(columnOrdinal, col2);
             return col1;
         }
@@ -318,11 +322,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             columns[columnOrdinal - 1].setColumnId(columnOrdinal);
             Column col1 = columns[columnOrdinal];
             Column col2 = columns[columnOrdinal - 1];
-            myColumnDC.Update(col1.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col1.GetColumnId() - 1);
-            myColumnDC.Update(col2.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col2.GetColumnId() + 1);
-            columns.Remove(columnOrdinal);
+            myColumnDC.Update(col2.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, -1);
+            myColumnDC.Update(col1.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col1.GetColumnId() + 1);
+            myColumnDC.Update(-1, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col2.GetColumnId() - 1);
+            columns.Remove(columnOrdinal-1);
             columns.Add(columnOrdinal - 1, col1);
-            columns.Remove(columnOrdinal - 1);
+            columns.Remove(columnOrdinal);
             columns.Add(columnOrdinal, col2);
             return col1;
         }

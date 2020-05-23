@@ -14,13 +14,47 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         }
 
-
-        public List<DTOs.BoardDTO> SelectAllColumns(int id, string email)
+        public List<DTOs.ColumnDTO> SelectAllColumns(string email)
         {
-            List<DTOs.BoardDTO> result = Select(id, email).Cast<DTOs.BoardDTO>().ToList();
+            //string t_name = "columns";
+            List<DTOs.ColumnDTO> results = new List<DTOs.ColumnDTO>();
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"select * from {MessageTableName} WHERE email = '{email}'";
 
-            return result;
+                SQLiteDataReader dataReader = null;
+                try
+                {
+                    connection.Open();
+                    dataReader = command.ExecuteReader();
+
+                    while (dataReader.Read())
+                    {
+                        results.Add(ConvertReaderToObject(dataReader));
+
+                    }
+                }
+                finally
+                {
+                    if (dataReader != null)
+                    {
+                        dataReader.Close();
+                    }
+
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
+            return results;
         }
+        //public List<DTOs.ColumnDTO> SelectAllColumns(int id, string email)
+        //{
+        //    List<DTOs.ColumnDTO> result = Select(id, email).Cast<DTOs.ColumnDTO>().ToList();
+
+        //    return result;
+        //}
 
         public List<DTOs.ColumnDTO> Select(int id, string email)
         {

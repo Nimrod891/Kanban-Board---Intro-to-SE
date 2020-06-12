@@ -26,6 +26,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             SetDueDate(dueDate);
             this.creationDate = DateTime.Now;
         }
+        public Task(int taskId, string title, string description, DateTime dueDate, DateTime creationDate)
+        {
+            this.taskId = taskId;
+            this.title = title;
+            this.description = description;
+            this.dueDate = dueDate;
+            this.creationDate = creationDate;
+        }
 
         public int GetTaskId()
         {
@@ -68,7 +76,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void SetDescription(string description)
         {
-            if (description != null)
+            if (description != null || !String.IsNullOrWhiteSpace(description))
             {
                 if (description.Length > maxDesc)
                 {

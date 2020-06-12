@@ -89,7 +89,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("User is not logged in");
             }
             Task a = columns[0].AddTask(taskId, title, description, dueDate);
-            DataAccessLayer.DTOs.TaskDTO dataTask = new DataAccessLayer.DTOs.TaskDTO(taskId, title, description, dueDate, DateTime.Now, 0, userEmail);
+            DataAccessLayer.DTOs.TaskDTO dataTask = new DataAccessLayer.DTOs.TaskDTO(taskId, 0, userEmail, title, description, dueDate, DateTime.Now);
             columns[0].myTaskDC.Insert(dataTask);
             taskId++;
             return a;   
@@ -224,9 +224,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
 
                 columns[i].setColumnId(i + 1);
+                
                 Column col = columns[i];
+                // ----!! We need to update each task in the TASK table in SQL in the column we are moving with the new column ID somehow
+                
                 columns.Remove(i);
                 columns.Add(i+1, col);
+                //foreach(var t in )
+                foreach (var TaskDictionaryPair in col.getMyTasks())
+                {
+
+                    col.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, 
+                       col.GetColumnId()); // old columnid in SQL to updated one
+                }
                 myColumnDC.Update(i, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, i + 1);
                  
             }
@@ -251,41 +261,58 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             
             if (columnOrdinal == 0) // move tasks to right column
             {
-                if(columns[columnOrdinal+1].GetNumOfTasks()+columns[columnOrdinal].GetNumOfTasks() > columns[columnOrdinal + 1].GetLimitNum())
+                if(columns[columnOrdinal+1].GetNumOfTasks()+columns[columnOrdinal].GetNumOfTasks() > columns[columnOrdinal + 1].GetLimitNum()
+                    && columns[columnOrdinal + 1].GetLimitNum() != -1) // if tasks num in right side column+task num in column to be removed are bigger than the limit of the right
+                    //side column OR there's no limit on the right side column
                 {
                     throw new Exception("You cant delete this tasks because the number of tasks is too high");
                 }
                 foreach (var t in tasks)
                 {
                     columns[columnOrdinal + 1].AddTasksToDict(t.Key, t.Value);
-                    columns[columnOrdinal].myTaskDC.Update(columnOrdinal, userEmail, DataAccessLayer.DTOs.TaskDTO.IDColumnName, columnOrdinal + 1);
+                    //columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.IDColumnName, columnOrdinal + 1);
+                    columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                       columnOrdinal+1);
                 }
             }
-            else
+            else // move tasks to left column
             {
-                if (columns[columnOrdinal - 1].GetNumOfTasks() + columns[columnOrdinal].GetNumOfTasks() > columns[columnOrdinal - 1].GetLimitNum())
+                if (columns[columnOrdinal - 1].GetNumOfTasks() + columns[columnOrdinal].GetNumOfTasks() > columns[columnOrdinal - 1].GetLimitNum() 
+                    && columns[columnOrdinal - 1].GetLimitNum()!=-1)
                 {
                     throw new Exception("You cant delete this tasks because the number of tasks is too high");
                 }
                 foreach (var t in tasks)
                 {
                     columns[columnOrdinal - 1].AddTasksToDict(t.Key, t.Value);
-                    columns[columnOrdinal].myTaskDC.Update(columnOrdinal, userEmail, DataAccessLayer.DTOs.TaskDTO.IDColumnName, columnOrdinal - 1);
+                    //columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.IDColumnName, columnOrdinal - 1);
+                    columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                       columnOrdinal - 1);
                 }
             }
+
             columns[columnOrdinal].removeMyTasks();
-            DataAccessLayer.DTOs.ColumnDTO dataColumn = new DataAccessLayer.DTOs.ColumnDTO(columnOrdinal, userEmail, columns[columnOrdinal].GetLimitNum(), columns[columnOrdinal].GetName(), columns[columnOrdinal].GetNumOfTasks());
-            myColumnDC.Delete(dataColumn);
+            DataAccessLayer.DTOs.ColumnDTO dataColumn = new DataAccessLayer.DTOs.ColumnDTO(columnOrdinal, userEmail, columns[columnOrdinal].GetLimitNum(),
+                columns[columnOrdinal].GetName(), columns[columnOrdinal].GetNumOfTasks());
+
+            myColumnDC.Delete(dataColumn, userEmail);
+            columns.Remove(columnOrdinal);
+
             for (int i = columnOrdinal+1; i <= columns.Count; i++) // moving all necessery columns left
             {
                 columns[i].setColumnId(i - 1);
                 Column col = columns[i];
+                foreach (var TaskDictionaryPair in col.getMyTasks())
+                {
+                    col.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                       col.GetColumnId()); // old columnid in SQL to updated one
+                }
                 columns.Remove(i);
                 columns.Add(i - 1, col);
                 myColumnDC.Update(i, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, i - 1);
             }
         }
-        public Column MoveColumnRight(int columnOrdinal)
+        public Column MoveColumnRight(int columnOrdinal) // we must update the SQL TASK table with new columnID for each task
         {
             if (columnOrdinal < 0 || columnOrdinal > columns.Count)
             {
@@ -295,20 +322,35 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("You cant move the most right column");
             }
+
             columns[columnOrdinal].setColumnId(columnOrdinal + 1);
             columns[columnOrdinal + 1].setColumnId(columnOrdinal);
-            Column col1 = columns[columnOrdinal];
+            Column col1 = columns[columnOrdinal]; // the one being moved right
+            foreach (var TaskDictionaryPair in col1.getMyTasks())
+            {
+
+                col1.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                   col1.GetColumnId()); // old columnid in SQL to updated one
+            }
             Column col2 = columns[columnOrdinal + 1];
-            myColumnDC.Update(col2.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, -1);
-            myColumnDC.Update(col1.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col1.GetColumnId() + 1);
-            myColumnDC.Update(-1, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col2.GetColumnId() - 1);
+            foreach (var TaskDictionaryPair in col2.getMyTasks())
+            {
+
+                col2.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                   col2.GetColumnId()); // old columnid in SQL to updated one
+            }
+
+            myColumnDC.Update(columnOrdinal+1, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, -1);
+            myColumnDC.Update(columnOrdinal, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, columnOrdinal+1);
+            myColumnDC.Update(-1, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, columnOrdinal);
+
             columns.Remove(columnOrdinal+1);
             columns.Add(columnOrdinal + 1, col1);
             columns.Remove(columnOrdinal);
             columns.Add(columnOrdinal, col2);
             return col1;
         }
-        public Column MoveColumnLeft(int columnOrdinal)
+        public Column MoveColumnLeft(int columnOrdinal)// we must update the SQL TASK table with new columnID for each task
         {
             if (columnOrdinal < 0 || columnOrdinal > columns.Count)
             {
@@ -320,8 +362,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             columns[columnOrdinal].setColumnId(columnOrdinal - 1);
             columns[columnOrdinal - 1].setColumnId(columnOrdinal);
-            Column col1 = columns[columnOrdinal];
+
+            Column col1 = columns[columnOrdinal]; // the one being moved left
+            foreach (var TaskDictionaryPair in col1.getMyTasks())
+            {
+
+                col1.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                   col1.GetColumnId()); // old columnid in SQL to updated one
+            }
             Column col2 = columns[columnOrdinal - 1];
+            foreach (var TaskDictionaryPair in col2.getMyTasks())
+            {
+
+                col2.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                   col2.GetColumnId()); // old columnid in SQL to updated one
+            }
+
             myColumnDC.Update(col2.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, -1);
             myColumnDC.Update(col1.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col1.GetColumnId() + 1);
             myColumnDC.Update(-1, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col2.GetColumnId() - 1);

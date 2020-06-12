@@ -16,6 +16,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         private int maxPass = 25;
         private int minPass = 5;
         private DataAccessLayer.UserDalController myUserDC;
+        private DataAccessLayer.BoardDalController myBoardDC;
+        private DataAccessLayer.ColumnDalController myColumnDC;
+        private DataAccessLayer.TaskDalController myTaskDC;
 
         public UserController()
         {
@@ -165,6 +168,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             {
                 return false;
             }
+
+        }
+        public bool DeleteData()
+        {
+            myUserDC = new DataAccessLayer.UserDalController();
+            myBoardDC = new DataAccessLayer.BoardDalController();
+            myColumnDC = new DataAccessLayer.ColumnDalController();
+            myTaskDC = new DataAccessLayer.TaskDalController();
+            if(myUserDC.DeleteAll() && myBoardDC.DeleteAll() && myColumnDC.DeleteAll() && myTaskDC.DeleteAll())
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -16,14 +16,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         }
 
-        public List<DTOs.TaskDTO> SelectAllTasks(string email)
+        public List<DTOs.TaskDTO> SelectAllTasks(string email, int columnid)
         {
             //string t_name = "columns";
             List<DTOs.TaskDTO> results = new List<DTOs.TaskDTO>();
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"select * from {MessageTableName} WHERE email = '{email}'";
+                command.CommandText = $"select * from {MessageTableName} WHERE email = '{email}' AND " +
+                    $"Column={columnid}";
                 SQLiteDataReader dataReader = null;
                 try
                 {
@@ -137,10 +138,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         protected DTOs.TaskDTO ConvertReaderToObject(SQLiteDataReader reader)
         {
-            DTOs.TaskDTO result = new DTOs.TaskDTO((long)reader.GetValue(0), reader.GetString(1), reader.GetString(2), reader.GetDateTime(3), reader.GetDateTime(4), (long)reader.GetValue(5), reader.GetString(6));
+            DTOs.TaskDTO result = new DTOs.TaskDTO((long)reader.GetValue(0), (long)reader.GetValue(1), reader.GetString(2),
+                reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6));
             return result;
 
         }
+        
 
     }
 }

@@ -135,7 +135,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         protected DTOs.ColumnDTO ConvertReaderToObject(SQLiteDataReader reader)
         {
-            DTOs.ColumnDTO result = new DTOs.ColumnDTO((long)reader.GetValue(0), reader.GetString(1), (long)reader.GetValue(2), reader.GetString(3), (long)reader.GetValue(4));
+            DTOs.ColumnDTO result = new DTOs.ColumnDTO((long)reader.GetValue(0), reader.GetString(1),
+                (long)reader.GetValue(2), reader.GetString(3), (long)reader.GetValue(4));
 
             return result;
 

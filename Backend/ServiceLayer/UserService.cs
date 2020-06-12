@@ -58,5 +58,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return new Response(e.Message);
             }
         }
+        public Response DeleteData()
+        {
+            try
+            {
+                myUserContorller.DeleteData();
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+            
+        }
     }
 }

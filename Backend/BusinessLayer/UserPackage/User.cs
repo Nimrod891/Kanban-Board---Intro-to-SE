@@ -13,7 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         private string nickname;
         private bool is_logged;
         private BoardPackage.Board myBoard;
-        DataAccessLayer.BoardDalController myBoardDC;
+        DataAccessLayer.BoardDalController myBoardDC = new DataAccessLayer.BoardDalController();
 
         public User(string email, string password, string nickname)
         {
@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             this.password = u.Password;
             this.nickname = u.NickName;
             this.is_logged = false;
-            DataAccessLayer.DTOs.BoardDTO DBoard = myBoardDC.Select(email);
+            DataAccessLayer.DTOs.BoardDTO DBoard = myBoardDC.Select(u.email);
             myBoard = new BoardPackage.Board(0,DBoard.email);
             //myBoard.initBoard();
         }

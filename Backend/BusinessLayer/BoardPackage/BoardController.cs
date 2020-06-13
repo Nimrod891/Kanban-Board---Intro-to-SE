@@ -159,5 +159,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             return boards[email].MoveColumnLeft(columnOrdinal);
         }
+
+        public Task GetTask(string userEmail, int columnordianl, int taskid)
+        {
+            if (!boards.ContainsKey(userEmail))
+            {
+                throw new Exception("Board not exist");
+            }
+            return boards[userEmail].GetColumnById(columnordianl).GetTaskById(taskid);
+        }
     }
 }

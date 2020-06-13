@@ -104,8 +104,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
 
-
-    public Response Register(string email, string password, string nickname)
+        /// <summary>
+        /// Registers a new user and creates a new board for him.
+        /// </summary>
+        /// <param name="email">The email address of the user to register</param>
+        /// <param name="password">The password of the user to register</param>
+        /// <param name="nickname">The nickname of the user to register</param>
+        /// <returns>A response object. The response should contain a error message in case of an error<returns>
+        public Response Register(string email, string password, string nickname)
         {
 
             Response r = myUserService.Register(email, password, nickname);
@@ -113,6 +119,46 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             log.Info("New User Registered: [" + email + "]");
             return r;
+        }
+
+        /// <summary>
+		/// Registers a new user and joins the user to an existing board.
+		/// </summary>
+		/// <param name="email">The email address of the user to register</param>
+		/// <param name="password">The password of the user to register</param>
+		/// <param name="nickname">The nickname of the user to register</param>
+		/// <param name="emailHost">The email address of the host user which owns the board</param>
+		/// <returns>A response object. The response should contain a error message in case of an error<returns>
+		public Response Register(string email, string password, string nickname, string emailHost)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+        /// <summary>
+        /// Assigns a task to a user
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        
+        /// <param name="emailAssignee">Email of the user to assign to task to</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Delete a task
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        		
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response DeleteTask(string email, int columnOrdinal, int taskId)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -161,6 +207,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit)
         {
             return myBoardService.LimitColumnTasks(email, columnOrdinal, limit);
+        }
+
+        /// <summary>
+        /// Change the name of a specific column
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="newName">The new name.</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response ChangeColumnName(string email, int columnOrdinal, string newName)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -299,6 +357,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Column> MoveColumnLeft(string email, int columnOrdinal)
         {
             return myBoardService.MoveColumnLeft(email, columnOrdinal);
+        }
+
+        public Response<Task> GetTask(string email, int colid, int taskid)
+        {
+            return myBoardService.GetTask(email, colid, taskid);
+
         }
 
     }

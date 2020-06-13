@@ -21,6 +21,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             MyBoardContorller.SetLoggedInBoard(email);
         }
+        public Response<Task> GetTask(string email, int colid, int taskid)
+        {
+            try
+            {
+                BusinessLayer.BoardPackage.Task task = MyBoardContorller.GetTask(email, colid, taskid);
+                Task taskservice = new Task(task.GetTaskId(), task.GetCreationDate(), task.GetDueDate(), task.GetTitle(), task.GetDescription());
+                return new Response<Task>(taskservice);
+            }
+            catch (Exception e)
+            {
+                return new Response<Task>(e.Message);
+            }
+        }
+
         public Response<Board> GetBoard(string email)
         {
             try

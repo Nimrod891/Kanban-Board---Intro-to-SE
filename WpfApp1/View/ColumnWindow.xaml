@@ -1,0 +1,25 @@
+﻿<Window x:Class="WpfApp1.View.ColumnWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1.View"
+        mc:Ignorable="d"
+        Title="ColumnWindow" Height="450" Width="800">
+        <Grid>
+            <ListBox Name="Tasks" HorizontalAlignment="Left" ItemsSource="{Binding Path=Tasks,Mode=TwoWay}" Height="199" Margin="303,97,0,0" VerticalAlignment="Top" Width="439" RenderTransformOrigin="0.5,0.5">
+                <ListBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="0.294"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </ListBox.RenderTransform>
+            </ListBox>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="35,165,0,0" TextWrapping="Wrap" Text="{Binding Path=EmailAssignee}" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Return to board" HorizontalAlignment="Left" Margin="664,44,0,0" VerticalAlignment="Top" Width="93" Click="return_to_board_button"/>
+            <Button Content="Advance" HorizontalAlignment="Left" Margin="87,117,0,0" VerticalAlignment="Top" Width="75" Click="advance_button"/>
+        <Button Content="View task" HorizontalAlignment="Left" Margin="189,225,0,0" VerticalAlignment="Top" Width="75" Click="view_task_button"/>
+    </Grid>
+</Window>

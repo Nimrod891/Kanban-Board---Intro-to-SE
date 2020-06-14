@@ -65,6 +65,31 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 
 
         }
+        public void Register(string email, string password, string nickname, string emailHost)
+        {
+            email = email.ToLower();
+            foreach (KeyValuePair<string, User> users in users) // check through dictionary if email already exisit
+            {
+                if (users.Key.Equals(email))
+                {
+                    throw new Exception("User already exisit");
+                }
+                if (string.IsNullOrWhiteSpace(nickname))
+                {
+                    throw new Exception("Invalid nickname");
+                }
+
+            }
+            if (!IsValidEmail(email))
+            {
+                throw new Exception("Invalid email");
+            }
+            if (!IsValidPass(password))
+            {
+                throw new Exception("Invalid password");
+            }
+
+        }
 
         public User Login(string email, string pass)
         {

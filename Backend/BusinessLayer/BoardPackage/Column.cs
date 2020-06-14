@@ -13,6 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private int columnId;
         private int limitNum;
         private int numOfTasks;
+        private int maxTasks = 100;
         private Dictionary<int, Task> tasks;
         private ReadOnlyDictionary<int, Task> readOnlyDict;
         public DataAccessLayer.TaskDalController myTaskDC;
@@ -94,7 +95,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("You can only add new task to backlog column");
             }
-            if (limitNum != -1 && numOfTasks >= limitNum) /// if there's no limit or we didnt over limit task number
+            if(tasks.Count >= maxTasks)
+            {
+                throw new Exception("there are allredy 100 tasks");
+            }
+            if (limitNum != -1 && tasks.Count >= limitNum) /// if there's no limit or we didnt over limit task number
             {
                 throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// "there are already 6 tasks in backlog column"
                 
@@ -117,6 +122,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (limitNum != -1 && numOfTasks >= limitNum)
             {
                 throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// example:"there are already 6 tasks in backlog column"  
+            }
+            if(tasks.Count >= maxTasks)
+            {
+                throw new Exception("there are already 100 tasks");
             }
             tasks.Add(taskId, t);
             numOfTasks = tasks.Count;

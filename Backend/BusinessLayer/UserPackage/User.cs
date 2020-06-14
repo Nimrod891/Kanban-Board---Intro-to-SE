@@ -15,14 +15,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         private BoardPackage.Board myBoard;
         DataAccessLayer.BoardDalController myBoardDC = new DataAccessLayer.BoardDalController();
 
-        public User(string email, string password, string nickname)
+        public User(string email, string password, string nickname, string emailHost) // register for exsisting board
+        {
+           
+            this.email = email;
+            this.password = password;
+            this.nickname = nickname;
+            this.is_logged = false;
+            this.myBoard = new BoardPackage.Board(email, emailHost);
+            
+        }
+        public User(string email, string password, string nickname) // register as host
         {
             this.email = email;
             this.password = password;
             this.nickname = nickname;
             this.is_logged = false;
             myBoard = new BoardPackage.Board(email);
+            myBoard.setEmailHost(email);
         }
+
         public User(DataAccessLayer.DTOs.UserDTO u)
         {
             this.email = u.email;
@@ -62,6 +74,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         {
             if (this.password.Equals(pass))
             {
+                myBoard.SetIsULoggedIn(true);
                 is_logged = true;
                 
                 return true;

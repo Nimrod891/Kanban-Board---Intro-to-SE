@@ -28,6 +28,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return new Response(e.Message);
             }
         }
+        public Response Register(string email, string password, string nickname, string emailHost)
+        {
+
+        }
 
 
         public Response<User> Login(string email, string password)

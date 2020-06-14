@@ -12,6 +12,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private static int num_Boards;
         private int Id_board;
         private string userEmail;
+        private string emailHost;
         private Dictionary<int, Column> columns;
         private int taskId;
         private int columnId;
@@ -21,12 +22,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private DataAccessLayer.ColumnDalController myColumnDC;
         //private DataAccessLayer.TaskDalController myTaskDC;
 
-        public Board(string userEmail)
+        public Board(string userEmail)//create new board
         {
             myBoardDC = new DataAccessLayer.BoardDalController();
             myColumnDC = new DataAccessLayer.ColumnDalController();
             columns = new Dictionary<int, Column>();
             this.userEmail = userEmail;
+            this.emailHost = userEmail;
             DataAccessLayer.DTOs.BoardDTO dataBoard = new DataAccessLayer.DTOs.BoardDTO(this.Id_board, this.userEmail);
             myBoardDC.Insert(dataBoard);
             
@@ -51,7 +53,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         }
        
-        public Board(int id,string userEmail)
+        public Board(int id, string userEmail) // load existing board
         {
             columns = new Dictionary<int, Column>();
             this.userEmail = userEmail;
@@ -71,7 +73,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
            
         }
-
+        public void setEmailHost(string emailHost)
+        {
+            this.emailHost = emailHost;
+        }
         public string GetUserEmail()
         {
             return userEmail;
@@ -97,11 +102,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void LimitTasks(int columnId, int limitNum)
         {
-            //if (!is_UserLoggedin)
-            //{
-            //    throw new Exception("User is not logged in");
-            //}
-                columns[columnId].SetLimitNum(limitNum);
+            if (!is_UserLoggedin)
+            {
+                throw new Exception("User is not logged in");
+            }
+            columns[columnId].SetLimitNum(limitNum);
             myColumnDC.Update(columnId,userEmail, DataAccessLayer.DTOs.ColumnDTO.MessageLimitNumColumnName, limitNum);
         }
 
@@ -119,6 +124,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("Invalid colomn Ordinal");
             }
+
             columns[currentColId + 1].AddTasksToDict(taskId, columns[currentColId].GetTaskById(taskId)); // add task to the next column
             columns[currentColId].myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, currentColId+1);
             columns[currentColId].DeleteTask(taskId); // delete task from current column

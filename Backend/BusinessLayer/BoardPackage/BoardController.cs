@@ -22,7 +22,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             foreach (DataAccessLayer.DTOs.BoardDTO b in myBoards)
             {
                 Board newBoard = new Board(0, b.email);
-               
+
                 boards.Add(b.email, newBoard);
 
             }
@@ -37,7 +37,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return boards[userEmail];
         }
 
-        public Task AddNewTask(string userEmail ,string title, string description, DateTime dueDate)
+        public Task AddNewTask(string userEmail, string title, string description, DateTime dueDate)
         {
 
             if (!boards.ContainsKey(userEmail))
@@ -46,10 +46,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
 
             Task a = boards[userEmail].AddNewTask(title, description, dueDate);
-            //boards[userEmail].ToDalObject().Save();
-
+            a.setTaskAssignee(userEmail);
             return a;
-            
+
         }
 
         public void LimitTasks(string userEmail, int columnId, int limitNum)
@@ -59,7 +58,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board does not exist");
             }
             boards[userEmail].LimitTasks(columnId, limitNum);
-            //boards[userEmail].ToDalObject().Save();
         }
         public void AdvanceTask(string userEmail, int currentColId, int taskId)
         {
@@ -68,7 +66,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board does not exist");
             }
             boards[userEmail].AdvanceTask(currentColId, taskId);
-            //boards[userEmail].ToDalObject().Save();
+            //boards[emailHost].ToDalObject().Save();
 
         }
 
@@ -78,7 +76,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             boards[email].SetIsULoggedIn(true);
         }
 
-        
+
 
         public void UpdateTaskDueDate(string userEmail, int colId, int taskId, DateTime dueDate)
         {
@@ -86,8 +84,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("Board not exist");
             }
+            if (!(boards[userEmail].GetColumnById(colId).GetTaskById(taskId).getTaskAssignee().Equals(userEmail)))
+            {
+                throw new Exception("you cant change task if you are not task assignee");
+            }
             boards[userEmail].UpdateTaskDueDate(colId, taskId, dueDate);
-            //boards[userEmail].ToDalObject().Save();
+            //boards[emailHost].ToDalObject().Save();
         }
 
         public void UpdateTaskTitle(string userEmail, int colId, int taskId, string title)
@@ -96,8 +98,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("Board not exist");
             }
+            if (!(boards[userEmail].GetColumnById(colId).GetTaskById(taskId).getTaskAssignee().Equals(userEmail)))
+            {
+                throw new Exception("you cant change task if you are not task assignee");
+            }
             boards[userEmail].UpdateTaskTitle(colId, taskId, title);
-            //boards[userEmail].ToDalObject().Save();
+            //boards[emailHost].ToDalObject().Save();
         }
 
         public void UpdateTaskDescription(string userEmail, int colId, int taskId, string description)
@@ -106,8 +112,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("Board not exist");
             }
+            if (!(boards[userEmail].GetColumnById(colId).GetTaskById(taskId).getTaskAssignee().Equals(userEmail)))
+            {
+                throw new Exception("you cant change task if you are not task assignee");
+            }
             boards[userEmail].UpdateTaskDescription(colId, taskId, description);
-            //boards[userEmail].ToDalObject().Save();
+            //boards[emailHost].ToDalObject().Save();
         }
 
         public Column GetColumnById(string userEmail, int columnOrdinal)
@@ -167,6 +177,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board not exist");
             }
             return boards[userEmail].GetColumnById(columnordianl).GetTaskById(taskid);
+        }
+        public void AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
+        {
+            if (!boards.ContainsKey(email))
+            {
+                throw new Exception("Board does not exist");
+            }
+            boards[email].AssignTask(columnOrdinal, taskId, emailAssignee);
+        }
+        public void DeleteTask(string email, int columnOrdinal, int taskId)
+        {
+            if (!boards.ContainsKey(email))
+            {
+                throw new Exception("Board does not exist");
+            }
+            boards[email].DeleteTask(columnOrdinal, taskId);
         }
     }
 }

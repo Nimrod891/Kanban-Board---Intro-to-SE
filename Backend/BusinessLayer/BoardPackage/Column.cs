@@ -12,8 +12,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private string name;
         private int columnId;
         private int limitNum;
-        private int numOfTasks;
-        private int maxTasks = 100;
         private Dictionary<int, Task> tasks;
         private ReadOnlyDictionary<int, Task> readOnlyDict;
         public DataAccessLayer.TaskDalController myTaskDC;
@@ -23,25 +21,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             this.name = name;
             this.columnId = columnId;
-            limitNum = -1;
-            numOfTasks = 0;
+            limitNum = 100;
             tasks = new Dictionary<int, Task>();
             myTaskDC = new DataAccessLayer.TaskDalController();
         }
-        public  Column(string email, string name, int columnId, int limitNum, int numOfTasks)
+        public Column(string email, string name, int columnId, int limitNum, int numOfTasks)
         {
             this.name = name;
             this.columnId = columnId;
             this.limitNum = limitNum;
-            this.numOfTasks = numOfTasks;
             tasks = new Dictionary<int, Task>();
             myTaskDC = new DataAccessLayer.TaskDalController();
-           List<DataAccessLayer.DTOs.TaskDTO> myTasks = myTaskDC.SelectAllTasks(email, columnId);
-           
-            foreach(DataAccessLayer.DTOs.TaskDTO t in myTasks)
+            List<DataAccessLayer.DTOs.TaskDTO> myTasks = myTaskDC.SelectAllTasks(email, columnId);
+
+            foreach (DataAccessLayer.DTOs.TaskDTO t in myTasks)
             {
                 int newId = Convert.ToInt32(t.Id);
-                Task newTask = new Task(newId, t.Title, t.Description, t.DueDate,t.CreationTime);
+                Task newTask = new Task(newId, t.Title, t.Description, t.DueDate, t.CreationTime);
                 tasks.Add(newId, newTask);
             }
         }
@@ -62,13 +58,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public int GetNumOfTasks()
         {
-            return numOfTasks;
+            return tasks.Count;
         }
         public void setColumnId(int columnId)
         {
             this.columnId = columnId;
         }
-       public Dictionary<int,Task> getMyTasks()
+        public Dictionary<int, Task> getMyTasks()
         {
             return this.tasks;
         }
@@ -78,11 +74,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public void SetLimitNum(int limitNum)
         {
-            if (limitNum == -1)
-            {
-                this.limitNum = limitNum;
-            }
-            if(limitNum < 0 || limitNum <= numOfTasks) // limit num smaller then 
+            if (limitNum < 0 || limitNum <= tasks.Count) // limit num smaller then 
             {
                 throw new Exception("Invalid number of limited tasks");
             }
@@ -95,14 +87,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("You can only add new task to backlog column");
             }
-            if(tasks.Count >= maxTasks)
-            {
-                throw new Exception("there are allredy 100 tasks");
-            }
-            if (limitNum != -1 && tasks.Count >= limitNum) /// if there's no limit or we didnt over limit task number
+            if (tasks.Count >= limitNum) /// if there's no limit or we didnt over limit task number
             {
                 throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// "there are already 6 tasks in backlog column"
-                
+
             }
             Task t = new Task(taskId, title, description, dueDate);
             this.AddTasksToDict(taskId, t);
@@ -115,21 +103,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("Removal failed, task Id could not be found");
             }
-            numOfTasks = tasks.Count;
         }
         public void AddTasksToDict(int taskId, Task t)
         {
-            if (limitNum != -1 && numOfTasks >= limitNum)
+            if (tasks.Count >= limitNum)
             {
                 throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// example:"there are already 6 tasks in backlog column"  
             }
-            if(tasks.Count >= maxTasks)
-            {
-                throw new Exception("there are already 100 tasks");
-            }
             tasks.Add(taskId, t);
-            numOfTasks = tasks.Count;
-
         }
 
         public Task GetTaskById(int taskId)
@@ -156,12 +137,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public ReadOnlyCollection<ServiceLayer.Task> GetMyTasks()
         {
             List<ServiceLayer.Task> listTasks = new List<ServiceLayer.Task>();
-            foreach (KeyValuePair<int,Task> t in tasks)
+            foreach (KeyValuePair<int, Task> t in tasks)
             {
                 ServiceLayer.Task task = new ServiceLayer.Task(t.Value.GetTaskId(), t.Value.GetCreationDate(), t.Value.GetDueDate(), t.Value.GetTitle(), t.Value.GetDescription());
                 listTasks.Add(task);
             }
             return listTasks.AsReadOnly();
+        }
+        public void AssignTask(int taskId, string emailAssignee)
+        {
+            tasks[taskId].setTaskAssignee(emailAssignee);
         }
     }
 }

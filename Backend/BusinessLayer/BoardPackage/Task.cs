@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    class Task 
+    class Task
     {
-       
+
         private int taskId;
         private string title;
         private string description;
@@ -16,10 +16,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private DateTime creationDate;
         private int maxDesc = 300;
         private int maxTitle = 50;
+        private string taskAssignee;
 
         public Task(int taskId, string title, string description, DateTime dueDate)
         {
-
             this.taskId = taskId;
             SetTitle(title);
             SetDescription(description);
@@ -33,6 +33,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.description = description;
             this.dueDate = dueDate;
             this.creationDate = creationDate;
+        }
+        public string getTaskAssignee()
+        {
+            return this.taskAssignee;
+        }
+        public void setTaskAssignee(string taskAssignee)
+        {
+            this.taskAssignee = taskAssignee;
         }
 
         public int GetTaskId()
@@ -60,12 +68,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return creationDate;
         }
 
-       
+
         public void SetTitle(string title)
         {
             if (title.Length > maxTitle)
             {
-                throw new Exception("Title is over 50 chars");   
+                throw new Exception("Title is over 50 chars");
             }
             if (String.IsNullOrWhiteSpace(title))
             {
@@ -83,8 +91,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     throw new Exception("description is over 300 chars");
                 }
             }
-            
-                this.description = description;
+
+            this.description = description;
         }
 
         public void SetDueDate(DateTime dueDate)

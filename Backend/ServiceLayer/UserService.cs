@@ -16,6 +16,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             this.myUserContorller = new BusinessLayer.UserPackage.UserController();
         }
+        public BusinessLayer.UserPackage.UserController getMyUserContreller()
+        {
+            return this.myUserContorller;
+        }
         public Response Register(string email, string password, string nickname)
         {
             try
@@ -30,7 +34,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
         public Response Register(string email, string password, string nickname, string emailHost)
         {
-
+            try
+            {
+                myUserContorller.Register(email, password, nickname, emailHost);
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
         }
 
 
@@ -45,7 +57,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e)
             {
-                log.Error("User "+email+" threw exception during login");
+                log.Error("User " + email + " threw exception during login");
                 return new Response<User>(e.Message);
             }
         }
@@ -73,7 +85,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 return new Response(e.Message);
             }
-            
+
         }
     }
 }

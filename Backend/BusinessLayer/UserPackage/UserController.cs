@@ -15,6 +15,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         private User loggedInUser;
         private int maxPass = 25;
         private int minPass = 5;
+        private BoardPackage.BoardController myBoardController;
         private DataAccessLayer.UserDalController myUserDC;
         private DataAccessLayer.BoardDalController myBoardDC;
         private DataAccessLayer.ColumnDalController myColumnDC;
@@ -25,7 +26,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             myUserDC = new DataAccessLayer.UserDalController();
             users = new Dictionary<string, User>();
             List<DataAccessLayer.DTOs.UserDTO> myUsers = myUserDC.SelectAllusers();
-            foreach(DataAccessLayer.DTOs.UserDTO u in myUsers)
+            foreach (DataAccessLayer.DTOs.UserDTO u in myUsers)
             {
                 User newUser = new User(u);
                 users.Add(u.email, newUser);
@@ -55,17 +56,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             {
                 throw new Exception("Invalid password");
             }
-            //email = email.ToLower();
             User u = new User(email, pass, nickname);
             users.Add(email, u);
             DataAccessLayer.DTOs.UserDTO dataUser = new DataAccessLayer.DTOs.UserDTO(0, email, nickname, pass);
             myUserDC.Insert(dataUser);
-            //u.ToDalObject().Save();
-            //u.GetUserBoard().ToDalObject().Save();
-
-
         }
-        public void Register(string email, string password, string nickname, string emailHost)
+        public void Register(string email, string password, string nickname, string emailHost)// not as host
         {
             email = email.ToLower();
             foreach (KeyValuePair<string, User> users in users) // check through dictionary if email already exisit
@@ -88,12 +84,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             {
                 throw new Exception("Invalid password");
             }
+            User u = new User(email, password, nickname, emailHost);
+            users.Add(email, u);
+            DataAccessLayer.DTOs.UserDTO dataUser = new DataAccessLayer.DTOs.UserDTO(0, email, nickname, password);
+            myUserDC.Insert(dataUser);
 
         }
 
         public User Login(string email, string pass)
         {
-            //email = email.ToLower();
 
             if (!users.ContainsKey(email)) // if user does not exisit
             {
@@ -201,11 +200,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             myBoardDC = new DataAccessLayer.BoardDalController();
             myColumnDC = new DataAccessLayer.ColumnDalController();
             myTaskDC = new DataAccessLayer.TaskDalController();
-            if(myUserDC.DeleteAll() && myBoardDC.DeleteAll() && myColumnDC.DeleteAll() && myTaskDC.DeleteAll())
+            if (myUserDC.DeleteAll() && myBoardDC.DeleteAll() && myColumnDC.DeleteAll() && myTaskDC.DeleteAll())
             {
                 return true;
             }
             return false;
+        }
+        public string getMyUserHostMail(string email)
+        {
+            foreach (var u in users)
+            {
+                if (u.Key.Equals(email))
+                {
+                    return u.Value.getMyBoard().GetUserEmail();
+                }
+            }
+            return null;
         }
     }
 }

@@ -25,7 +25,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
            (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         boardService myBoardService;
         userService myUserService;
-        
+        string emailBoard;
+
 
         /// <summary>
         /// Simple public constructor.
@@ -33,17 +34,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Service()
         {
             LoadData();
-            
+
         }
-               
+
         /// <summary>        
         /// Loads the data. Intended be invoked only when the program starts
         /// </summary>
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
         public Response LoadData()
         {
-            if(!File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"))))
-                {
+
+            if (!File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"))))
+            {
                 string sql1 = @"CREATE TABLE Board(id INTEGER NOT NULL,email TEXT PRIMARY KEY NOT NULL)";
                 string sql2 = "CREATE TABLE USER(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,NickName TEXT NOT NULL ,password  TEXT NOT NULL)";
                 string sql3 = "CREATE TABLE Column(id INTEGER ,email text NOT NULL ,LimitNum INTEGER NOT NULL , Name TEXT NOT NULL, NumTask INTEGER NOT NULL,PRIMARY KEY ('id','email'))";
@@ -58,16 +60,25 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                     using (System.Data.SQLite.SQLiteCommand com = new System.Data.SQLite.SQLiteCommand(con))
                     {
-                        con.Open();
+                        try
+                        {
+                            con.Open();
 
-                        com.CommandText = sql1;
-                        com.ExecuteNonQuery();
-                        com.CommandText = sql2;
-                        com.ExecuteNonQuery();
-                        com.CommandText = sql3;
-                        com.ExecuteNonQuery();
-                        com.CommandText = sql4;
-                        com.ExecuteNonQuery();
+                            com.CommandText = sql1;
+                            com.ExecuteNonQuery();
+                            com.CommandText = sql2;
+                            com.ExecuteNonQuery();
+                            com.CommandText = sql3;
+                            com.ExecuteNonQuery();
+                            com.CommandText = sql4;
+                            com.ExecuteNonQuery();
+                        }
+                        finally
+                        {
+                            com.Dispose();
+                            con.Close();
+
+                        }
                     }
                 }
 
@@ -77,7 +88,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 log.Info("Loading data");
                 this.myUserService = new userService();
                 this.myBoardService = new boardService();
-               
+
                 return new Response();
             }
             catch (Exception e)
@@ -92,7 +103,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             //    this.myBoardService = new boardService();
             //    this.myUserService = new userService();
             //}
-           
+
         }
 
 
@@ -131,7 +142,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 		/// <returns>A response object. The response should contain a error message in case of an error<returns>
 		public Response Register(string email, string password, string nickname, string emailHost)
         {
-            throw new NotImplementedException();
+            Response r = myUserService.Register(email, password, nickname, emailHost);
+            this.myBoardService = new boardService();
+
+            log.Info("New User Registered: [" + email + "]");
+            return r;
         }
 
 
@@ -146,7 +161,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
         {
-            throw new NotImplementedException();
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            Response r = myBoardService.AssignTask(emailBoard, columnOrdinal, taskId, emailAssignee);
+            this.myBoardService = new boardService();
+            return r;
         }
 
         /// <summary>
@@ -158,7 +176,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response DeleteTask(string email, int columnOrdinal, int taskId)
         {
-            throw new NotImplementedException();
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            Response r = myBoardService.DeleteTask(emailBoard, columnOrdinal, taskId);
+            this.myBoardService = new boardService();
+            return r;
         }
 
         /// <summary>
@@ -193,8 +214,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
         public Response<Board> GetBoard(string email)
         {
-            return myBoardService.GetBoard(email);
-           
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.GetBoard(emailBoard);
+
         }
 
         /// <summary>
@@ -206,7 +228,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit)
         {
-            return myBoardService.LimitColumnTasks(email, columnOrdinal, limit);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.LimitColumnTasks(emailBoard, columnOrdinal, limit);
         }
 
         /// <summary>
@@ -231,7 +254,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string title, string description, DateTime dueDate)
         {
-            return myBoardService.AddTask(email, title, description, dueDate);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.AddTask(emailBoard, title, description, dueDate);
         }
 
         /// <summary>
@@ -244,7 +268,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            return myBoardService.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.UpdateTaskDueDate(emailBoard, columnOrdinal, taskId, dueDate);
         }
 
         /// <summary>
@@ -257,6 +282,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
         {
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
             return myBoardService.UpdateTaskTitle(email, columnOrdinal, taskId, title);
         }
 
@@ -282,7 +308,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AdvanceTask(string email, int columnOrdinal, int taskId)
         {
-            return myBoardService.AdvanceTask(email, columnOrdinal, taskId);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.AdvanceTask(emailBoard, columnOrdinal, taskId);
         }
 
 
@@ -294,7 +321,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
         public Response<Column> GetColumn(string email, string columnName)
         {
-            return myBoardService.GetColumn(email, columnName);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.GetColumn(emailBoard, columnName);
         }
 
         /// <summary>
@@ -307,7 +335,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
-            return myBoardService.GetColumn(email, columnOrdinal);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.GetColumn(emailBoard, columnOrdinal);
         }
 
         /// <summary>
@@ -319,7 +348,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response RemoveColumn(string email, int columnOrdinal)
         {
-            return myBoardService.RemoveColumn(email, columnOrdinal);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.RemoveColumn(emailBoard, columnOrdinal);
         }
 
         /// <summary>
@@ -332,7 +362,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the new Column, the response should contain a error message in case of an error</returns>
         public Response<Column> AddColumn(string email, int columnOrdinal, string Name)
         {
-            return myBoardService.AddColumn(email, columnOrdinal, Name);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.AddColumn(emailBoard, columnOrdinal, Name);
         }
 
         /// <summary>
@@ -344,7 +375,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the moved Column, the response should contain a error message in case of an error</returns>
         public Response<Column> MoveColumnRight(string email, int columnOrdinal)
         {
-            return myBoardService.MoveColumnRight(email, columnOrdinal);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.MoveColumnRight(emailBoard, columnOrdinal);
         }
 
         /// <summary>
@@ -356,14 +388,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the moved Column, the response should contain a error message in case of an error</returns>
         public Response<Column> MoveColumnLeft(string email, int columnOrdinal)
         {
-            return myBoardService.MoveColumnLeft(email, columnOrdinal);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.MoveColumnLeft(emailBoard, columnOrdinal);
         }
 
         public Response<Task> GetTask(string email, int colid, int taskid)
         {
-            return myBoardService.GetTask(email, colid, taskid);
-
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.GetTask(emailBoard, colid, taskid);
         }
+
 
     }
 }

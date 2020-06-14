@@ -55,7 +55,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                MyBoardContorller.LimitTasks(email,columnOrdinal,limit);
+                MyBoardContorller.LimitTasks(email, columnOrdinal, limit);
                 return new Response();
             }
             catch (Exception e)
@@ -68,7 +68,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BusinessLayer.BoardPackage.Task t = MyBoardContorller.AddNewTask(email, title, description, dueDate);
-                Task servicTask = new Task(t.GetTaskId(),t.GetCreationDate(),t.GetDueDate(),t.GetTitle(),t.GetDescription());
+                Task servicTask = new Task(t.GetTaskId(), t.GetCreationDate(), t.GetDueDate(), t.GetTitle(), t.GetDescription());
                 log.Info($"User {email} has added a new task: \n{title}\nDue Date:{dueDate}");
                 return new Response<Task>(servicTask);
             }
@@ -128,7 +128,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                MyBoardContorller.AdvanceTask(email,columnOrdinal,taskId);
+                MyBoardContorller.AdvanceTask(email, columnOrdinal, taskId);
             }
             catch (Exception e)
             {
@@ -152,7 +152,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                Column columnService = new Column(MyBoardContorller.GetColumnById(email, columnOrdinal).GetMyTasks(), MyBoardContorller.GetColumnById(email,columnOrdinal).GetName(), MyBoardContorller.GetColumnById(email, columnOrdinal).GetLimitNum());
+                Column columnService = new Column(MyBoardContorller.GetColumnById(email, columnOrdinal).GetMyTasks(), MyBoardContorller.GetColumnById(email, columnOrdinal).GetName(), MyBoardContorller.GetColumnById(email, columnOrdinal).GetLimitNum());
                 return new Response<Column>(columnService);
             }
             catch (Exception e)
@@ -210,6 +210,30 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 return new Response<Column>(e.Message);
             }
+        }
+        public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
+        {
+            try
+            {
+                MyBoardContorller.AssignTask(email, columnOrdinal, taskId, emailAssignee);
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+            return new Response();
+        }
+        public Response DeleteTask(string email, int columnOrdinal, int taskId)
+        {
+            try
+            {
+                MyBoardContorller.DeleteTask(email, columnOrdinal, taskId);
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+            return new Response();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
-    class User 
+    class User
     {
         private string email;
         private string password;
@@ -14,27 +14,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         private bool is_logged;
         private BoardPackage.Board myBoard;
         DataAccessLayer.BoardDalController myBoardDC = new DataAccessLayer.BoardDalController();
+        private string myBoardHostMail;
 
-        public User(string email, string password, string nickname, string emailHost) // register for exsisting board
-        {
-           
-            this.email = email;
-            this.password = password;
-            this.nickname = nickname;
-            this.is_logged = false;
-            this.myBoard = new BoardPackage.Board(email, emailHost);
-            
-        }
-        public User(string email, string password, string nickname) // register as host
+        public User(string email, string password, string nickname)
         {
             this.email = email;
             this.password = password;
             this.nickname = nickname;
             this.is_logged = false;
             myBoard = new BoardPackage.Board(email);
-            myBoard.setEmailHost(email);
+            myBoardHostMail = email;
         }
-
+        public User(string email, string password, string nickname, string emailHost)// not host user
+        {
+            this.email = email;
+            this.password = password;
+            this.nickname = nickname;
+            this.is_logged = false;
+            myBoard = new BoardPackage.Board(email, emailHost);
+            myBoardHostMail = myBoard.GetUserEmail();
+        }
         public User(DataAccessLayer.DTOs.UserDTO u)
         {
             this.email = u.email;
@@ -42,10 +41,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             this.nickname = u.NickName;
             this.is_logged = false;
             DataAccessLayer.DTOs.BoardDTO DBoard = myBoardDC.Select(u.email);
-            myBoard = new BoardPackage.Board(0,DBoard.email);
+            myBoard = new BoardPackage.Board(0, DBoard.email);
             //myBoard.initBoard();
         }
-        
+
         public BoardPackage.Board getMyBoard()
         {
             return this.myBoard;
@@ -74,9 +73,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         {
             if (this.password.Equals(pass))
             {
-                myBoard.SetIsULoggedIn(true);
                 is_logged = true;
-                
+                myBoard.SetIsULoggedIn(true);
+                myBoard.setLoggedInUser(this.email);
+
                 return true;
             }
             return false;
@@ -91,6 +91,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             is_logged = false;
             myBoard.SetIsULoggedIn(false);
         }
+
 
     }
 }

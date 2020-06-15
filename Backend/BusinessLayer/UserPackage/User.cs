@@ -91,7 +91,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             is_logged = false;
             myBoard.SetIsULoggedIn(false);
         }
-
-
     }
 }

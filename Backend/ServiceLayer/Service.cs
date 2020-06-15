@@ -44,9 +44,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             if(!File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"))))
                 {
-                string sql1 = @"CREATE TABLE Board(id INTEGER NOT NULL,email TEXT PRIMARY KEY NOT NULL)";
-                string sql2 = "CREATE TABLE USER(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,NickName TEXT NOT NULL ,password  TEXT NOT NULL)";
-                string sql3 = "CREATE TABLE Column(id INTEGER NOT NULL,email text NOT NULL ,LimitNum INTEGER NOT NULL , Name TEXT NOT NULL, NumTask INTEGER NOT NULL,PRIMARY KEY ('id','email'))";
+                string sql1 = @"CREATE TABLE Board(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY )";
+                string sql2 = "CREATE TABLE USER(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,NickName TEXT NOT NULL, password TEXT NOT NULL)";
+                string sql3 = "CREATE TABLE Column(id INTEGER NOT NULL,email text NOT NULL ,LimitNum INTEGER NOT NULL, Name TEXT NOT NULL, NumTask INTEGER NOT NULL,PRIMARY KEY ('id','email'))";
                 string sql4 = "CREATE TABLE Task(id INTEGER NOT NULL,Column INTEGER NOT NULL,email TEXT NOT NULL ,Title TEXT NOT NULL , Description TEXT NOT NULL,DueDate DATETIME NOT NULL,CreationTime DATETIME NOT NULL,PRIMARY KEY('id','Column','email' ))";
                 System.Data.SQLite.SQLiteConnection.CreateFile("M3.db");
 
@@ -121,6 +121,40 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="email">The email address of the user to login</param>
         /// <param name="password">The password of the user to login</param>
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
+
+        public Response Register(string email, string password, string nickname, string emailHost)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+        /// <summary>
+        /// Assigns a task to a user
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        
+        /// <param name="emailAssignee">Email of the user to assign to task to</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Delete a task
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        		
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response DeleteTask(string email, int columnOrdinal, int taskId)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public Response<User> Login(string email, string password)
         {
             Response<User> r = myUserService.Login(email, password);
@@ -301,5 +335,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return myBoardService.MoveColumnLeft(email, columnOrdinal);
         }
 
+        Response IService.ChangeColumnName(string email, int columnOrdinal, string newName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

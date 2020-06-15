@@ -103,7 +103,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", TASK.Id);
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailval", TASK.email);
                     SQLiteParameter titleParam = new SQLiteParameter(@"Titleval", TASK.Title);
-                    SQLiteParameter descriptionParam = new SQLiteParameter(@"DescriptionVal", TASK.Description);
+                    SQLiteParameter descriptionParam;
+                    if (!string.IsNullOrEmpty(TASK.Description))// check if description is NULL
+                    {
+                        descriptionParam = new SQLiteParameter(@"DescriptionVal", TASK.Description);
+                    }
+                    else
+                    {
+                         descriptionParam = new SQLiteParameter(@"DescriptionVal","");
+                    }
                     SQLiteParameter duedateParam = new SQLiteParameter(@"DueDateVal", TASK.DueDate);
                     SQLiteParameter creationtimeParam = new SQLiteParameter(@"CreationTimeVal", TASK.CreationTime);
                     SQLiteParameter columnideParam = new SQLiteParameter(@"ColumnVal", TASK.ColumnId);
@@ -115,6 +123,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Parameters.Add(idParam);
                     command.Parameters.Add(emailParam);
                     command.Parameters.Add(titleParam);
+                    if(descriptionParam.IsNullable)
                     command.Parameters.Add(descriptionParam);
                     command.Parameters.Add(duedateParam);
                     command.Parameters.Add(creationtimeParam);
@@ -145,7 +154,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
             else
             {
-                desc = string.Empty;
+                desc = "";
             }
             DTOs.TaskDTO result = new DTOs.TaskDTO((long)reader.GetValue(0), (long)reader.GetValue(1), reader.GetString(2),
                 reader.GetString(3), desc, reader.GetDateTime(5), reader.GetDateTime(6));

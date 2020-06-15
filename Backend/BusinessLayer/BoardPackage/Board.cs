@@ -65,6 +65,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 int newLimit = Convert.ToInt32(c.LimitNum);
                 int newNumTasks = Convert.ToInt32(c.NumTasks);
                 Column newCol = new Column(c.email, c.Name, newId, newLimit, newNumTasks);
+                columns.Add(newCol.GetColumnId(), newCol);
             }
         }
         public Board(int id, string userEmail)
@@ -82,6 +83,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 int newLimit = Convert.ToInt32(c.LimitNum);
                 int newNumTasks = Convert.ToInt32(c.NumTasks);
                 Column newCol = new Column(c.email, c.Name, newId, newLimit, newNumTasks);
+                columns.Add(newCol.GetColumnId(), newCol);
             }
         }
         public void setLoggedInUser(string email)

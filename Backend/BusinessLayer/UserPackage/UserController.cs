@@ -104,8 +104,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                 throw new Exception("Can't logged in");
             }
             loggedInUser = users[email];
-            loggedInUser.getMyBoard().SetIsULoggedIn(true);
-            loggedInUser.GetUserBoard().SetIsULoggedIn(true);
             return loggedInUser;
         }
 

@@ -71,6 +71,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 
         public bool Login(string pass)
         {
+            
             if (this.password.Equals(pass))
             {
                 is_logged = true;

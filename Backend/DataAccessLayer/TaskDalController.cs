@@ -138,8 +138,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         protected DTOs.TaskDTO ConvertReaderToObject(SQLiteDataReader reader)
         {
+            string desc;
+            if (!reader.IsDBNull(4))
+            {
+                desc = reader.GetString(4);
+            }
+            else
+            {
+                desc = string.Empty;
+            }
             DTOs.TaskDTO result = new DTOs.TaskDTO((long)reader.GetValue(0), (long)reader.GetValue(1), reader.GetString(2),
-                reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6));
+                reader.GetString(3), desc, reader.GetDateTime(5), reader.GetDateTime(6));
             return result;
 
         }

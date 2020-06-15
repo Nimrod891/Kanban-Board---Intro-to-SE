@@ -46,8 +46,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                 string sql1 = @"CREATE TABLE Board(id INTEGER NOT NULL,email TEXT PRIMARY KEY NOT NULL)";
                 string sql2 = "CREATE TABLE USER(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,NickName TEXT NOT NULL ,password  TEXT NOT NULL)";
-                string sql3 = "CREATE TABLE Column(id INTEGER ,email text NOT NULL ,LimitNum INTEGER NOT NULL , Name TEXT NOT NULL, NumTask INTEGER NOT NULL,PRIMARY KEY ('id','email'))";
-                string sql4 = "CREATE TABLE Task(id INTEGER,Column INTEGER NOT NULL,email TEXT NOT NULL ,Title TEXT NOT NULL , Description TEXT,DueDate DATETIME NOT NULL,CreationTime DATETIME NOT NULL,PRIMARY KEY('id','Column','email' ))";
+                string sql3 = "CREATE TABLE Column(id INTEGER NOT NULL,email text NOT NULL ,LimitNum INTEGER NOT NULL , Name TEXT NOT NULL, NumTask INTEGER NOT NULL,PRIMARY KEY ('id','email'))";
+                string sql4 = "CREATE TABLE Task(id INTEGER NOT NULL,Column INTEGER NOT NULL,email TEXT NOT NULL ,Title TEXT NOT NULL , Description TEXT NOT NULL,DueDate DATETIME NOT NULL,CreationTime DATETIME NOT NULL,PRIMARY KEY('id','Column','email' ))";
                 System.Data.SQLite.SQLiteConnection.CreateFile("M3.db");
 
 

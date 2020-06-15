@@ -396,7 +396,5 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
             return myBoardService.GetTask(emailBoard, colid, taskid);
         }
-
-
     }
 }

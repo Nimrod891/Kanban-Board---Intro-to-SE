@@ -68,6 +68,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                     while (dataReader.Read())
                     {
+
                         results.Add(ConvertReaderToObject(dataReader));
 
                     }
@@ -103,15 +104,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", TASK.Id);
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailval", TASK.email);
                     SQLiteParameter titleParam = new SQLiteParameter(@"Titleval", TASK.Title);
-                    SQLiteParameter descriptionParam;
-                    if (!string.IsNullOrEmpty(TASK.Description))// check if description is NULL
-                    {
-                        descriptionParam = new SQLiteParameter(@"DescriptionVal", TASK.Description);
-                    }
-                    else
-                    {
-                        descriptionParam = new SQLiteParameter(@"DescriptionVal", "");
-                    }
+                    SQLiteParameter descriptionParam = new SQLiteParameter(@"Descriptionval", TASK.Description);
                     SQLiteParameter duedateParam = new SQLiteParameter(@"DueDateVal", TASK.DueDate);
                     SQLiteParameter creationtimeParam = new SQLiteParameter(@"CreationTimeVal", TASK.CreationTime);
                     SQLiteParameter columnideParam = new SQLiteParameter(@"ColumnVal", TASK.ColumnId);
@@ -123,7 +116,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Parameters.Add(idParam);
                     command.Parameters.Add(emailParam);
                     command.Parameters.Add(titleParam);
-                    
                     command.Parameters.Add(descriptionParam);
                     command.Parameters.Add(duedateParam);
                     command.Parameters.Add(creationtimeParam);
@@ -147,17 +139,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         protected DTOs.TaskDTO ConvertReaderToObject(SQLiteDataReader reader)
         {
-            string desc;
-            if (reader.GetString(4).Equals(""))
+            DTOs.TaskDTO result;
+            if (reader.IsDBNull(4))
             {
-                desc = null;
+                result = new DTOs.TaskDTO((long)reader.GetValue(0), (long)reader.GetValue(1), reader.GetString(2),
+                reader.GetString(3), null, reader.GetDateTime(5), reader.GetDateTime(6));
             }
             else
             {
-                desc = reader.GetString(4);
+                result = new DTOs.TaskDTO((long)reader.GetValue(0), (long)reader.GetValue(1), reader.GetString(2),
+                reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6));
             }
-            DTOs.TaskDTO result = new DTOs.TaskDTO((long)reader.GetValue(0), (long)reader.GetValue(1), reader.GetString(2),
-                reader.GetString(3), desc, reader.GetDateTime(5), reader.GetDateTime(6));
             return result;
 
         }

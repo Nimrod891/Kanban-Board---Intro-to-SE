@@ -151,9 +151,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6));
             }
             return result;
-
         }
-        
-
     }
 }

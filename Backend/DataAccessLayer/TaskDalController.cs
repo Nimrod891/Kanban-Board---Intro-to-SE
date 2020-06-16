@@ -111,8 +111,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
 
-
-
                     command.Parameters.Add(idParam);
                     command.Parameters.Add(emailParam);
                     command.Parameters.Add(titleParam);

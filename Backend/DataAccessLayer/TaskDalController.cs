@@ -110,7 +110,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     }
                     else
                     {
-                         descriptionParam = new SQLiteParameter(@"DescriptionVal","");
+                        descriptionParam = new SQLiteParameter(@"DescriptionVal", "");
                     }
                     SQLiteParameter duedateParam = new SQLiteParameter(@"DueDateVal", TASK.DueDate);
                     SQLiteParameter creationtimeParam = new SQLiteParameter(@"CreationTimeVal", TASK.CreationTime);
@@ -123,7 +123,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Parameters.Add(idParam);
                     command.Parameters.Add(emailParam);
                     command.Parameters.Add(titleParam);
-                    if(descriptionParam.IsNullable)
+                    
                     command.Parameters.Add(descriptionParam);
                     command.Parameters.Add(duedateParam);
                     command.Parameters.Add(creationtimeParam);
@@ -148,13 +148,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         protected DTOs.TaskDTO ConvertReaderToObject(SQLiteDataReader reader)
         {
             string desc;
-            if (!reader.IsDBNull(4))
+            if (reader.GetString(4).Equals(""))
             {
-                desc = reader.GetString(4);
+                desc = null;
             }
             else
             {
-                desc = "";
+                desc = reader.GetString(4);
             }
             DTOs.TaskDTO result = new DTOs.TaskDTO((long)reader.GetValue(0), (long)reader.GetValue(1), reader.GetString(2),
                 reader.GetString(3), desc, reader.GetDateTime(5), reader.GetDateTime(6));

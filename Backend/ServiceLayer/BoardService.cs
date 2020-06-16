@@ -197,5 +197,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return new Response<Column>(e.Message);
             }
         }
+        public Response<Task> GetTaskById(string email, int colID, int taskId)
+        {
+            try
+            {
+                BusinessLayer.BoardPackage.Task t = MyBoardContorller.GetTaskById(email, colID, taskId);
+                Task taskService = new Task(t.GetTaskId(), t.GetCreationDate(), t.GetDueDate(), t.GetTitle(), t.GetDescription());
+                return new Response<Task>(taskService);
+            }
+            catch (Exception e)
+            {
+                return new Response<Task>(e.Message);
+            }
+        }
     }
 }

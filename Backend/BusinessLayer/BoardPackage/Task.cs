@@ -84,7 +84,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void SetDescription(string description)
         {
-            if (description != null || !String.IsNullOrWhiteSpace(description))
+            if (!String.IsNullOrEmpty(description))
             {
                 if (description.Length > maxDesc)
                 {

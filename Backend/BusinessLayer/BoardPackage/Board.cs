@@ -387,5 +387,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             columns.Add(columnOrdinal, col2);
             return col1;
         }
+        public Task GetTaskById(int colID,int taskId)
+        {
+            return columns[colID].GetTaskById(taskId);
+        }
     }
 }

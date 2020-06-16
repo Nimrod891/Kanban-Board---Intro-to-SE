@@ -339,5 +339,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             throw new NotImplementedException();
         }
+        public Response<Task> GetTaskById(string email, int colID, int taskId)
+        {
+            return myBoardService.GetTaskById(email, colID, taskId);
+        }
     }
 }

@@ -190,6 +190,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the column, the response should contain a error message in case of an error</returns>
         Response<Column> MoveColumnLeft(string email, int columnOrdinal);
 
+        Response<Task> GetTaskById(string email, int colID, int taskId);
+
 
     }
 }

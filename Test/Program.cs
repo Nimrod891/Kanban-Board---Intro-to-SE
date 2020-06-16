@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using IntroSE.Kanban.Backend.BusinessLayer;
 using Task = IntroSE.Kanban.Backend.ServiceLayer.Task;
+
 
 namespace test
 {
@@ -27,7 +28,12 @@ namespace test
  
             reg = service.Login("ggg@gmail.com", "aA123456");
             reg = service.AddTask("ggg@gmail.com", "first", null, DateTime.Today.AddDays(1));
-            reg = service.GetColumn("ggg@gmail.com", 0);
+            reg = service.AddTask("ggg@gmail.com", "second", "aaa", DateTime.Today.AddDays(1));
+            
+            reg = service.AddTask("ggg@gmail.com", "first", null, DateTime.Today.AddDays(1));
+            
+            
+
             reg = service.AddTask("ggg@gmail.com", "secondadd", "second body", DateTime.Today.AddDays(1));
             reg = service.AddTask("ggg@gmail.com", "thirdtask", "third body", DateTime.Today.AddDays(1));
             reg = service.AddTask("ggg@gmail.com", "3rd goes to inprogress", " body", DateTime.Today.AddDays(1));

@@ -159,5 +159,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             return boards[email].MoveColumnLeft(columnOrdinal);
         }
+        public Task GetTaskById(string email,int colID, int taskId)
+        {
+            return boards[email].GetTaskById(colID, taskId);
+        }
     }
 }

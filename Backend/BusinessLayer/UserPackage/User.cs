@@ -63,7 +63,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             if (this.password.Equals(pass))
             {
                 is_logged = true;
-                
+                myBoard.SetIsULoggedIn(true);
                 return true;
             }
             return false;

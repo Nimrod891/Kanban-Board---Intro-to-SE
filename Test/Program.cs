@@ -23,16 +23,17 @@ namespace test
             IService service = new Service();
 
             Response reg = service.LoadData();
-            reg = service.Register("gg@gmail.com", "aA123456", "dasda");
+            
             reg = service.Register("ggg@gmail.com", "aA123456", "dasda");
- 
+             
             reg = service.Login("ggg@gmail.com", "aA123456");
             reg = service.AddTask("ggg@gmail.com", "first", null, DateTime.Today.AddDays(1));
             reg = service.AddTask("ggg@gmail.com", "second", "aaa", DateTime.Today.AddDays(1));
             
-            reg = service.AddTask("ggg@gmail.com", "first", null, DateTime.Today.AddDays(1));
-            
-            
+           // reg = service.AddTask("ggg@gmail.com", "first", null, DateTime.Today.AddDays(1));
+            reg = service.Register("gg@gmail.com", "aA123456", "dasda");
+            reg = service.GetColumn("ggg@gmail.com", 0);
+            reg = service.GetColumn("ggg@gmail.com", 3);
 
             reg = service.AddTask("ggg@gmail.com", "secondadd", "second body", DateTime.Today.AddDays(1));
             reg = service.AddTask("ggg@gmail.com", "thirdtask", "third body", DateTime.Today.AddDays(1));

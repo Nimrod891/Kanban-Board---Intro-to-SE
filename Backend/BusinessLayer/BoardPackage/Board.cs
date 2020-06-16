@@ -70,7 +70,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 columns.Add(newId, newCol);
                 taskId += newCol.GetMyTasks().Count;
             }
-            taskId += 2;
+        
         }
 
         public string GetUserEmail()
@@ -98,11 +98,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void LimitTasks(int columnId, int limitNum)
         {
-            //if (!is_UserLoggedin)
-            //{
-            //    throw new Exception("User is not logged in");
-            //}
-                columns[columnId].SetLimitNum(limitNum);
+            if (!is_UserLoggedin)
+            {
+                throw new Exception("User is not logged in");
+            }
+            if (columnId < 0 || columnId > columns.Count - 1)
+            {
+                throw new Exception("Invalid colomn Ordinal");
+            }
+            columns[columnId].SetLimitNum(limitNum);
             myColumnDC.Update(columnId,userEmail, DataAccessLayer.DTOs.ColumnDTO.MessageLimitNumColumnName, limitNum);
         }
 
@@ -116,7 +120,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("You can't advance tasks from the last column");
             }
-            if(currentColId < 0 || currentColId > columns.Count)
+            if(currentColId < 0 || currentColId > columns.Count-1)
             {
                 throw new Exception("Invalid colomn Ordinal");
             }
@@ -131,7 +135,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("can't update tasks in done column");
             }
-            if (is_UserLoggedin)
+            if (colId < 0 || colId > columns.Count - 1)
+            {
+                throw new Exception("INVALID column id");
+            }
+                if (is_UserLoggedin)
             {
                 columns[colId].GetTaskById(taskId).SetDueDate(dueDate);
                 columns[columnId].myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessageDueDateColumnName, dueDate);
@@ -145,6 +153,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (colId == columns.Count)
             {
                 throw new Exception("can't update tasks in done column");
+            }
+            if (colId < 0 || colId > columns.Count - 1)
+            {
+                throw new Exception("INVALID column id");
             }
             if (is_UserLoggedin)
             {
@@ -162,6 +174,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("can't update tasks in done column");
             }
+            if (colId < 0 || colId > columns.Count - 1)
+            {
+                throw new Exception("INVALID column id");
+            }
             if (is_UserLoggedin)
             {
                 columns[colId].GetTaskById(taskId).SetDescription(description);
@@ -175,7 +191,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public Column GetColumnById(int columnOrdinal)
         {
-            if (columnOrdinal < 0 || columnOrdinal > columns.Count)
+            if (columnOrdinal < 0)
+            {
+                throw new Exception("Invalid column ordinal");
+            }
+            if(columnOrdinal > columns.Count-1)
             {
                 throw new Exception("Invalid column ordinal");
             }
@@ -210,7 +230,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public Column AddColumn(int columnOrdinal, string Name)
         {
-            if (columnOrdinal < 0 || columnOrdinal > columns.Count)
+            if (columnOrdinal < 0 || columnOrdinal > columns.Count-1)
             {
                 throw new Exception("Invalid column ordinal");
             }
@@ -250,7 +270,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public void RemoveColumn(int columnOrdinal)
         {
-            if(columnOrdinal<0 || columnOrdinal > columns.Count)
+            if(columnOrdinal<0 || columnOrdinal > columns.Count-1)
             {
                 throw new Exception("Invalid column ordinal");
             }
@@ -315,11 +335,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public Column MoveColumnRight(int columnOrdinal) // we must update the SQL TASK table with new columnID for each task
         {
-            if (columnOrdinal < 0 || columnOrdinal > columns.Count)
+            if (columnOrdinal < 0 || columnOrdinal > columns.Count-1)
             {
                 throw new Exception("Invalid column ordinal");
             }
-            if (columnOrdinal == columns.Count)
+            if (columnOrdinal == columns.Count-1)
             {
                 throw new Exception("You cant move the most right column");
             }
@@ -353,7 +373,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public Column MoveColumnLeft(int columnOrdinal)// we must update the SQL TASK table with new columnID for each task
         {
-            if (columnOrdinal < 0 || columnOrdinal > columns.Count)
+            if (columnOrdinal < 0 || columnOrdinal > columns.Count-1)
             {
                 throw new Exception("Invalid column ordinal");
             }

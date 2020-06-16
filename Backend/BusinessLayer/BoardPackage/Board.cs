@@ -69,7 +69,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 columns.Add(newId, newCol);
                 
             }
-           
         }
 
         public string GetUserEmail()

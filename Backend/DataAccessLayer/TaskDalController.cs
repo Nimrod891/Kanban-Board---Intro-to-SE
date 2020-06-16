@@ -23,8 +23,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"select * from {MessageTableName} WHERE email = '{email}' AND " +
-                    $"Column={columnid}";
+                command.CommandText = $"select * from {MessageTableName} WHERE email = '{email}' AND Column={columnid}";
                 SQLiteDataReader dataReader = null;
                 try
                 {
@@ -52,26 +51,24 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return results;
         }
 
-        public List<DTOs.TaskDTO> Select(int id, string email)
+        public DTOs.TaskDTO Select(int id, string email, int columnid)
         {
             //string t_name = "columns";
-            List<DTOs.TaskDTO> results = new List<DTOs.TaskDTO>();
+            DTOs.TaskDTO t;
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"select * from {MessageTableName} WHERE email = '{email}' AND id={id} ";
+                command.CommandText = $"select * from {MessageTableName} WHERE email = '{email}' AND Column = {columnid} AND id={id} ";
                 SQLiteDataReader dataReader = null;
+                
                 try
                 {
                     connection.Open();
                     dataReader = command.ExecuteReader();
 
-                    while (dataReader.Read())
-                    {
+                   
+                       t= ConvertReaderToObject(dataReader);
 
-                        results.Add(ConvertReaderToObject(dataReader));
-
-                    }
                 }
                 finally
                 {
@@ -85,7 +82,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
 
             }
-            return results;
+            return t;
         }
 
 

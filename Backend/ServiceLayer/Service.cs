@@ -33,6 +33,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Service()
         {
             LoadData();
+            this.myUserService = new userService();
+            this.myBoardService = new boardService();
+
             
         }
                
@@ -58,16 +61,25 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                     using (System.Data.SQLite.SQLiteCommand com = new System.Data.SQLite.SQLiteCommand(con))
                     {
-                        con.Open();
+                        try
+                        {
+                            con.Open();
 
-                        com.CommandText = sql1;
-                        com.ExecuteNonQuery();
-                        com.CommandText = sql2;
-                        com.ExecuteNonQuery();
-                        com.CommandText = sql3;
-                        com.ExecuteNonQuery();
-                        com.CommandText = sql4;
-                        com.ExecuteNonQuery();
+                            com.CommandText = sql1;
+                            com.ExecuteNonQuery();
+                            com.CommandText = sql2;
+                            com.ExecuteNonQuery();
+                            com.CommandText = sql3;
+                            com.ExecuteNonQuery();
+                            com.CommandText = sql4;
+                            com.ExecuteNonQuery();
+                        }
+                        finally
+                        {
+                            com.Dispose();
+                            con.Close();
+                        }
+                        
                     }
                 }
 
@@ -77,7 +89,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 log.Info("Loading data");
                 this.myUserService = new userService();
                 this.myBoardService = new boardService();
-               
+
                 return new Response();
             }
             catch (Exception e)
@@ -86,13 +98,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return new Response(e.Message);
             }
 
-            //finally
-            //{
-            //    log.Fatal("Couldn't load datafinally");
-            //    this.myBoardService = new boardService();
-            //    this.myUserService = new userService();
-            //}
-           
+
+
         }
 
 

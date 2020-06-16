@@ -66,9 +66,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 int newLimit = Convert.ToInt32(c.LimitNum);
                 int newNumTasks = Convert.ToInt32(c.NumTasks);
                 Column newCol = new Column(c.email, c.Name, newId, newLimit, newNumTasks);
-                columns.Add(newId, newCol);
                 
+                columns.Add(newId, newCol);
+                taskId += newCol.GetMyTasks().Count;
+
             }
+            taskId += 2;
         }
 
         public string GetUserEmail()

@@ -15,8 +15,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private int numOfTasks;
         private Dictionary<int, Task> tasks;
         private ReadOnlyDictionary<int, Task> readOnlyDict;
-        public DataAccessLayer.TaskDalController myTaskDC;
-        private DataAccessLayer.ColumnDalController myColumnDC;
 
         public Column(string name, int columnId)
         {
@@ -25,7 +23,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             limitNum = -1;
             numOfTasks = 0;
             tasks = new Dictionary<int, Task>();
-            myTaskDC = new DataAccessLayer.TaskDalController();
         }
         public  Column(string email, string name, int columnId, int limitNum, int numOfTasks)
         {
@@ -34,15 +31,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.limitNum = limitNum;
             this.numOfTasks = numOfTasks;
             tasks = new Dictionary<int, Task>();
-            myTaskDC = new DataAccessLayer.TaskDalController();
-           List<DataAccessLayer.DTOs.TaskDTO> myTasks = myTaskDC.SelectAllTasks(email, columnId);
            
-            foreach(DataAccessLayer.DTOs.TaskDTO t in myTasks)
-            {
-                int newId = Convert.ToInt32(t.Id);
-                Task newTask = new Task(newId, t.Title, t.Description, t.DueDate,t.CreationTime);
-                tasks.Add(newId, newTask);
-            }
         }
         public string GetName()
         {

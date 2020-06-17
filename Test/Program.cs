@@ -41,10 +41,13 @@ namespace test
             reg = service.AddTask("ggg@gmail.com", "4th goes to TEST", " body", DateTime.Today.AddDays(1));
             reg = service.AddTask("ggg@gmail.com", "5th goes to done", " body", DateTime.Today.AddDays(1));
             reg = service.AddTask("ggg@gmail.com", "6th backlogish", " body", DateTime.Today.AddDays(1));
+
             reg = service.AdvanceTask("ggg@gmail.com", 0, 3);
+            reg = service.AdvanceTask("ggg@gmail.com", 0, 4);
+            reg = service.AdvanceTask("ggg@gmail.com", 1, 3);
             reg = service.AdvanceTask("ggg@gmail.com", 0, 5);
             reg = service.AdvanceTask("ggg@gmail.com", 1, 5);
-            
+
             reg = service.UpdateTaskDescription("ggg@gmail.com", 0, 2, "upated description test");
             reg = service.UpdateTaskDueDate("ggg@gmail.com", 0, 2, DateTime.Today.AddDays(3));
             reg = service.UpdateTaskTitle("ggg@gmail.com", 1, 1, "updated title test");
@@ -52,20 +55,20 @@ namespace test
             reg = service.AdvanceTask("ggg@gmail.com", 0, 4);
             reg = service.MoveColumnLeft("ggg@gmail.com", 1);
             reg = service.MoveColumnRight("ggg@gmail.com", 1);
-            //reg = service.RemoveColumn("ggg@gmail.com", 2);
-            //reg = service.RemoveColumn("ggg@gmail.com", 0);
+            reg = service.RemoveColumn("ggg@gmail.com", 2);
+            reg = service.RemoveColumn("ggg@gmail.com", 0);
             reg = service.GetColumn("ggg@gmail.com", 0);
             reg = service.AddColumn("ggg@gmail.com", 4, "Exist");
             reg = service.GetColumn("ggg@gmail.com", 4);
             reg = service.RemoveColumn(mail, 3);
             reg = service.GetColumn(mail, 3);
-            //reg = service.GetColumn("ggg@gmail.com", );
             reg = service.MoveColumnLeft(mail, 2);
             reg = service.GetColumn(mail, 2);
             reg = service.MoveColumnRight(mail, 2);
+            reg = service.MoveColumnRight(mail, 1);
             reg = service.GetColumn(mail, 2);
             reg = service.AddTask(mail, "Empty", null, DateTime.Today.AddDays(1));
-           // reg = service.LoadData
+            reg = service.LoadData();
 
 
 

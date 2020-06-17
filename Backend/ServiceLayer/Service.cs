@@ -32,10 +32,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         public Service()
         {
-            LoadData();
             this.myUserService = new userService();
             this.myBoardService = new boardService();
-
             
         }
                
@@ -87,8 +85,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 log.Info("Loading data");
-                this.myUserService = new userService();
-                this.myBoardService = new boardService();
+                myUserService.LoadData();
+                myBoardService.LoadData();
 
                 return new Response();
             }
@@ -116,8 +114,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
 
             Response r = myUserService.Register(email, password, nickname);
-            this.myBoardService = new boardService();
-
+            if (r != null)
+            {
+                this.myBoardService.LoadData();
+            }            
             log.Info("New User Registered: [" + email + "]");
             return r;
         }

@@ -21,12 +21,24 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             MyBoardContorller.SetLoggedInBoard(email);
         }
+        public Response LoadData()
+        {
+            try
+            {
+                MyBoardContorller.loadData();
+                return new Response();
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
         public Response<Board> GetBoard(string email)
         {
             try
             {
                 List<string> columnNames = new List<string>();
-                columnNames = MyBoardContorller.GetBoard(email).GetMyColumns();
+                columnNames = MyBoardContorller.GetBoard(email).GetMyColumnsNames();
                 ReadOnlyCollection<string> colNames = new ReadOnlyCollection<string>(columnNames);
                 Board boardService = new Board(colNames);
                 return new Response<Board>(boardService);

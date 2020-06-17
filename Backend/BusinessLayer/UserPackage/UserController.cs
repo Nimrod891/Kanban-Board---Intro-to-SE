@@ -23,18 +23,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         public UserController()
         {
             myUserDC = new DataAccessLayer.UserDalController();
+            myBoardDC = new DataAccessLayer.BoardDalController();
+            myColumnDC = new DataAccessLayer.ColumnDalController();
+            myTaskDC = new DataAccessLayer.TaskDalController();
             users = new Dictionary<string, User>();
+            
+        }
+        public void loadData()
+        {
             List<DataAccessLayer.DTOs.UserDTO> myUsers = myUserDC.SelectAllusers();
-            foreach(DataAccessLayer.DTOs.UserDTO u in myUsers)
+            foreach (DataAccessLayer.DTOs.UserDTO u in myUsers)
             {
                 User newUser = new User(u);
                 users.Add(u.email, newUser);
             }
         }
-
         public void Register(string email, string pass, string nickname)
         {
-            email = email.ToLower();
+            
             foreach (KeyValuePair<string, User> users in users) // check through dictionary if email already exisit
             {
                 if (users.Key.Equals(email))
@@ -45,6 +51,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                 {
                     throw new Exception("Invalid nickname");
                 }
+                
+
 
             }
             if (!IsValidEmail(email))
@@ -55,14 +63,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             {
                 throw new Exception("Invalid password");
             }
-            //email = email.ToLower();
+
             User u = new User(email, pass, nickname);
             users.Add(email, u);
             DataAccessLayer.DTOs.UserDTO dataUser = new DataAccessLayer.DTOs.UserDTO(0, email, nickname, pass);
-            myUserDC.Insert(dataUser);
-            //u.ToDalObject().Save();
-            //u.GetUserBoard().ToDalObject().Save();
-
+            myUserDC.Insert(dataUser); // insert user to database
+            BoardPackage.Board userBoard = new BoardPackage.Board(email);
+            DataAccessLayer.DTOs.BoardDTO dataBoard = new DataAccessLayer.DTOs.BoardDTO(0, email);
+            myBoardDC.Insert(dataBoard); // insert Board to database
+            foreach (var c in userBoard.getMyColumns()) // insert columns to database
+            {
+                DataAccessLayer.DTOs.ColumnDTO dataColumn = new DataAccessLayer.DTOs.ColumnDTO((long)c.Value.GetColumnId(), userBoard.GetUserEmail(), (long)c.Value.GetLimitNum(),c.Value.GetName(), (long)c.Value.GetNumOfTasks());
+                myColumnDC.Insert(dataColumn);
+            }
 
         }
 
@@ -80,8 +93,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                 throw new Exception("Can't logged in");
             }
             loggedInUser = users[email];
-            loggedInUser.getMyBoard().SetIsULoggedIn(true);
-            loggedInUser.GetUserBoard().SetIsULoggedIn(true);
             return loggedInUser;
         }
 
@@ -172,10 +183,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         }
         public bool DeleteData()
         {
-            myUserDC = new DataAccessLayer.UserDalController();
-            myBoardDC = new DataAccessLayer.BoardDalController();
-            myColumnDC = new DataAccessLayer.ColumnDalController();
-            myTaskDC = new DataAccessLayer.TaskDalController();
+            
             if(myUserDC.DeleteAll() && myBoardDC.DeleteAll() && myColumnDC.DeleteAll() && myTaskDC.DeleteAll())
             {
                 return true;

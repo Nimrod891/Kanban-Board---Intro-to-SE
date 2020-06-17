@@ -16,6 +16,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             this.myUserContorller = new BusinessLayer.UserPackage.UserController();
         }
+        public Response LoadData()
+        {
+            try
+            {
+                myUserContorller.loadData();
+                return new Response();
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
         public Response Register(string email, string password, string nickname)
         {
             try

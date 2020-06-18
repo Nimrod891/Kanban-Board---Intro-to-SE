@@ -48,8 +48,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Task a = boards[userEmail].AddNewTask(title, description, dueDate);
             //boards[userEmail].ToDalObject().Save();
 
-            return a;
-            
+            return a;   
         }
 
         public void LimitTasks(string userEmail, int columnId, int limitNum)

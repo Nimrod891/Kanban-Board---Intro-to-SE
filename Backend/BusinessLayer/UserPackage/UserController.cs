@@ -22,10 +22,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 
         public UserController()
         {
-            myUserDC = new DataAccessLayer.UserDalController();
             users = new Dictionary<string, User>();
+            
+        }
+        public void LoadData()
+        {
+            myUserDC = new DataAccessLayer.UserDalController();
             List<DataAccessLayer.DTOs.UserDTO> myUsers = myUserDC.SelectAllusers();
-            foreach(DataAccessLayer.DTOs.UserDTO u in myUsers)
+            foreach (DataAccessLayer.DTOs.UserDTO u in myUsers)
             {
                 User newUser = new User(u);
                 users.Add(u.email, newUser);
@@ -55,6 +59,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             {
                 throw new Exception("Invalid password");
             }
+        
             //email = email.ToLower();
             User u = new User(email, pass, nickname);
             users.Add(email, u);
@@ -66,7 +71,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 
         }
 
-        public User Login(string email, string pass)
+        public void Register(string email, string password, string nickname, string emailHost)// not as host
+        {
+            email = email.ToLower();
+            foreach (KeyValuePair<string, User> users in users) // check through dictionary if email already exisit
+            {
+                if (users.Key.Equals(email))
+                {
+                    throw new Exception("User already exisit");
+                }
+                if (string.IsNullOrWhiteSpace(nickname))
+                {
+                    throw new Exception("Invalid nickname");
+                }
+            }
+            User u = new User(email, password, nickname, emailHost);
+            DataAccessLayer.DTOs.UserDTO dataUser = new DataAccessLayer.DTOs.UserDTO(0, email, nickname, password); 
+            myUserDC.Insert(dataUser);
+        }
+
+            public User Login(string email, string pass)
         {
             //email = email.ToLower();
 
@@ -181,6 +205,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                 return true;
             }
             return false;
+        }
+
+        public string getMyUserHostMail(string email)
+        {
+            foreach (var u in users)
+            {
+                if (u.Key.Equals(email))
+                {
+                    return u.Value.getMyBoard().GetUserEmail();
+                }
+            }
+            return null;
         }
     }
 }

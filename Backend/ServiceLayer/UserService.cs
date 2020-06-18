@@ -16,11 +16,35 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             this.myUserContorller = new BusinessLayer.UserPackage.UserController();
         }
+        public Response LoadData()
+        {
+            try
+            {
+                myUserContorller.LoadData();
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
         public Response Register(string email, string password, string nickname)
         {
             try
             {
                 myUserContorller.Register(email, password, nickname);
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
+        public Response Register(string email, string password, string nickname, string emailHost)
+        {
+            try
+            {
+                myUserContorller.Register(email, password, nickname,emailHost);
                 return new Response();
             }
             catch (Exception e)
@@ -70,6 +94,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return new Response(e.Message);
             }
             
+        }
+        public BusinessLayer.UserPackage.UserController getMyUserContreller()
+        {
+            return this.myUserContorller;
         }
     }
 }

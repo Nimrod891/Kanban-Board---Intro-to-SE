@@ -48,6 +48,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             return name;
         }
+        public void setName(string name)
+        {
+            this.name = name;
+        }
 
         public int GetColumnId()
         {
@@ -142,8 +146,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return -1;
         }
 
-
-
         public ReadOnlyCollection<ServiceLayer.Task> GetMyTasks()
         {
             List<ServiceLayer.Task> listTasks = new List<ServiceLayer.Task>();
@@ -153,6 +155,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 listTasks.Add(task);
             }
             return listTasks.AsReadOnly();
+        }
+
+        public void AssignTask(int taskId, string emailAssignee)
+        {
+            tasks[taskId].setEmailAssignee(emailAssignee);
         }
     }
 }

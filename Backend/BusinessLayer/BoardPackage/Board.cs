@@ -11,12 +11,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
        
         private static int num_Boards;
         private int Id_board;
-        private string userEmail;
+        private string creatorEmail;
         private Dictionary<int, Column> columns;
         private int taskId;
         private int columnId;
         private int minColumns = 2;
         private bool is_UserLoggedin;
+        private string loggedInUser;
         private DataAccessLayer.BoardDalController myBoardDC;
         private DataAccessLayer.ColumnDalController myColumnDC;
         //private DataAccessLayer.TaskDalController myTaskDC;
@@ -26,10 +27,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             myBoardDC = new DataAccessLayer.BoardDalController();
             myColumnDC = new DataAccessLayer.ColumnDalController();
             columns = new Dictionary<int, Column>();
-            this.userEmail = userEmail;
-            DataAccessLayer.DTOs.BoardDTO dataBoard = new DataAccessLayer.DTOs.BoardDTO(this.Id_board, this.userEmail);
+            this.creatorEmail = userEmail;
+            DataAccessLayer.DTOs.BoardDTO dataBoard = new DataAccessLayer.DTOs.BoardDTO(this.Id_board, this.creatorEmail);
             myBoardDC.Insert(dataBoard);
-            
             columnId = 0;
             Column backlog = new Column("backlog", columnId);
             DataAccessLayer.DTOs.ColumnDTO dataColumn = new DataAccessLayer.DTOs.ColumnDTO(backlog.GetColumnId(), userEmail, backlog.GetLimitNum(), backlog.GetName(), backlog.GetNumOfTasks());
@@ -50,16 +50,34 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             
 
         }
-       
+
+        public Board(string userEmail, string emailHost)
+        {
+            columns = new Dictionary<int, Column>();
+            this.creatorEmail = emailHost;
+
+            //is_UserLoggedin = false;
+            myColumnDC = new DataAccessLayer.ColumnDalController();
+            List<DataAccessLayer.DTOs.ColumnDTO> myColumns = myColumnDC.SelectAllColumns(emailHost);
+            // Select(Id_board, emailHost);
+            foreach (DataAccessLayer.DTOs.ColumnDTO c in myColumns)
+            {
+                int newId = Convert.ToInt32(c.Id);
+                int newLimit = Convert.ToInt32(c.LimitNum);
+                int newNumTasks = Convert.ToInt32(c.NumTasks);
+                Column newCol = new Column(c.email, c.Name, newId, newLimit, newNumTasks);
+            }
+        }
+
         public Board(int id,string userEmail)
         {
             columns = new Dictionary<int, Column>();
-            this.userEmail = userEmail;
+            this.creatorEmail = userEmail;
 
             //is_UserLoggedin = false;
             myColumnDC = new DataAccessLayer.ColumnDalController();
             List<DataAccessLayer.DTOs.ColumnDTO> myColumns = myColumnDC.SelectAllColumns( userEmail);
-               // Select(Id_board, userEmail);
+               // Select(Id_board, creatorEmail);
             foreach (DataAccessLayer.DTOs.ColumnDTO c in myColumns)
             {
                 int newId = Convert.ToInt32(c.Id);
@@ -75,7 +93,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public string GetUserEmail()
         {
-            return userEmail;
+            return creatorEmail;
         }
 
         public void SetIsULoggedIn(bool a)
@@ -90,7 +108,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("User is not logged in");
             }
             Task a = columns[0].AddTask(taskId, title, description, dueDate);
-            DataAccessLayer.DTOs.TaskDTO dataTask = new DataAccessLayer.DTOs.TaskDTO(taskId, 0, userEmail, title, description, dueDate, DateTime.Now);
+            DataAccessLayer.DTOs.TaskDTO dataTask = new DataAccessLayer.DTOs.TaskDTO(taskId, 0, creatorEmail, title, description, dueDate, DateTime.Now);
             columns[0].myTaskDC.Insert(dataTask);
             taskId++;
             return a;   
@@ -107,7 +125,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Invalid colomn Ordinal");
             }
             columns[columnId].SetLimitNum(limitNum);
-            myColumnDC.Update(columnId,userEmail, DataAccessLayer.DTOs.ColumnDTO.MessageLimitNumColumnName, limitNum);
+            myColumnDC.Update(columnId,creatorEmail, DataAccessLayer.DTOs.ColumnDTO.MessageLimitNumColumnName, limitNum);
+        }
+        public void DeleteTask(int columnOrdinal, int taskId)
+        {
+            columns[columnOrdinal].DeleteTask(taskId);
         }
 
         public void AdvanceTask(int currentColId, int taskId)
@@ -125,7 +147,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Invalid colomn Ordinal");
             }
             columns[currentColId + 1].AddTasksToDict(taskId, columns[currentColId].GetTaskById(taskId)); // add task to the next column
-            columns[currentColId].myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, currentColId+1);
+            columns[currentColId].myTaskDC.Update(taskId, creatorEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, currentColId+1);
             columns[currentColId].DeleteTask(taskId); // delete task from current column
         }
 
@@ -142,7 +164,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 if (is_UserLoggedin)
             {
                 columns[colId].GetTaskById(taskId).SetDueDate(dueDate);
-                columns[columnId].myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessageDueDateColumnName, dueDate);
+                columns[columnId].myTaskDC.Update(taskId, creatorEmail, DataAccessLayer.DTOs.TaskDTO.MessageDueDateColumnName, dueDate);
             }
               
             else
@@ -161,7 +183,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (is_UserLoggedin)
             {
                 columns[colId].GetTaskById(taskId).SetTitle(title);
-                columns[colId].myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessageTitleColumnName, title);
+                columns[colId].myTaskDC.Update(taskId, creatorEmail, DataAccessLayer.DTOs.TaskDTO.MessageTitleColumnName, title);
             }
                 
             else
@@ -181,7 +203,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (is_UserLoggedin)
             {
                 columns[colId].GetTaskById(taskId).SetDescription(description);
-                columns[colId].myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessagedescriptionColumnName, description);
+                columns[colId].myTaskDC.Update(taskId, creatorEmail, DataAccessLayer.DTOs.TaskDTO.MessagedescriptionColumnName, description);
             }
                 
 
@@ -255,15 +277,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 foreach (var TaskDictionaryPair in col.getMyTasks())
                 {
 
-                    col.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, 
+                    col.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), creatorEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, 
                        col.GetColumnId()); // old columnid in SQL to updated one
                 }
-                myColumnDC.Update(i, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, i + 1);
+                myColumnDC.Update(i, creatorEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, i + 1);
                  
             }
             Column c = new Column(Name, columnOrdinal);
             columns.Add(columnOrdinal, c);
-            DataAccessLayer.DTOs.ColumnDTO dataColumn = new DataAccessLayer.DTOs.ColumnDTO(columnOrdinal, userEmail, c.GetLimitNum(), c.GetName(), c.GetNumOfTasks());
+            DataAccessLayer.DTOs.ColumnDTO dataColumn = new DataAccessLayer.DTOs.ColumnDTO(columnOrdinal, creatorEmail, c.GetLimitNum(), c.GetName(), c.GetNumOfTasks());
             myColumnDC.Insert(dataColumn);
             columnId++;
             return c;
@@ -291,8 +313,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 foreach (var t in tasks)
                 {
                     columns[columnOrdinal + 1].AddTasksToDict(t.Key, t.Value);
-                    //columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.IDColumnName, columnOrdinal + 1);
-                    columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                    //columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), creatorEmail, DataAccessLayer.DTOs.TaskDTO.IDColumnName, columnOrdinal + 1);
+                    columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), creatorEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
                        columnOrdinal+1);
                 }
             }
@@ -306,17 +328,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 foreach (var t in tasks)
                 {
                     columns[columnOrdinal - 1].AddTasksToDict(t.Key, t.Value);
-                    //columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.IDColumnName, columnOrdinal - 1);
-                    columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                    //columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), creatorEmail, DataAccessLayer.DTOs.TaskDTO.IDColumnName, columnOrdinal - 1);
+                    columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), creatorEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
                        columnOrdinal - 1);
                 }
             }
 
             columns[columnOrdinal].removeMyTasks();
-            DataAccessLayer.DTOs.ColumnDTO dataColumn = new DataAccessLayer.DTOs.ColumnDTO(columnOrdinal, userEmail, columns[columnOrdinal].GetLimitNum(),
-                columns[columnOrdinal].GetName(), columns[columnOrdinal].GetNumOfTasks());
-
-            myColumnDC.Delete(dataColumn, userEmail);
+            DataAccessLayer.DTOs.ColumnDTO dataColumn = new DataAccessLayer.DTOs.ColumnDTO(columnOrdinal, creatorEmail, columns[columnOrdinal].GetLimitNum(),
+            columns[columnOrdinal].GetName(), columns[columnOrdinal].GetNumOfTasks());
+            int newId = Convert.ToInt32(dataColumn.Id);
+            myColumnDC.Delete(newId, creatorEmail);
             columns.Remove(columnOrdinal);
 
             for (int i = columnOrdinal+1; i <= columns.Count; i++) // moving all necessery columns left
@@ -325,12 +347,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Column col = columns[i];
                 foreach (var TaskDictionaryPair in col.getMyTasks())
                 {
-                    col.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                    col.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), creatorEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
                        col.GetColumnId()); // old columnid in SQL to updated one
                 }
                 columns.Remove(i);
                 columns.Add(i - 1, col);
-                myColumnDC.Update(i, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, i - 1);
+                myColumnDC.Update(i, creatorEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, i - 1);
             }
         }
         public Column MoveColumnRight(int columnOrdinal) // we must update the SQL TASK table with new columnID for each task
@@ -350,20 +372,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             foreach (var TaskDictionaryPair in col1.getMyTasks())
             {
 
-                col1.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                col1.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), creatorEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
                    col1.GetColumnId()); // old columnid in SQL to updated one
             }
             Column col2 = columns[columnOrdinal + 1];
             foreach (var TaskDictionaryPair in col2.getMyTasks())
             {
 
-                col2.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                col2.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), creatorEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
                    col2.GetColumnId()); // old columnid in SQL to updated one
             }
 
-            myColumnDC.Update(columnOrdinal+1, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, -1);
-            myColumnDC.Update(columnOrdinal, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, columnOrdinal+1);
-            myColumnDC.Update(-1, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, columnOrdinal);
+            myColumnDC.Update(columnOrdinal+1, creatorEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, -1);
+            myColumnDC.Update(columnOrdinal, creatorEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, columnOrdinal+1);
+            myColumnDC.Update(-1, creatorEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, columnOrdinal);
 
             columns.Remove(columnOrdinal+1);
             columns.Add(columnOrdinal + 1, col1);
@@ -388,20 +410,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             foreach (var TaskDictionaryPair in col1.getMyTasks())
             {
 
-                col1.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                col1.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), creatorEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
                    col1.GetColumnId()); // old columnid in SQL to updated one
             }
             Column col2 = columns[columnOrdinal - 1];
             foreach (var TaskDictionaryPair in col2.getMyTasks())
             {
 
-                col2.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
+                col2.myTaskDC.Update(TaskDictionaryPair.Value.GetTaskId(), creatorEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName,
                    col2.GetColumnId()); // old columnid in SQL to updated one
             }
 
-            myColumnDC.Update(col2.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, -1);
-            myColumnDC.Update(col1.GetColumnId(), userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col1.GetColumnId() + 1);
-            myColumnDC.Update(-1, userEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col2.GetColumnId() - 1);
+            myColumnDC.Update(col2.GetColumnId(), creatorEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, -1);
+            myColumnDC.Update(col1.GetColumnId(), creatorEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col1.GetColumnId() + 1);
+            myColumnDC.Update(-1, creatorEmail, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, col2.GetColumnId() - 1);
             columns.Remove(columnOrdinal-1);
             columns.Add(columnOrdinal - 1, col1);
             columns.Remove(columnOrdinal);
@@ -411,6 +433,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public Task GetTaskById(int colID,int taskId)
         {
             return columns[colID].GetTaskById(taskId);
+        }
+        public void addColumnToDict(Column c)
+        {
+            columns.Add(c.GetColumnId(), c);
+        }
+
+        public void AssignTask(int columnOrdinal, int taskId, string emailAssignee)
+        {
+            if (columnOrdinal < 0 || columnOrdinal > columns.Count)
+            {
+                throw new Exception("Invalid column ordinal");
+            }
+            columns[columnOrdinal].AssignTask(taskId, emailAssignee);
+        }
+
+        public void ChangeColumnName(int columnOrdinal, string newName)
+        {
+            columns[columnOrdinal].setName(newName);
         }
     }
 }

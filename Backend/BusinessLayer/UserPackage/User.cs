@@ -13,6 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         private string nickname;
         private bool is_logged;
         private BoardPackage.Board myBoard;
+        private string myBoardHostMail;
         DataAccessLayer.BoardDalController myBoardDC = new DataAccessLayer.BoardDalController();
 
         public User(string email, string password, string nickname)
@@ -22,6 +23,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             this.nickname = nickname;
             this.is_logged = false;
             myBoard = new BoardPackage.Board(email);
+        }
+        public User(string email, string password, string nickname, string emailHost)// not host user
+        {
+            this.email = email;
+            this.password = password;
+            this.nickname = nickname;
+            this.is_logged = false;
+            myBoard = new BoardPackage.Board(email, emailHost);
+            myBoardHostMail = myBoard.GetUserEmail();
         }
         public User(DataAccessLayer.DTOs.UserDTO u)
         {

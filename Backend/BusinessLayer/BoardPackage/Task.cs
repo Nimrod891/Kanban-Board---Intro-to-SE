@@ -27,7 +27,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             SetDueDate(dueDate);
             this.creationDate = DateTime.Now;
         }
-        public Task(int taskId, string title, string description, DateTime dueDate, DateTime creationDate)
+        public Task(int taskId, string title, string description, DateTime dueDate, DateTime creationDate) //LoadTask
         {
             this.taskId = taskId;
             this.title = title;

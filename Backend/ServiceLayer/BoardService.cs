@@ -37,11 +37,60 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return new Response<Board>(e.Message);
             }
         }
-        public Response LimitColumnTasks(string email, int columnOrdinal, int limit)
+        public Response LoadData()
+        {
+            try
+            {
+                MyBoardContorller.LoadData();
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
+        public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
+        {
+            try
+            {
+                MyBoardContorller.AssignTask(email, columnOrdinal, taskId, emailAssignee);
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
+        public Response DeleteTask(string email, int columnOrdinal, int taskId)
+        {
+            try
+            {
+                MyBoardContorller.DeleteTask(email, columnOrdinal, taskId);
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
+            public Response LimitColumnTasks(string email, int columnOrdinal, int limit)
         {
             try
             {
                 MyBoardContorller.LimitTasks(email,columnOrdinal,limit);
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
+
+        public Response ChangeColumnName(string email, int columnOrdinal, string newName)
+        {
+            try
+            {
+                MyBoardContorller.ChangeColumnName(email, columnOrdinal, newName);
                 return new Response();
             }
             catch (Exception e)

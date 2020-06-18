@@ -25,6 +25,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
            (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         boardService myBoardService;
         userService myUserService;
+        string emailBoard;
         
 
         /// <summary>
@@ -32,9 +33,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         public Service()
         {
-            LoadData();
+
             this.myUserService = new userService();
             this.myBoardService = new boardService();
+            LoadData();
 
             
         }
@@ -45,8 +47,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
         public Response LoadData()
         {
-            if(!File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"))))
-                {
+            if (!File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "M3.db"))))
+            {
                 string sql1 = @"CREATE TABLE Board(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY )";
                 string sql2 = "CREATE TABLE USER(id INTEGER NOT NULL,email TEXT NOT NULL PRIMARY KEY,NickName TEXT NOT NULL, password TEXT NOT NULL)";
                 string sql3 = "CREATE TABLE Column(id INTEGER NOT NULL,email text NOT NULL ,LimitNum INTEGER NOT NULL, Name TEXT NOT NULL, NumTask INTEGER NOT NULL,PRIMARY KEY ('id','email'))";
@@ -79,16 +81,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                             com.Dispose();
                             con.Close();
                         }
-                        
+
                     }
                 }
-
             }
+
             try
             {
                 log.Info("Loading data");
-                this.myUserService = new userService();
-                this.myBoardService = new boardService();
+                myUserService.LoadData();
+                myBoardService.LoadData();
 
                 return new Response();
             }
@@ -116,7 +118,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
 
             Response r = myUserService.Register(email, password, nickname);
-            this.myBoardService = new boardService();
+            if(r.ErrorMessage == null)
+            {
+                myBoardService.LoadData();
+            }
 
             log.Info("New User Registered: [" + email + "]");
             return r;
@@ -131,7 +136,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response Register(string email, string password, string nickname, string emailHost)
         {
-            throw new NotImplementedException();
+            return myUserService.Register(email, password, nickname, emailHost);
         }
 
 
@@ -146,7 +151,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
         {
-            throw new NotImplementedException();
+            return myBoardService.AssignTask(email, columnOrdinal, taskId, emailAssignee);
         }
 
         /// <summary>
@@ -158,7 +163,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response DeleteTask(string email, int columnOrdinal, int taskId)
         {
-            throw new NotImplementedException();
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.DeleteTask(emailBoard, columnOrdinal, taskId);
         }
 
 
@@ -342,9 +348,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return myBoardService.MoveColumnLeft(email, columnOrdinal);
         }
 
-        Response IService.ChangeColumnName(string email, int columnOrdinal, string newName)
+        public Response ChangeColumnName(string email, int columnOrdinal, string newName)
         {
-            throw new NotImplementedException();
+            return myBoardService.ChangeColumnName(email, columnOrdinal, newName);
         }
         public Response<Task> GetTaskById(string email, int colID, int taskId)
         {

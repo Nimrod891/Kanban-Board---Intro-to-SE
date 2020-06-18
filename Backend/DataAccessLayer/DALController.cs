@@ -144,7 +144,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         //  protected abstract DTOs.DTO ConvertReaderToObject(SQLiteDataReader reader);
 
-        public bool Delete(DTOs.DTO DTOObj, string boardEmail)
+        public bool Delete(int id, string boardEmail)
         {
             int res = -1;
 
@@ -153,7 +153,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 var command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"delete from {_tableName} where id={DTOObj.Id} AND email='{boardEmail}'"
+                    CommandText = $"delete from {_tableName} where id={id} AND email='{boardEmail}'"
                 };
                 try
                 {

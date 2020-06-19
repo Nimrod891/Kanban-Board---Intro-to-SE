@@ -27,7 +27,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         }
         public void LoadData()
         {
+            myBoardDC = new DataAccessLayer.BoardDalController();
             myUserDC = new DataAccessLayer.UserDalController();
+            myColumnDC = new DataAccessLayer.ColumnDalController();
             List<DataAccessLayer.DTOs.UserDTO> myUsers = myUserDC.SelectAllusers();
             foreach (DataAccessLayer.DTOs.UserDTO u in myUsers)
             {
@@ -65,6 +67,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             users.Add(email, u);
             DataAccessLayer.DTOs.UserDTO dataUser = new DataAccessLayer.DTOs.UserDTO(0, email, nickname, pass);
             myUserDC.Insert(dataUser);
+            
+            DataAccessLayer.DTOs.BoardDTO dataBoard = new DataAccessLayer.DTOs.BoardDTO(0, u.getMyBoard().GetUserEmail());
+            myBoardDC.Insert(dataBoard);
+            Dictionary<int, Backend.BusinessLayer.BoardPackage.Column> myBoardColumns = new Dictionary<int, BoardPackage.Column>();
+            myBoardColumns = u.getMyBoard().getMyColumns();
+            foreach(var c in myBoardColumns)
+            {
+                DataAccessLayer.DTOs.ColumnDTO dataCol = new DataAccessLayer.DTOs.ColumnDTO(c.Value.GetColumnId(), email, c.Value.GetLimitNum(), c.Value.GetName(), c.Value.GetNumOfTasks());
+                myColumnDC.Insert(dataCol);
+            }
             //u.ToDalObject().Save();
             //u.GetUserBoard().ToDalObject().Save();
 
@@ -85,7 +97,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                     throw new Exception("Invalid nickname");
                 }
             }
-            User u = new User(email, password, nickname, emailHost);
+            //User u = new User(email, password, nickname, emailHost); CHANGE
             DataAccessLayer.DTOs.UserDTO dataUser = new DataAccessLayer.DTOs.UserDTO(0, email, nickname, password); 
             myUserDC.Insert(dataUser);
         }

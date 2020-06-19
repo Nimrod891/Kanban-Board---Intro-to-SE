@@ -45,6 +45,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                         int tId = Convert.ToInt32(t.Id);
                         Task newTask = new Task(tId, t.Title, t.Description, t.DueDate, t.CreationTime);
                         newCol.AddTasksToDict(newTask.GetTaskId(), newTask);
+                        newBoard.setTaskId(newCol.GetMyTasks().Count + newBoard.getTaskId());
                     }
                 }
             }
@@ -76,7 +77,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return boards[userEmail];
         }
 
-        public Task AddNewTask(string userEmail ,string title, string description, DateTime dueDate)
+        public Task AddNewTask(string userEmail, string title, string description, DateTime dueDate)
         {
 
             if (!boards.ContainsKey(userEmail))
@@ -85,10 +86,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
 
             Task a = boards[userEmail].AddNewTask(title, description, dueDate);
+            DataAccessLayer.DTOs.TaskDTO dataTask = new DataAccessLayer.DTOs.TaskDTO(a.GetTaskId(), 0, userEmail, a.GetTitle(), a.GetDescription(), a.GetDueDate(), a.GetCreationDate());
+            myTaskDC.Insert(dataTask);
             //boards[creatorEmail].ToDalObject().Save();
 
             return a;
-            
+
         }
         public void ChangeColumnName(string email, int columnOrdinal, string newName)
         {
@@ -106,6 +109,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board does not exist");
             }
             boards[userEmail].LimitTasks(columnId, limitNum);
+            myColumnDC.Update(columnId, userEmail, DataAccessLayer.DTOs.ColumnDTO.MessageLimitNumColumnName, limitNum);
             //boards[creatorEmail].ToDalObject().Save();
         }
         public void AdvanceTask(string userEmail, int currentColId, int taskId)
@@ -115,6 +119,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board does not exist");
             }
             boards[userEmail].AdvanceTask(currentColId, taskId);
+            myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, currentColId + 1);
             //boards[creatorEmail].ToDalObject().Save();
 
         }
@@ -125,7 +130,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             boards[email].SetIsULoggedIn(true);
         }
 
-        
+
 
         public void UpdateTaskDueDate(string userEmail, int colId, int taskId, DateTime dueDate)
         {
@@ -134,6 +139,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board not exist");
             }
             boards[userEmail].UpdateTaskDueDate(colId, taskId, dueDate);
+            myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessageDueDateColumnName, dueDate);
             //boards[creatorEmail].ToDalObject().Save();
         }
 
@@ -144,6 +150,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board not exist");
             }
             boards[userEmail].UpdateTaskTitle(colId, taskId, title);
+            myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessageTitleColumnName, title);
             //boards[creatorEmail].ToDalObject().Save();
         }
 
@@ -154,6 +161,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board not exist");
             }
             boards[userEmail].UpdateTaskDescription(colId, taskId, description);
+            myTaskDC.Update(taskId, userEmail, DataAccessLayer.DTOs.TaskDTO.MessagedescriptionColumnName, description);
             //boards[creatorEmail].ToDalObject().Save();
         }
 
@@ -180,7 +188,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("Board not exist");
             }
-            return boards[email].AddColumn(columnOrdinal, Name);
+            Column c = boards[email].AddColumn(columnOrdinal, Name);
+            for (int i = boards[email].getMyColumns().Count - 1; i > columnOrdinal; i--)// update tasks columnid,columnid,instert new column.
+            {
+                foreach (var t in boards[email].getMyColumns()[i].getMyTasks())
+                {
+                    myTaskDC.Update(t.Value.GetTaskId(), email, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, i);
+                }
+                myColumnDC.Update(i - 1, email, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, i);
+            }
+            DataAccessLayer.DTOs.ColumnDTO dataColumn = new DataAccessLayer.DTOs.ColumnDTO(columnOrdinal, email, c.GetLimitNum(), c.GetName(), c.GetNumOfTasks());
+            myColumnDC.Insert(dataColumn);
+            return c;
         }
         public void RemoveColumn(string email, int columnOrdinal)
         {
@@ -189,6 +208,28 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board not exist");
             }
             boards[email].RemoveColumn(columnOrdinal);
+            if (columnOrdinal == 0)
+            {
+                foreach (var t in boards[email].getMyColumns()[columnOrdinal + 1].getMyTasks())
+                {
+                    myTaskDC.Update(t.Value.GetTaskId(), email, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, columnOrdinal + 1);
+                }
+            }
+            else
+            {
+                foreach (var t in boards[email].getMyColumns()[columnOrdinal - 1].getMyTasks())
+                    myTaskDC.Update(t.Value.GetTaskId(), email, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, columnOrdinal - 1);
+            }
+
+            myColumnDC.Delete(columnOrdinal, email);
+            for (int i = columnOrdinal + 1; i <= boards[email].getMyColumns().Count; i++)
+            {
+                foreach (var t in boards[email].getMyColumns()[i - 1].getMyTasks())
+                {
+                    myTaskDC.Update(t.Value.GetTaskId(), email, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, i - 1);
+                }
+                myColumnDC.Update(i, email, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, i - 1);
+            }
         }
         public Column MoveColumnRight(string email, int columnOrdinal)
         {
@@ -196,7 +237,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("Board not exist");
             }
-            return boards[email].MoveColumnRight(columnOrdinal);
+            Dictionary<int, Task> taskscol1 = boards[email].getMyColumns()[columnOrdinal].getMyTasks();
+            Dictionary<int, Task> taskscol2 = boards[email].getMyColumns()[columnOrdinal + 1].getMyTasks();
+            Column c = boards[email].MoveColumnRight(columnOrdinal);
+            foreach (var t in taskscol1)
+            {
+                myTaskDC.Update(t.Value.GetTaskId(), email, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, columnOrdinal + 1);
+            }
+            foreach (var t in taskscol2)
+            {
+                myTaskDC.Update(t.Value.GetTaskId(), email, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, columnOrdinal);
+            }
+            myColumnDC.Update(columnOrdinal + 1, email, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, -1);
+            myColumnDC.Update(columnOrdinal, email, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, columnOrdinal + 1);
+            myColumnDC.Update(-1, email, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, columnOrdinal);
+            return c;
         }
         public Column MoveColumnLeft(string email, int columnOrdinal)
         {
@@ -204,9 +259,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("Board not exist");
             }
-            return boards[email].MoveColumnLeft(columnOrdinal);
+            Dictionary<int, Task> taskscol1 = boards[email].getMyColumns()[columnOrdinal].getMyTasks();
+            Dictionary<int, Task> taskscol2 = boards[email].getMyColumns()[columnOrdinal - 1].getMyTasks();
+            Column c = boards[email].MoveColumnLeft(columnOrdinal);
+            foreach (var t in taskscol1)
+            {
+                myTaskDC.Update(t.Value.GetTaskId(), email, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, columnOrdinal - 1);
+            }
+            foreach (var t in taskscol2)
+            {
+                myTaskDC.Update(t.Value.GetTaskId(), email, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, columnOrdinal);
+            }
+            myColumnDC.Update(columnOrdinal - 1, email, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, -1);
+            myColumnDC.Update(columnOrdinal, email, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, columnOrdinal - 1);
+            myColumnDC.Update(-1, email, DataAccessLayer.DTOs.ColumnDTO.IDColumnName, columnOrdinal);
+            return c;
         }
-        public Task GetTaskById(string email,int colID, int taskId)
+        public Task GetTaskById(string email, int colID, int taskId)
         {
             return boards[email].GetTaskById(colID, taskId);
         }

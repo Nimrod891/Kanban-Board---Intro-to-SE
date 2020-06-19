@@ -22,7 +22,7 @@ namespace test
             string mail = "ggg@gmail.com";
             IService service = new Service();
 
-            Response reg = service.LoadData();
+            Response reg;
             
             reg = service.Register("ggg@gmail.com", "aA123456", "dasda");
              

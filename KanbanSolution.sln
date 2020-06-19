@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanProject", "Backend\Ka
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{F33561C9-4184-46CD-8CAA-43B23F32BD97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{BA953AD2-BF83-4762-B8DD-A55C88DD66FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{C4803E0C-25B1-413A-B16E-129D1DC803BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{F33561C9-4184-46CD-8CAA-43B23F32BD97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F33561C9-4184-46CD-8CAA-43B23F32BD97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F33561C9-4184-46CD-8CAA-43B23F32BD97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA953AD2-BF83-4762-B8DD-A55C88DD66FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA953AD2-BF83-4762-B8DD-A55C88DD66FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA953AD2-BF83-4762-B8DD-A55C88DD66FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA953AD2-BF83-4762-B8DD-A55C88DD66FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4803E0C-25B1-413A-B16E-129D1DC803BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4803E0C-25B1-413A-B16E-129D1DC803BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4803E0C-25B1-413A-B16E-129D1DC803BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4803E0C-25B1-413A-B16E-129D1DC803BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

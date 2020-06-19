@@ -33,12 +33,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         public Service()
         {
-
+            
             this.myUserService = new userService();
             this.myBoardService = new boardService();
             LoadData();
 
-            
+
+
         }
                
         /// <summary>        

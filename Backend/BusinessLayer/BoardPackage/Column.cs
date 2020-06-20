@@ -73,6 +73,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public void setColumnId(int columnId)
         {
             this.columnId = columnId;
+
         }
        public Dictionary<int,Task> getMyTasks()
         {

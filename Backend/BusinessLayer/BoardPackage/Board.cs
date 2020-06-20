@@ -427,6 +427,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             this.loggedInUser = email;
         }
+        public void setCreator(string email)
+        {
+            this.creatorEmail = email;
+        }
 
     }
 }

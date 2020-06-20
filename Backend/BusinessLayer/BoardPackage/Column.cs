@@ -14,12 +14,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private int columnId;
         private int limitNum;
         private int numOfTasks;
+        private int maxNameLength = 15;
         private Dictionary<int, Task> tasks;
         private ReadOnlyDictionary<int, Task> readOnlyDict;
 
         public Column(string name, int columnId)
         {
-            this.name = name;
+            setName(name);
             this.columnId = columnId;
             limitNum = 100;
             numOfTasks = 0;
@@ -27,7 +28,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public  Column(string email, string name, int columnId, int limitNum, int numOfTasks)
         {
-            this.name = name;
+            setName(name);
             this.columnId = columnId;
             this.limitNum = limitNum;
             this.numOfTasks = numOfTasks;
@@ -44,6 +45,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public void setName(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new Exception("cant be empty");
+            }
+            if(name.Length > maxNameLength)
+            {
+                throw new Exception("cant add name with more then 15 chars");
+            }
             this.name = name;
         }
 
@@ -118,7 +127,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             tasks.Add(taskId, t);
             numOfTasks = tasks.Count;
-
         }
 
         public Task GetTaskById(int taskId)

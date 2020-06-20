@@ -213,7 +213,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit)
         {
-            return myBoardService.LimitColumnTasks(email, columnOrdinal, limit);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.LimitColumnTasks(emailBoard, columnOrdinal, limit);
         }
 
         /// <summary>
@@ -226,7 +227,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string title, string description, DateTime dueDate)
         {
-            return myBoardService.AddTask(email, title, description, dueDate);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.AddTask(emailBoard, title, description, dueDate);
         }
 
         /// <summary>
@@ -239,7 +241,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            return myBoardService.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.UpdateTaskDueDate(emailBoard, columnOrdinal, taskId, dueDate);
         }
 
         /// <summary>
@@ -252,7 +255,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
         {
-            return myBoardService.UpdateTaskTitle(email, columnOrdinal, taskId, title);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.UpdateTaskTitle(emailBoard, columnOrdinal, taskId, title);
         }
 
         /// <summary>
@@ -265,7 +269,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string description)
         {
-            return myBoardService.UpdateTaskDescription(email, columnOrdinal, taskId, description);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.UpdateTaskDescription(emailBoard, columnOrdinal, taskId, description);
         }
 
         /// <summary>
@@ -277,7 +282,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AdvanceTask(string email, int columnOrdinal, int taskId)
         {
-            return myBoardService.AdvanceTask(email, columnOrdinal, taskId);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.AdvanceTask(emailBoard, columnOrdinal, taskId);
         }
 
 
@@ -314,7 +320,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response RemoveColumn(string email, int columnOrdinal)
         {
-            return myBoardService.RemoveColumn(email, columnOrdinal);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.RemoveColumn(emailBoard, columnOrdinal);
         }
 
         /// <summary>
@@ -327,7 +334,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the new Column, the response should contain a error message in case of an error</returns>
         public Response<Column> AddColumn(string email, int columnOrdinal, string Name)
         {
-            return myBoardService.AddColumn(email, columnOrdinal, Name);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.AddColumn(emailBoard, columnOrdinal, Name);
         }
 
         /// <summary>
@@ -339,7 +347,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the moved Column, the response should contain a error message in case of an error</returns>
         public Response<Column> MoveColumnRight(string email, int columnOrdinal)
         {
-            return myBoardService.MoveColumnRight(email, columnOrdinal);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.MoveColumnRight(emailBoard, columnOrdinal);
         }
 
         /// <summary>
@@ -351,12 +360,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the moved Column, the response should contain a error message in case of an error</returns>
         public Response<Column> MoveColumnLeft(string email, int columnOrdinal)
         {
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
             return myBoardService.MoveColumnLeft(email, columnOrdinal);
         }
 
         public Response ChangeColumnName(string email, int columnOrdinal, string newName)
         {
-            return myBoardService.ChangeColumnName(email, columnOrdinal, newName);
+            emailBoard = myUserService.getMyUserContreller().getMyUserHostMail(email);
+            return myBoardService.ChangeColumnName(emailBoard, columnOrdinal, newName);
         }
         public Response<Task> GetTaskById(string email, int colID, int taskId)
         {

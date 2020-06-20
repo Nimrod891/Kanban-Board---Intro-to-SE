@@ -21,6 +21,7 @@ namespace Tests
             board.addColumnToDict(backlog.Object);
             board.addColumnToDict(in_progress.Object);
             board.addColumnToDict(done.Object);
+            board.setCreator("hila@gmail.com");
         }
         //[TearDown]
         //public void TearDown()
@@ -43,6 +44,8 @@ namespace Tests
         [TestCase("backlog")]
         [TestCase("in_progress")]
         [TestCase("done")]
+        [TestCase("")]
+        [TestCase(null)]
         [Test]
         public void addColumnTest_invalidExistingName_ExceptingException(string inValidName)
         {
@@ -54,7 +57,19 @@ namespace Tests
             //Act
             Assert.Catch<Exception>(delegate { board.AddColumn(validColId, inValidName); }, "inValid name exception");
         }
+        [Test]
+        public void addColumnTest_notCreatorUser_ExceptingException()
+        {
+            //Arrange
+            int validColId = 1;
+            string ValidColName = "Hila";
+            board.SetIsULoggedIn(true);
+            board.setLoggedInUser("nim@gmail.com");
+            Mock<Column> testColumn = new Mock<Column>();
 
+            //Act
+            Assert.Catch<Exception>(delegate { board.AddColumn(validColId, ValidColName); }, "inValid name exception");
+        }
         [Test]
         public void addColumnTest_validArguments_ExceptingColAddInRightPlace()
         {
@@ -63,6 +78,7 @@ namespace Tests
             string ValidcolName = "Hila";
             int validColId = 1;
             board.SetIsULoggedIn(true);
+            board.setLoggedInUser("hila@gmail.com");
             //Act
             Column c = board.AddColumn(validColId, ValidcolName);
             //Assert
@@ -78,6 +94,7 @@ namespace Tests
         {
             //Arrange
             board.SetIsULoggedIn(true);
+            board.setLoggedInUser("hila@gmail.com");
 
             //Act
             Assert.Catch<Exception>(delegate { board.MoveColumnRight(columnId); }, "inValid ColID exception");
@@ -88,6 +105,7 @@ namespace Tests
             //Arrange
             int columnOrdinal = 2;
             board.SetIsULoggedIn(true);
+            board.setLoggedInUser("hila@gmail.com");
             //Act
             Assert.Catch<Exception>(delegate { board.MoveColumnRight(columnOrdinal); }, "cant move right the last column");
         }
@@ -98,11 +116,25 @@ namespace Tests
             int validColId = 1;
             Column c2 = board.getMyColumns()[validColId + 1];
             board.SetIsULoggedIn(true);
+            board.setLoggedInUser("hila@gmail.com");
             //Act
             Column c1 = board.MoveColumnRight(validColId);
             //Assert
             Assert.AreSame(c1, board.getMyColumns()[validColId+1]);
             Assert.AreSame(c2, board.getMyColumns()[validColId]);
         }
+        [Test]
+        public void MoveColumnRightTest_notCreatorUser_ExceptingException()
+        {
+            //Arrange
+            int validColId = 1;
+            board.SetIsULoggedIn(true);
+            board.setLoggedInUser("nim@gmail.com");
+            Mock<Column> testColumn = new Mock<Column>();
+
+            //Act
+            Assert.Catch<Exception>(delegate { board.MoveColumnRight(validColId); }, "inValid name exception");
+        }
+
     }
 }

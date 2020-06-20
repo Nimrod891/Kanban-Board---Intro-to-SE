@@ -21,7 +21,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             this.name = name;
             this.columnId = columnId;
-            limitNum = -1;
+            limitNum = 100;
             numOfTasks = 0;
             tasks = new Dictionary<int, Task>();
         }
@@ -139,7 +139,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             return -1;
         }
-
+        public Dictionary<int,Task> getTasksDict()
+        {
+            return this.tasks;
+        }
         public ReadOnlyCollection<ServiceLayer.Task> GetMyTasks()
         {
             List<ServiceLayer.Task> listTasks = new List<ServiceLayer.Task>();

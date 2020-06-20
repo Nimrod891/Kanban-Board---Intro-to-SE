@@ -259,5 +259,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return new Response<Task>(e.Message);
             }
         }
+        public BusinessLayer.BoardPackage.BoardController getMyBoardController()
+        {
+            return this.MyBoardContorller;
+        }
     }
 }

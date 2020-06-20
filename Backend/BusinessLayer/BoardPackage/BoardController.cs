@@ -279,5 +279,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             return boards[email].GetTaskById(colID, taskId);
         }
+        public Dictionary<string,Board> getMyBoards()
+        {
+            return this.boards;
+        }
+        public void addBoardToDict(Board b)
+        {
+            this.boards.Add(b.GetUserEmail(), b);
+        }
     }
 }

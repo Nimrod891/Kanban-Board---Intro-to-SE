@@ -48,23 +48,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             
         }
 
-        //public Board(string userEmail, string emailHost)
-        //{
-        //    columns = new Dictionary<int, Column>();
-        //    this.creatorEmail = emailHost;
-
-        //    //is_UserLoggedin = false;
-
-        //    List<DataAccessLayer.DTOs.ColumnDTO> myColumns = myColumnDC.SelectAllColumns(emailHost);
-        //    // Select(Id_board, emailHost);
-        //    foreach (DataAccessLayer.DTOs.ColumnDTO c in myColumns)
-        //    {
-        //        int newId = Convert.ToInt32(c.Id);
-        //        int newLimit = Convert.ToInt32(c.LimitNum);
-        //        int newNumTasks = Convert.ToInt32(c.NumTasks);
-        //        Column newCol = new Column(c.email, c.Name, newId, newLimit, newNumTasks);
-        //    }
-        //}
+        public Board(string userEmail, string emailHost)
+        {
+            columns = new Dictionary<int, Column>();
+            this.creatorEmail = emailHost;
+            is_UserLoggedin = false;
+        }
 
         public Board(int id,string userEmail)
         {
@@ -92,6 +81,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("User is not logged in");
             }
             Task a = columns[0].AddTask(taskId, title, description, dueDate);
+            a.setEmailAssignee(this.loggedInUser);
             taskId++;
             return a;   
         }
@@ -106,11 +96,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("Invalid colomn Ordinal");
             }
+            if(!loggedInUser.Equals(creatorEmail))
+            {
+                throw new Exception("only creator can do this");
+            }
             columns[columnId].SetLimitNum(limitNum);
            
         }
         public void DeleteTask(int columnOrdinal, int taskId)
         {
+            if (!loggedInUser.Equals(columns[columnOrdinal].getTasksDict()[taskId].getEmailAssignee()))
+            {
+                throw new Exception("only taskAsignee can do that");
+            }
+            if (columnId < 0 || columnId > columns.Count - 1)
+            {
+                throw new Exception("Invalid colomn Ordinal");
+            }
             columns[columnOrdinal].DeleteTask(taskId);
         }
 
@@ -128,6 +130,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("Invalid colomn Ordinal");
             }
+            if (!loggedInUser.Equals(columns[currentColId].getTasksDict()[taskId].getEmailAssignee()))
+            {
+                throw new Exception("only taskAsignee can do that");
+            }
             columns[currentColId + 1].AddTasksToDict(taskId, columns[currentColId].GetTaskById(taskId)); // add task to the next column
             columns[currentColId].DeleteTask(taskId); // delete task from current column
         }
@@ -142,14 +148,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("INVALID column id");
             }
-                if (is_UserLoggedin)
+            if (!loggedInUser.Equals(columns[colId].getTasksDict()[taskId].getEmailAssignee()))
             {
-                columns[colId].GetTaskById(taskId).SetDueDate(dueDate);
-                
+                throw new Exception("only taskAsignee can do that");
             }
-              
-            else
+            if (!is_UserLoggedin)
+            {
                 throw new Exception("User is not logged in");
+            }
+            columns[colId].GetTaskById(taskId).SetDueDate(dueDate);
         }
         public void UpdateTaskTitle(int colId, int taskId, string title)
         {
@@ -161,14 +168,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("INVALID column id");
             }
-            if (is_UserLoggedin)
+            if (!loggedInUser.Equals(columns[colId].getTasksDict()[taskId].getEmailAssignee()))
             {
-                columns[colId].GetTaskById(taskId).SetTitle(title);
-                
+                throw new Exception("only taskAsignee can do that");
             }
-                
-            else
+            if (!is_UserLoggedin)
+            {
                 throw new Exception("User is not logged in");
+            }
+            columns[colId].GetTaskById(taskId).SetTitle(title);
         }
 
         public void UpdateTaskDescription(int colId, int taskId, string description)
@@ -181,15 +189,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("INVALID column id");
             }
-            if (is_UserLoggedin)
+            if (!loggedInUser.Equals(columns[colId].getTasksDict()[taskId].getEmailAssignee()))
             {
-                columns[colId].GetTaskById(taskId).SetDescription(description);
-                
+                throw new Exception("only taskAsignee can do that");
             }
-                
-
-            else
+            if (!is_UserLoggedin)
+            {
                 throw new Exception("User is not logged in");
+            }
+            columns[colId].GetTaskById(taskId).SetDescription(description);
         }
 
         public Column GetColumnById(int columnOrdinal)
@@ -244,7 +252,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     throw new Exception("This name is allready taken");
                 }
             }
-            for(int i = columns.Count-1; i >= columnOrdinal; i--) // moving all necessery columns right
+            if (!loggedInUser.Equals(creatorEmail))
+            {
+                throw new Exception("only creator can do this");
+            }
+            for (int i = columns.Count-1; i >= columnOrdinal; i--) // moving all necessery columns right
             {
 
                 columns[i].setColumnId(i + 1);
@@ -270,6 +282,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (columns.Count == minColumns)
             {
                 throw new Exception("You must have at least 2 column");
+            }
+            if (!loggedInUser.Equals(creatorEmail))
+            {
+                throw new Exception("only creator can do this");
             }
             Dictionary<int, Task> tasks = columns[columnOrdinal].getMyTasks();
 
@@ -322,6 +338,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("You cant move the most right column");
             }
+            if (!loggedInUser.Equals(creatorEmail))
+            {
+                throw new Exception("only creator can do this");
+            }
 
             columns[columnOrdinal].setColumnId(columnOrdinal + 1);
             columns[columnOrdinal + 1].setColumnId(columnOrdinal);
@@ -344,6 +364,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("You cant move the most left column");
             }
+            if (!loggedInUser.Equals(creatorEmail))
+            {
+                throw new Exception("only creator can do this");
+            }
+
             columns[columnOrdinal].setColumnId(columnOrdinal - 1);
             columns[columnOrdinal - 1].setColumnId(columnOrdinal);
 
@@ -376,6 +401,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void ChangeColumnName(int columnOrdinal, string newName)
         {
+            if (columnOrdinal < 0 || columnOrdinal > columns.Count-1)
+            {
+                throw new Exception("Invalid column ordinal");
+            }
+            if (!loggedInUser.Equals(creatorEmail))
+            {
+                throw new Exception("only creator can do this");
+            }
             columns[columnOrdinal].setName(newName);
         }
         public void setTaskId(int id)
@@ -389,6 +422,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public Dictionary<int,Column> getMyColumns()
         {
             return this.columns;
+        }
+        public void setLoggedInUser(string email)
+        {
+            this.loggedInUser = email;
         }
 
     }

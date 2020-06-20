@@ -25,13 +25,13 @@ namespace test
             Response reg;
             
             reg = service.Register("ggg@gmail.com", "aA123456", "dasda");
-             
+            
             reg = service.Login("ggg@gmail.com", "aA123456");
             reg = service.AddTask("ggg@gmail.com", "first", null, DateTime.Today.AddDays(1));
             reg = service.AddTask("ggg@gmail.com", "second", "aaa", DateTime.Today.AddDays(1));
             
            // reg = service.AddTask("ggg@gmail.com", "first", null, DateTime.Today.AddDays(1));
-            reg = service.Register("gg@gmail.com", "aA123456", "dasda");
+            //reg = service.Register("gg@gmail.com", "aA123456", "dasda");
             reg = service.GetColumn("ggg@gmail.com", 0);
             reg = service.GetColumn("ggg@gmail.com", 3);
 
@@ -65,7 +65,10 @@ namespace test
             reg = service.MoveColumnRight(mail, 2);
             reg = service.GetColumn(mail, 2);
             reg = service.AddTask(mail, "Empty", null, DateTime.Today.AddDays(1));
-           // reg = service.LoadData
+            reg = service.Register("gg@gmail.com", "aA123456", "dasda", "ggg@gmail.com");
+            reg = service.Login("gg@gmail.com", "aA123456");
+            reg = service.MoveColumnLeft("gg@gmail.com", 1);
+            // reg = service.LoadData
 
 
 

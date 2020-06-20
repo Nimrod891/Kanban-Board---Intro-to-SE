@@ -97,7 +97,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                     throw new Exception("Invalid nickname");
                 }
             }
-            //User u = new User(email, password, nickname, emailHost); CHANGE
+            User u = new User(email, password, nickname, emailHost);
             DataAccessLayer.DTOs.UserDTO dataUser = new DataAccessLayer.DTOs.UserDTO(0, email, nickname, password); 
             myUserDC.Insert(dataUser);
         }
@@ -229,6 +229,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                 }
             }
             return null;
+        }
+        public Dictionary<string,User> getMyUsers()
+        {
+            return this.users;
         }
     }
 }

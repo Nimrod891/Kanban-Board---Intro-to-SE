@@ -24,15 +24,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             this.is_logged = false;
             myBoard = new BoardPackage.Board(email);
         }
-        //public User(string email, string password, string nickname, string emailHost)// not host user
-        //{
-        //    this.email = email;
-        //    this.password = password;
-        //    this.nickname = nickname;
-        //    this.is_logged = false;
-        //    myBoard = new BoardPackage.Board(email, emailHost);
-        //    myBoardHostMail = myBoard.GetUserEmail();
-        //}
+        public User(string email, string password, string nickname, string emailHost)// not host user
+        {
+            this.email = email;
+            this.password = password;
+            this.nickname = nickname;
+            this.is_logged = false;
+            myBoardHostMail = emailHost;
+        }
         public User(DataAccessLayer.DTOs.UserDTO u)
         {
             this.email = u.email;
@@ -74,6 +73,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             {
                 is_logged = true;
                 myBoard.SetIsULoggedIn(true);
+                myBoard.setLoggedInUser(this.email);
                 return true;
             }
             return false;
@@ -88,6 +88,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             is_logged = false;
             myBoard.SetIsULoggedIn(false);
         }
-
+        public void setMyBoard(BoardPackage.Board b)
+        {
+            this.myBoard = b;
+        }
     }
 }

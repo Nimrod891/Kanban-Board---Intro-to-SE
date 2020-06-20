@@ -33,7 +33,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         public Service()
         {
-            
             this.myUserService = new userService();
             this.myBoardService = new boardService();
             LoadData();
@@ -121,7 +120,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = myUserService.Register(email, password, nickname);
             if(r.ErrorMessage == null)
             {
-                myBoardService.LoadData();
+                myBoardService.getMyBoardController().addBoardToDict(myUserService.getMyUserContreller().getMyUsers()[email].getMyBoard());
             }
 
             log.Info("New User Registered: [" + email + "]");
@@ -137,7 +136,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response Register(string email, string password, string nickname, string emailHost)
         {
-            return myUserService.Register(email, password, nickname, emailHost);
+            Response r = myUserService.Register(email, password, nickname, emailHost);
+            if (r.ErrorMessage == null)
+            {
+                BusinessLayer.BoardPackage.Board board = myBoardService.getMyBoardController().getMyBoards()[emailHost];
+                myUserService.getMyUserContreller().getMyUsers()[email].setMyBoard(board);
+            }
+            return r;
         }
 
 

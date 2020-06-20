@@ -23,11 +23,7 @@ namespace Tests
             board.addColumnToDict(done.Object);
             board.setCreator("hila@gmail.com");
         }
-        //[TearDown]
-        //public void TearDown()
-        //{
-        //    board.RemoveColumn()
-        //}
+
         [TestCase(-1)]
         [TestCase(3)]
         [Test]
@@ -41,6 +37,7 @@ namespace Tests
             //Act
             Assert.Catch<Exception>(delegate { board.AddColumn(columnId, ValidcolName); }, "invalid column id exception");
         }
+
         [TestCase("backlog")]
         [TestCase("in_progress")]
         [TestCase("done")]
@@ -87,6 +84,7 @@ namespace Tests
             Assert.AreSame(in_progress.Object, board.getMyColumns()[2]);
             Assert.AreSame(done.Object, board.getMyColumns()[3]);
         }
+
         [TestCase(-1)]
         [TestCase(3)]
         [Test]
@@ -109,6 +107,7 @@ namespace Tests
             //Act
             Assert.Catch<Exception>(delegate { board.MoveColumnRight(columnOrdinal); }, "cant move right the last column");
         }
+
         [Test]
         public void MoveColumnRightTest_validArguments_ExceptingColumnsChangesPlace()
         {
@@ -136,5 +135,51 @@ namespace Tests
             Assert.Catch<Exception>(delegate { board.MoveColumnRight(validColId); }, "inValid name exception");
         }
 
+        [TestCase(-1)]
+        [TestCase(3)]
+        [Test]
+        public void LimitTaskTest_InvalidColumnId_ExceptingException(int columnId)
+        {
+            //Arrange
+            int ValidLimitNum = 10;
+            board.SetIsULoggedIn(true);
+            board.setLoggedInUser("hila@gmail.com");
+            //backlog.Setup(m => m.SetLimitNum(10));
+
+            //Act
+            Assert.Catch<Exception>(delegate { board.LimitTasks(columnId,ValidLimitNum); }, "invalid column id exception");
+        }
+
+        [Test]
+        public void LimitTaskTest_notCreatorUser_ExceptingException()
+        {
+            //Arrange
+            int validColId = 1;
+            int validLimitNum = 10;
+            board.SetIsULoggedIn(true);
+            board.setLoggedInUser("nim@gmail.com");
+            Mock<Column> testColumn = new Mock<Column>();
+
+            //Act
+            Assert.Catch<Exception>(delegate { board.LimitTasks(validColId, validLimitNum); }, "cant add if loggedin user is not creator");
+        }
+        [Test]
+        public void LimitTaskTest_notLoggedInUser_ExceptingException()
+        {
+            int validColId = 1;
+            int ValidLimitNum = 10;
+            board.SetIsULoggedIn(false);
+            board.setLoggedInUser("hila@gmail.com");
+            Assert.Catch<Exception>(delegate { board.LimitTasks(validColId, ValidLimitNum); }, "cant add if loggedin user is not creator");
+        }
+        [Test]
+        public void LimitTaskTest_ValidArguments_notThrowingExceptions()
+        {
+            int validColId = 1;
+            int ValidLimitNum = 10;
+            board.SetIsULoggedIn(true);
+            board.setLoggedInUser("hila@gmail.com");
+            Assert.DoesNotThrow(delegate { board.LimitTasks(validColId, ValidLimitNum); }, "succed limitTask");
+        }
     }
 }

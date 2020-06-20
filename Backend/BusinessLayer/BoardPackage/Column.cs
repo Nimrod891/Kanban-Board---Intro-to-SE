@@ -166,5 +166,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             tasks[taskId].setEmailAssignee(emailAssignee);
         }
+
     }
 }

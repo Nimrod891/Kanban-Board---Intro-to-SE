@@ -29,6 +29,7 @@ namespace test
             reg = service.Login("ggg@gmail.com", "aA123456");
             reg = service.AddTask("ggg@gmail.com", "first", null, DateTime.Today.AddDays(1));
             reg = service.AddTask("ggg@gmail.com", "second", "aaa", DateTime.Today.AddDays(1));
+            reg = service.AddColumn("ggg@gmail.com", 1, "hila");
             
            // reg = service.AddTask("ggg@gmail.com", "first", null, DateTime.Today.AddDays(1));
             //reg = service.Register("gg@gmail.com", "aA123456", "dasda");

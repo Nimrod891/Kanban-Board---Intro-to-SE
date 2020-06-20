@@ -100,6 +100,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("Board does not exist");
             }
             boards[email].ChangeColumnName(columnOrdinal, newName);
+            myColumnDC.Update(columnOrdinal, email, DataAccessLayer.DTOs.ColumnDTO.MessageNameColumnName, newName);
         }
 
         public void LimitTasks(string userEmail, int columnId, int limitNum)

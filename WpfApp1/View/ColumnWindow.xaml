@@ -1,0 +1,51 @@
+﻿<Window x:Class="WpfApp1.View.ColumnWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1.View"
+        mc:Ignorable="d"
+        Title="ColumnWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="11*"/>
+        </Grid.RowDefinitions>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="3,227.6,0,0" TextWrapping="Wrap" Text="{Binding Path=NameColumn}" VerticalAlignment="Top" Width="120" Grid.Row="1" Grid.Column="1"/>
+
+        <TextBox HorizontalAlignment="Left" Height="41" Margin="15,71,0,0" TextWrapping="Wrap" Text="{Binding Path=TitleColumn}" VerticalAlignment="Top" Width="188" Grid.Column="1" Grid.RowSpan="2"/>
+        <Button Content="Return to board" HorizontalAlignment="Left" Margin="675,44,0,0" VerticalAlignment="Top" Width="93" Click="return_to_board_button" Grid.Column="1" Height="19"/>
+        <Button Content="Advance" HorizontalAlignment="Left" Margin="128,227.6,0,0" VerticalAlignment="Top" Width="75" Click="advance_button" Grid.Row="1" Grid.Column="1" Height="19"/>
+        <Button Content="View task" HorizontalAlignment="Left" Margin="675,137.6,0,0" VerticalAlignment="Top" Width="75" Click="view_task_button" Grid.Row="1" Grid.Column="1" Height="19"/>
+        <Button Content="Delete task" HorizontalAlignment="Left" Margin="675,75.6,0,0" VerticalAlignment="Top" Width="75" Click="delete_task" Grid.Row="1" Grid.Column="1" Height="19"/>
+        <Button Content="Change Title" HorizontalAlignment="Left" Margin="225,71,0,0.4" Width="75" Click="Change_Title_Button" Grid.Column="1"/>
+        <Label Content="{Binding Path= TitleColumn}" HorizontalAlignment="Left" Margin="59,22,0,0" VerticalAlignment="Top" Width="222" FontSize="20" Height="41" Grid.ColumnSpan="2"/>
+
+        <StackPanel Orientation="Vertical" Margin="0,0,-0.4,0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <Label Content="{Binding Path= Title,Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"/>
+            <ListBox ItemsSource="{Binding TaskOfColumn}" SelectedValue="{Binding SelectedTask, Mode=OneWayToSource}" SelectionChanged="ListBox_SelectionChanged"  Height="374" Margin="315,0,137.6,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal"  Background="{Binding Path=Date75}"   >
+                            <Label Content="{Binding Taskid}"/>
+                            <Label Content="     "/>
+                            <Label Content="{Binding Title}" FontSize="20" BorderBrush="Green"/>
+                            <Label Content="     "/>
+
+                            <Label Content="{Binding Duedate}" FontSize="15"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+        <Button Content="assign task" HorizontalAlignment="Left" Margin="128,174.6,0,0" VerticalAlignment="Top" Width="75" Click="assign_task_button" Height="24" Grid.Row="1" Grid.Column="1"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="3,174.6,0,0" TextWrapping="Wrap" Text="{Binding Path=AssignEmail}" VerticalAlignment="Top" Width="120" Grid.Row="1" Grid.Column="1"/>
+        <TextBox HorizontalAlignment="Left" Height="41" Margin="15,31.6,0,0" TextWrapping="Wrap" Text="{Binding Path=Filter}" VerticalAlignment="Top" Width="188" Grid.Column="1" Grid.Row="1"/>
+        <Button Content="Filter" HorizontalAlignment="Left" Margin="225,53.6,0,0" VerticalAlignment="Top" Width="75" Click="Change_task_button" Grid.Column="1" Height="19" Grid.Row="1"/>
+        <Button Content="Sort By Due Date" HorizontalAlignment="Left" Margin="675,196.6,0,0" VerticalAlignment="Top" Width="93" Click="sort_by_date_button" Grid.Row="1" Grid.Column="1" Height="34"/>
+    </Grid>
+</Window>

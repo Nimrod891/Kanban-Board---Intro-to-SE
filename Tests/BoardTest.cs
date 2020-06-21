@@ -23,7 +23,7 @@ namespace Tests
             board.addColumnToDict(done.Object);
             board.setCreator("hila@gmail.com");
         }
-
+        //-------------------------ADD COLUMN TEST---------------------------------
         [TestCase(-1)]
         [TestCase(3)]
         [Test]
@@ -84,7 +84,7 @@ namespace Tests
             Assert.AreSame(in_progress.Object, board.getMyColumns()[2]);
             Assert.AreSame(done.Object, board.getMyColumns()[3]);
         }
-
+        //-------------------------MOVE COLUMN RIGHT TEST---------------------------------
         [TestCase(-1)]
         [TestCase(3)]
         [Test]
@@ -134,7 +134,7 @@ namespace Tests
             //Act
             Assert.Catch<Exception>(delegate { board.MoveColumnRight(validColId); }, "inValid name exception");
         }
-
+        //-------------------------LIMIT TASK TEST---------------------------------
         [TestCase(-1)]
         [TestCase(3)]
         [Test]

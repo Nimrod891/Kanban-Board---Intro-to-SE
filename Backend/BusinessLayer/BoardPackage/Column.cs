@@ -74,10 +74,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             this.columnId = columnId;
         }
-       public Dictionary<int,Task> getMyTasks()
-        {
-            return this.tasks;
-        }
+       
         public void removeMyTasks()
         {
             tasks.Clear();
@@ -95,7 +92,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.limitNum = limitNum;
         }
 
-        public Task AddTask(int taskId, string title, string description, DateTime dueDate)
+        public Task AddTask(int taskId, string title, string description, DateTime dueDate, string email)
         {
             if (!(this.columnId == 0))
             {
@@ -106,7 +103,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new Exception("there are already " + limitNum + " tasks in " + name + "column"); /// "there are already 6 tasks in backlog column"
                 
             }
-            Task t = new Task(taskId, title, description, dueDate);
+            Task t = new Task(taskId, title, description, dueDate, email);
             this.AddTasksToDict(taskId, t);
             return t;
         }
@@ -156,7 +153,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             List<ServiceLayer.Task> listTasks = new List<ServiceLayer.Task>();
             foreach (KeyValuePair<int,Task> t in tasks)
             {
-                ServiceLayer.Task task = new ServiceLayer.Task(t.Value.GetTaskId(), t.Value.GetCreationDate(), t.Value.GetDueDate(), t.Value.GetTitle(), t.Value.GetDescription());
+                ServiceLayer.Task task = new ServiceLayer.Task(t.Value.GetTaskId(), t.Value.GetCreationDate(), t.Value.GetDueDate(), t.Value.GetTitle(), t.Value.GetDescription(), t.Value.getEmailAssignee());
                 listTasks.Add(task);
             }
             return listTasks.AsReadOnly();

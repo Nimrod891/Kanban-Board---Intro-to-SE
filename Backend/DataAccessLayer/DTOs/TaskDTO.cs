@@ -13,8 +13,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         public const string MessagecolumnColumnName = "Column";
         public const string MessageDueDateColumnName = "DueDate";
         public const string MessageCreationTimeColumnName = "CreationTime";
+        public const string MessageTaskAssigneeColumnName = "TaskAssignee";
 
-        // private string _taskid;
+        //private string _taskid;
         // public string TaskID { get => _taskid; set { _taskid = value; _controller.Update(Id, MessageTaskIDColumnName, value); } }
         private string _title;
         public string Title { get => _title; set { _title = value; _controller.Update(Id, email, MessageTitleColumnName, value); } }
@@ -29,10 +30,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         public DateTime DueDate { get => _duedate; set { _duedate = value; _controller.Update(Id, email, MessageDueDateColumnName, value); } }
         private DateTime _creationtime;
         public DateTime CreationTime { get => _creationtime; set { _creationtime = value; _controller.Update(Id, email, MessageCreationTimeColumnName, value); } }
+        private string _TaskAssignee;
+        public string TaskAssignee { get => _TaskAssignee; set { _TaskAssignee = value; _controller.Update(Id, email, MessageTaskAssigneeColumnName, value); } }
 
 
 
-        public TaskDTO(long ID, long columnID, string Email, string Title, string Description, DateTime DueDate, DateTime CreationTime) : base(new TaskDalController())
+        public TaskDTO(long ID, long columnID, string Email, string Title, string Description, DateTime DueDate, DateTime CreationTime, string TaskAssignee) : base(new TaskDalController())
         {
 
             email = Email;
@@ -42,6 +45,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             _coulumnId = columnID;
             _duedate = DueDate;
             _creationtime = CreationTime;
+            _TaskAssignee = TaskAssignee;
 
 
         }

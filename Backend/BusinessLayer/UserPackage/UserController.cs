@@ -40,7 +40,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 
         public void Register(string email, string pass, string nickname)
         {
-            email = email.ToLower();
+            //mail = email.ToLower();
             foreach (KeyValuePair<string, User> users in users) // check through dictionary if email already exisit
             {
                 if (users.Key.Equals(email))

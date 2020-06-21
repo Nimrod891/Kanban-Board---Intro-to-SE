@@ -9,15 +9,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public readonly DateTime DueDate;
         public readonly string Title;
         public readonly string Description;
-        //public readonly string emailAssignee;
-        internal Task(int id, DateTime creationTime, DateTime dueDate, string title, string description)
+        public readonly string emailAssignee;
+        internal Task(int id, DateTime creationTime, DateTime dueDate, string title, string description, string emailAssignee)
         {
             this.Id = id;
             this.CreationTime = creationTime;
             this.DueDate = dueDate;
             this.Title = title;
             this.Description = description;
-            //this.emailAssignee = emailAssignee;
+            this.emailAssignee = emailAssignee;
         }
         // You can add code here
     }

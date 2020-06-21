@@ -56,7 +56,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
 
-                command.CommandText = $"select * from {MessageTableName} WHERE email  = '{email}';";
+                command.CommandText = $"select * from {MessageTableName} WHERE email  = '{email}'";
                 SQLiteDataReader dataReader = null;
                 try
                 {

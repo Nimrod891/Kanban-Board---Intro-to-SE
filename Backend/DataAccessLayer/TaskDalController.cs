@@ -96,8 +96,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTOs.DTO.IDColumnName} ,{DTOs.TaskDTO.MessagecolumnColumnName},{DTOs.TaskDTO.EmailColumnName},{DTOs.TaskDTO.MessageTitleColumnName},{DTOs.TaskDTO.MessagedescriptionColumnName},{DTOs.TaskDTO.MessageDueDateColumnName},{DTOs.TaskDTO.MessageCreationTimeColumnName}) " +
-    $"VALUES (@idVal,@Columnval,@emailval,@Titleval,@Descriptionval,@DueDateVal,@CreationTimeVal);";
+                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTOs.DTO.IDColumnName} ,{DTOs.TaskDTO.MessagecolumnColumnName},{DTOs.TaskDTO.EmailColumnName},{DTOs.TaskDTO.MessageTitleColumnName},{DTOs.TaskDTO.MessagedescriptionColumnName},{DTOs.TaskDTO.MessageDueDateColumnName},{DTOs.TaskDTO.MessageCreationTimeColumnName}, {DTOs.TaskDTO.MessageTaskAssigneeColumnName}) " +
+    $"VALUES (@idVal,@Columnval,@emailval,@Titleval,@Descriptionval,@DueDateVal,@CreationTimeVal, @TaskAssigneeVal);";
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", TASK.Id);
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailval", TASK.email);
                     SQLiteParameter titleParam = new SQLiteParameter(@"Titleval", TASK.Title);
@@ -105,6 +105,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     SQLiteParameter duedateParam = new SQLiteParameter(@"DueDateVal", TASK.DueDate);
                     SQLiteParameter creationtimeParam = new SQLiteParameter(@"CreationTimeVal", TASK.CreationTime);
                     SQLiteParameter columnideParam = new SQLiteParameter(@"ColumnVal", TASK.ColumnId);
+                    SQLiteParameter taskAssigneeParam = new SQLiteParameter(@"TaskAssigneeVal", TASK.TaskAssignee);
 
 
 
@@ -115,6 +116,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Parameters.Add(duedateParam);
                     command.Parameters.Add(creationtimeParam);
                     command.Parameters.Add(columnideParam);
+                    command.Parameters.Add(taskAssigneeParam);
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();
@@ -138,12 +140,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             if (reader.IsDBNull(4))
             {
                 result = new DTOs.TaskDTO((long)reader.GetValue(0), (long)reader.GetValue(1), reader.GetString(2),
-                reader.GetString(3), null, reader.GetDateTime(5), reader.GetDateTime(6));
+                reader.GetString(3), null, reader.GetDateTime(5), reader.GetDateTime(6), reader.GetString(7));
             }
             else
             {
                 result = new DTOs.TaskDTO((long)reader.GetValue(0), (long)reader.GetValue(1), reader.GetString(2),
-                reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6));
+                reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6), reader.GetString(7));
             }
             return result;
         }

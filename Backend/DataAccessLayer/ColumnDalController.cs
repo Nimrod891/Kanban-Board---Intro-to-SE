@@ -56,10 +56,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         //    return result;
         //}
 
-        public List<DTOs.ColumnDTO> Select(int id, string email)
+        public DTOs.ColumnDTO Select(int id, string email)
         {
             //string t_name = "columns";
-            List<DTOs.ColumnDTO> results = new List<DTOs.ColumnDTO>();
+            DTOs.ColumnDTO result;
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
@@ -71,11 +71,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     connection.Open();
                     dataReader = command.ExecuteReader();
 
-                    while (dataReader.Read())
-                    {
-                        results.Add(ConvertReaderToObject(dataReader));
+                    
+                        result=(ConvertReaderToObject(dataReader));
 
-                    }
+                    
                 }
                 finally
                 {
@@ -89,7 +88,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
 
             }
-            return results;
+            return result;
         }
 
         public bool Insert(DTOs.ColumnDTO column)

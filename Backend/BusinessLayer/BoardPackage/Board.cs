@@ -73,15 +73,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             this.is_UserLoggedin = a;
         }
-        public Task AddNewTask(string title, string description, DateTime dueDate)
+        public Task AddNewTask(string title, string description, DateTime dueDate, string assigneeEmail)
         {
             if (!is_UserLoggedin)/// getting exception here because is_UserLoggedin from this board
                                 ///is not changed to true when the user is logged in.
             {
                 throw new Exception("User is not logged in");
             }
-            Task a = columns[0].AddTask(taskId, title, description, dueDate);
-            a.setEmailAssignee(this.loggedInUser);
+            Task a = columns[0].AddTask(taskId, title, description, dueDate, assigneeEmail);
+            //a.setEmailAssignee(this.loggedInUser); -> Assignee added to constructor
             taskId++;
             return a;   
         }
@@ -241,7 +241,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
         public Column AddColumn(int columnOrdinal, string Name)
         {
-            if (columnOrdinal < 0 || columnOrdinal > columns.Count-1)
+            if (columnOrdinal < 0|| columnOrdinal > columns.Count)
             {
                 throw new Exception("Invalid column ordinal");
             }
@@ -287,7 +287,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("only creator can do this");
             }
-            Dictionary<int, Task> tasks = columns[columnOrdinal].getMyTasks();
+            Dictionary<int, Task> tasks = columns[columnOrdinal].getTasksDict();
 
             if (columnOrdinal == 0) // move tasks to right column
             {
@@ -414,6 +414,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public void setTaskId(int id)
         {
             this.taskId = id;
+        }
+
+        public int getColumnId()
+        {
+            return this.columnId;
+        }
+        public void setColumnId(int id)
+        {
+            this.columnId = id;
         }
         public int getTaskId()
         {

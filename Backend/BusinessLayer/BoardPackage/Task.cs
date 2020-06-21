@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private int maxDesc = 300;
         private int maxTitle = 50;
 
-        public Task(int taskId, string title, string description, DateTime dueDate)
+        public Task(int taskId, string title, string description, DateTime dueDate, string email)
         {
 
             this.taskId = taskId;
@@ -26,14 +26,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             SetDescription(description);
             SetDueDate(dueDate);
             this.creationDate = DateTime.Now;
+            this.emailAssignee = email;
         }
-        public Task(int taskId, string title, string description, DateTime dueDate, DateTime creationDate) //LoadTask
+        public Task(int taskId, string title, string description, DateTime dueDate, DateTime creationDate, string emailAssignee) //LoadTask
         {
             this.taskId = taskId;
             this.title = title;
             this.description = description;
             this.dueDate = dueDate;
             this.creationDate = creationDate;
+            this.emailAssignee = emailAssignee;
         }
         public string getEmailAssignee()
         {

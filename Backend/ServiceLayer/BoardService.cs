@@ -103,7 +103,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BusinessLayer.BoardPackage.Task t = MyBoardContorller.AddNewTask(email, title, description, dueDate);
-                Task servicTask = new Task(t.GetTaskId(),t.GetCreationDate(),t.GetDueDate(),t.GetTitle(),t.GetDescription());
+                Task servicTask = new Task(t.GetTaskId(),t.GetCreationDate(),t.GetDueDate(),t.GetTitle(),t.GetDescription(), t.getEmailAssignee());
                 log.Info($"User {email} has added a new task: \n{title}\nDue Date:{dueDate}");
                 return new Response<Task>(servicTask);
             }
@@ -251,7 +251,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BusinessLayer.BoardPackage.Task t = MyBoardContorller.GetTaskById(email, colID, taskId);
-                Task taskService = new Task(t.GetTaskId(), t.GetCreationDate(), t.GetDueDate(), t.GetTitle(), t.GetDescription());
+                Task taskService = new Task(t.GetTaskId(), t.GetCreationDate(), t.GetDueDate(), t.GetTitle(), t.GetDescription(), t.getEmailAssignee());
                 return new Response<Task>(taskService);
             }
             catch (Exception e)

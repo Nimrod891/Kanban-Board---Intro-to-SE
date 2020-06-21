@@ -50,6 +50,7 @@ namespace test
             reg = service.UpdateTaskDueDate("ggg@gmail.com", 0, 2, DateTime.Today.AddDays(3));
             reg = service.UpdateTaskTitle("ggg@gmail.com", 1, 1, "updated title test");
             reg = service.AddColumn("ggg@gmail.com", 1, "testColumn");
+            reg = service.AddColumn("ggg@gmail.com", 5, "Another");
             reg = service.AdvanceTask("ggg@gmail.com", 0, 4);
             reg = service.MoveColumnLeft("ggg@gmail.com", 1);
             reg = service.MoveColumnRight("ggg@gmail.com", 1);
@@ -58,6 +59,10 @@ namespace test
             reg = service.GetColumn("ggg@gmail.com", 0);
             reg = service.AddColumn("ggg@gmail.com", 4, "Exist");
             reg = service.GetColumn("ggg@gmail.com", 4);
+            reg = service.AddColumn("ggg@gmail.com", 5, "End");
+            reg = service.AddColumn("ggg@gmail.com", 0, "Exist");
+            reg = service.RemoveColumn("ggg@gmail.com", 0);
+            reg = service.RemoveColumn("ggg@gmail.com", 2);
             reg = service.RemoveColumn(mail, 3);
             reg = service.GetColumn(mail, 3);
             //reg = service.GetColumn("ggg@gmail.com", );

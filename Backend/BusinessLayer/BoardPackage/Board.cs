@@ -287,7 +287,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new Exception("only creator can do this");
             }
-            Dictionary<int, Task> tasks = columns[columnOrdinal].getTasksDict();
+            Dictionary<int, Task> tasks = columns[columnOrdinal].getTasksDict(); // all tasks from the column to be removed
 
             if (columnOrdinal == 0) // move tasks to right column
             {
@@ -299,7 +299,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 }
                 foreach (var t in tasks)
                 {
-                    columns[columnOrdinal + 1].AddTasksToDict(t.Key, t.Value);
+                    columns[columnOrdinal + 1].AddTasksToDict(t.Key, t.Value); // add tasks from the column 0 to the one on its right side
 
                 }
             }
@@ -312,11 +312,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 }
                 foreach (var t in tasks)
                 {
-                    columns[columnOrdinal - 1].AddTasksToDict(t.Key, t.Value);
+                    columns[columnOrdinal - 1].AddTasksToDict(t.Key, t.Value); // add tasks from the column to be removed to the one on its left
                     //columns[columnOrdinal].myTaskDC.Update(t.Value.GetTaskId(), creatorEmail, DataAccessLayer.DTOs.TaskDTO.IDColumnName, columnOrdinal - 1);
                 }
 
-                columns[columnOrdinal].removeMyTasks();
+                //columns[columnOrdinal].removeMyTasks();
                 columns.Remove(columnOrdinal);
 
                 for (int i = columnOrdinal + 1; i <= columns.Count; i++) // moving all necessery columns left

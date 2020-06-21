@@ -228,7 +228,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             myColumnDC.Delete(columnOrdinal, email);
             for (int i = columnOrdinal + 1; i <= boards[email].getMyColumns().Count; i++)
             {
-                foreach (var t in boards[email].getMyColumns()[i - 1].getTasksDict())
+                foreach (var t in boards[email].getMyColumns()[i].getTasksDict())
                 {
                     myTaskDC.Update(t.Value.GetTaskId(), email, DataAccessLayer.DTOs.TaskDTO.MessagecolumnColumnName, i - 1);
                 }
